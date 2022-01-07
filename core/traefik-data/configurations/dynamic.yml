@@ -11,8 +11,8 @@ http:
 
     user-auth:
       basicAuth:
-        users:
-          - "raf:$apr1$MTqfVwiE$FKkzT5ERGFqwH9f3uipxA1"
+        users: 
+          - '{{ env "TRAEFIC_AUTH" }}'
 
 tls:
   options:

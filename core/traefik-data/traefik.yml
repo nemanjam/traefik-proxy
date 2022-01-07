@@ -27,7 +27,7 @@ providers:
 certificatesResolvers:
   letsencrypt:
     acme:
-      email: rafrasenberg@gmail.com
+      email: $ACME_EMAIL
       storage: acme.json
       keyType: EC384
       httpChallenge:
