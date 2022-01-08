@@ -62,10 +62,11 @@ Then run the below command, replacing the `username` and `password` with the one
 echo $(htpasswd -nb <username> <password>)
 ```
 
-Edit the `.env` file and add your auth string to `TRAEFIC_AUTH`. Also replace `ACME_EMAIL`, `TRAEFIC_HOST` and `PORTAINER_HOST` with your own values.
+### Copy local `.env` file to server
 
 ```bash
-source .env
+scp ./core/.env ubuntu@amd1:/home/ubuntu/traefik-proxy/core
+
 ```
 
 ### III. Create the proxy network
@@ -77,7 +78,7 @@ docker network create proxy
 ### IV. Give the proper permissions to acme.json
 
 ```bash
-sudo chmod 600 ./traefik-data/acme.json
+sudo chmod 600 ~/traefik-proxy/core/traefik-data/acme.json
 ```
 
 ### V. Run the stack
