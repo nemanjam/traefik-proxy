@@ -89,6 +89,10 @@ sudo chmod 600 ~/traefik-proxy/core/traefik-data/acme.json
 
 ```
 docker-compose up -d
+
+docker-compose start
+
+docker-compose stop
 ```
 
 ## Adding services
