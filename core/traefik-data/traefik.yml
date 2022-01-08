@@ -28,8 +28,8 @@ certificatesResolvers:
   letsencrypt:
     acme:
       email: nemanja.mitic.elfak@hotmail.com
-      caServer: "https://acme-staging-v02.api.letsencrypt.org/directory"
-      # caServer: "https://acme-v02.api.letsencrypt.org/directory"
+      # caServer: "https://acme-staging-v02.api.letsencrypt.org/directory"
+      caServer: "https://acme-v02.api.letsencrypt.org/directory"
       storage: acme.json
       keyType: EC384
       httpChallenge:
