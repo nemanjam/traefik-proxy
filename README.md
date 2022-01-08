@@ -62,10 +62,14 @@ Then run the below command, replacing the `username` and `password` with the one
 echo $(htpasswd -nb <username> <password>)
 ```
 
-### Copy local `.env` file to server
+### Copy local `.env` files to server
 
 ```bash
+# core .env
 scp ./core/.env ubuntu@amd1:/home/ubuntu/traefik-proxy/core
+
+# uptime-kuma .env
+scp ./apps/uptime-kuma/.env ubuntu@amd1:/home/ubuntu/traefik-proxy/apps/uptime-kuma
 
 ```
 
