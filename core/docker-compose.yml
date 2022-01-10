@@ -50,6 +50,16 @@ services:
       - "traefik.http.routers.portainer-secure.service=portainer"
       - "traefik.http.services.portainer.loadbalancer.server.port=9000"
 
+  adminer:
+    image: "adminer:4.8.1-standalone"
+    hostname: adminer
+    networks:
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.adminer.rule=Host(`adminer.${DOMAIN}`)"
+      - "traefik.http.services.adminer.loadbalancer.server.port=8080"
+
 networks:
   proxy:
     external: true
