@@ -1,29 +1,29 @@
-version: "3.8"
+version: '3.8'
 
 services:
- uptime:
-  image: "louislam/uptime-kuma"
-  container_name: uptime
-  restart: unless-stopped
-  volumes:
-   - uptime-kuma:/app/data:rw
-  # ports:
-  #  - 3100:3001 # dont expose it directly on domain:3001
-  labels:
-   # Traefik
-   - "traefik.enable=true" 
-  # HTTP Router
-   - "traefik.http.routers.uptime-https.rule=Host(`status.${DOMAIN}`)"
-   - "traefik.http.routers.uptime-https.entrypoints=websecure"
-   - "traefik.http.routers.uptime-https.middlewares=user-auth@file"
-   - "traefik.http.routers.uptime-https.service=uptime-svc"
-   - "traefik.http.services.uptime-svc.loadbalancer.server.port=3001"
-  networks:
-   - proxy # out to Traefik
+  uptime:
+    image: 'louislam/uptime-kuma'
+    container_name: uptime
+    restart: unless-stopped
+    volumes:
+      - uptime-kuma:/app/data:rw
+    # ports:
+    #  - 3100:3001 # dont expose it directly on domain:3001
+    labels:
+      # Traefik
+      - 'traefik.enable=true'
+      # HTTP Router
+      - 'traefik.http.routers.uptime-https.rule=Host(`status.${DOMAIN}`)'
+      - 'traefik.http.routers.uptime-https.entrypoints=websecure'
+      - 'traefik.http.routers.uptime-https.middlewares=user-auth@file'
+      - 'traefik.http.routers.uptime-https.service=uptime-svc'
+      - 'traefik.http.services.uptime-svc.loadbalancer.server.port=3001'
+    networks:
+      - proxy # out to Traefik
 
 volumes:
- uptime-kuma:
+  uptime-kuma:
 
 networks:
- proxy:
-  external: true
+  proxy:
+    external: true
