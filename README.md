@@ -2,7 +2,6 @@
 
 Forked from [rafrasenberg/docker-traefik-portainer](https://github.com/rafrasenberg/docker-traefik-portainer) and [dbartumeu/docker-traefik-portainer](https://github.com/dbartumeu/docker-traefik-portainer)
 
-
 # Docker container management with Traefik v2 and Portainer
 
 A configuration set-up for a Traefik v2 reverse proxy along with Portainer and Docker Compose.
@@ -90,6 +89,8 @@ sudo chmod 600 ~/traefik-proxy/core/traefik-data/acme.json
 ```
 docker-compose up -d
 
+docker-compose down
+
 docker-compose start
 
 docker-compose stop
@@ -121,6 +122,7 @@ networks:
 Make sure to change `myservice`, `myservice.yourdomain.com` and `myserviceport` for meaningful values.
 
 ---
+
 ---
 
 # Docker container management with Traefik v2 and Portainer

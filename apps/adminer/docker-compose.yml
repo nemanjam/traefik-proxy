@@ -3,6 +3,7 @@ version: '3.8'
 services:
   adminer:
     image: 'adminer:4.8.1-standalone'
+    container_name: adminer
     hostname: adminer
     networks:
       - proxy
