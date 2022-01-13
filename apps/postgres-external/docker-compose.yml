@@ -6,12 +6,14 @@ services:
     restart: unless-stopped
     ports:
       - '5433:5433'
-    volumes:
-      - ./pg-data:/var/lib/postgresql/data
-      - ./pg-config/pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
-    # - ./prisma/pg-config/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
     env_file:
       - .env.local
+    environment:
+      - PGDATA=/var/lib/postgresql/data/db-files/
+    volumes:
+      - ./pg-data:/var/lib/postgresql/data/db-files
+      - ./pg-config/pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
+      # - ./prisma/pg-config/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
     networks:
       - proxy
 
