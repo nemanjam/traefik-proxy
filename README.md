@@ -82,6 +82,9 @@ docker network create proxy
 
 ```bash
 sudo chmod 600 ~/traefik-proxy/core/traefik-data/acme.json
+
+# backup
+cp ~/traefik-proxy/core/traefik-data/acme.json ~/acme.json.bak
 ```
 
 ### V. Run the stack

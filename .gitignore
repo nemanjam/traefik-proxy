@@ -1,3 +1,5 @@
 /**/.env
 /**/.env.local
 /**/pg-data/
+
+core/traefik-data/acme.json
