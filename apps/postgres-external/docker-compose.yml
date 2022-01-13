@@ -4,16 +4,15 @@ services:
     image: postgres:14-alpine
     container_name: postgres-external
     restart: unless-stopped
+    command: postgres -c config_file=/etc/postgresql.conf
     ports:
       - '5433:5433'
     env_file:
       - .env.local
-    environment:
-      - PGDATA=/var/lib/postgresql/data/db-files/
     volumes:
-      - ./pg-data:/var/lib/postgresql/data/db-files
-      - ./pg-config/pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
-      # - ./prisma/pg-config/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
+      - ./pg-data:/var/lib/postgresql/data
+      - ./pg-config/postgresql.conf:/etc/postgresql.conf
+      - ./pg-config/pg_hba.conf:/etc/pg_hba.conf
     networks:
       - proxy
 
