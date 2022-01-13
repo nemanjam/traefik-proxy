@@ -10,13 +10,6 @@ services:
       - ./pg-data:/var/lib/postgresql/data
       - ./pg-config/pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
     # - ./prisma/pg-config/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
-
-    environment:
-      PGPORT: 5433
-    #   POSTGRES_USER: user
-    #   POSTGRES_PASSWORD: pass
-    #   POSTGRES_DB: db
-
     env_file:
       - .env.local
     networks:
