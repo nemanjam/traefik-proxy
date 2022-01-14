@@ -1,0 +1,47 @@
+version: '3.8'
+services:
+  nextjs-prisma-prod:
+    container_name: nextjs-prisma-prod
+    image: nemanjamitic/nextjs-prisma-prod:latest
+    # ports:
+    #   - '3001:3001'
+    #command: sleep infinity
+    volumes:
+      - ./uploads:/app/uploads
+      - ./prisma:/app/prisma
+    env_file:
+      - .env.production
+      # for now
+      - .env.local
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.nextjs-prisma-secure.rule=Host(`${HOSTNAME}`)'
+      - 'traefik.http.routers.nextjs-prisma-secure.entrypoints=websecure'
+      - 'traefik.http.routers.nextjs-prisma-secure.service=nextjs-prisma-svc'
+      - 'traefik.http.services.nextjs-prisma-svc.loadbalancer.server.port=3001'
+    depends_on:
+      - postgres-db-prod
+    networks:
+      - proxy
+      - internal
+
+  postgres-db-prod:
+    image: postgres:14-alpine
+    container_name: postgres-db-prod
+    restart: unless-stopped
+    ports:
+      - '5432:5432'
+    volumes:
+      - ./prisma/pg-data:/var/lib/postgresql/data
+    env_file:
+      - .env.local
+    networks:
+      # for adminer
+      - proxy
+      - internal
+
+networks:
+  proxy:
+    external: true
+  internal:
+    external: false
