@@ -2,7 +2,7 @@ version: '3.8'
 services:
   nextjs-prisma-prod:
     container_name: nextjs-prisma-prod
-    image: nemanjamitic/nextjs-prisma-prod:latest
+    image: nemanjamitic/nextjs-prisma-boilerplate:latest
     # ports:
     #   - '3001:3001'
     #command: sleep infinity
