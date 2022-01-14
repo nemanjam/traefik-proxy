@@ -8,6 +8,10 @@ mkdir -p ~/traefik-proxy/apps/nextjs-prisma-boilerplate/prisma/pg-data
 # cant load schema.prisma...?
 sudo chmod 777 -R prisma uploads
 
+-rw-rw-r--  1 ubuntu ubuntu 2545 Jan 14 13:43 schema.prisma
+-rw-rw-r--  1 ubuntu ubuntu 4301 Jan 14 13:43 seed.js
+
+
 # clean pg-data
 rm -r pg-data/*
 
