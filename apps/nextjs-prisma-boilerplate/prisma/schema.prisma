@@ -1,0 +1,91 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+// binaryTargets = ["debian-openssl-1.1.x"]
+
+// env("DB_PROVIDER")
+// provider must be hardcoded here
+// https://github.com/prisma/prisma/issues/3834
+
+datasource db {
+  provider = "postgres" 
+  url      =  env("DATABASE_URL")
+}
+
+// provider = "sqlite" 
+// url    =  "file:./dev.db"
+
+model Post {
+  id          Int     @id @default(autoincrement())
+  title       String
+  content     String?
+  published   Boolean @default(false)
+  author      User?   @relation(fields: [authorId], references: [id])
+  authorId    String?
+  createdAt   DateTime  @default(now()) @map(name: "created_at")
+  updatedAt   DateTime  @updatedAt @map(name: "updated_at")
+  // hero image, tag, category, comments
+
+  @@map("posts")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique // optional, facebook
+  username      String    @unique @default(cuid())
+  provider      String    @default("credentials")
+  password      String? 
+  emailVerified DateTime? @map("email_verified")
+  image         String?
+  headerImage   String?   @map("header_image")
+  bio           String?
+  role          String    @default("user") // user, admin
+  accounts      Account[] // next-auth requires this scheme, user is in scheme too
+  sessions      Session[]
+  posts         Post[]
+  createdAt     DateTime  @default(now()) @map(name: "created_at")
+  updatedAt     DateTime  @updatedAt @map(name: "updated_at")
+
+  @@map("users")
+}
+
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String  @map("user_id")
+  type               String
+  provider           String
+  providerAccountId  String  @map("provider_account_id")
+  refresh_token      String?
+  access_token       String?
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?
+  session_state      String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique @map("session_token")
+  userId       String   @map("user_id")
+  expires      DateTime  
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {  
+  identifier String  
+  token      String   @unique  
+  expires    DateTime
+
+  @@unique([identifier, token])  
+  @@map("verificationtokens")
+}

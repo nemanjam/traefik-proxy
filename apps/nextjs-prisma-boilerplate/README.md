@@ -5,6 +5,7 @@
 mkdir -p ~/traefik-proxy/apps/nextjs-prisma-boilerplate/prisma/pg-data
 
 # make volumes writable for others
+# cant load schema.prisma...?
 sudo chmod 777 -R prisma uploads
 
 # clean pg-data
