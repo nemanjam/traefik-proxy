@@ -23,7 +23,6 @@ services:
       - postgres-db-prod
     networks:
       - proxy
-      - internal
 
   postgres-db-prod:
     image: postgres:14-alpine
@@ -38,10 +37,7 @@ services:
     networks:
       # for adminer
       - proxy
-      - internal
 
 networks:
   proxy:
     external: true
-  internal:
-    external: false
