@@ -25,3 +25,5 @@ scp ./apps/nextjs-prisma-boilerplate/.env.local ubuntu@amd1:~/traefik-proxy/apps
 scp ./apps/nextjs-prisma-boilerplate/.env ubuntu@amd1:~/traefik-proxy/apps/nextjs-prisma-boilerplate
 
 ```
+
+### to reflect NEXTAUTH_URL in `.env.production` change you must rebuild container
