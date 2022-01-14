@@ -2,7 +2,7 @@
 
 ```bash
 # make volume data dir
-mkdir -p ~/traefik-proxy/apps/nextjs-prisma-boilerplate/pg-data
+mkdir -p ~/traefik-proxy/apps/nextjs-prisma-boilerplate/prisma/pg-data
 
 # make volumes writable for others
 sudo chmod 777 -R prisma uploads
