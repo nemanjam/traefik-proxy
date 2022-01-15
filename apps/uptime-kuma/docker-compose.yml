@@ -12,6 +12,7 @@ services:
     labels:
       # Traefik
       - 'traefik.enable=true'
+      - 'traefik.docker.network=proxy'
       # HTTP Router
       - 'traefik.http.routers.uptime-https.rule=Host(`status.${DOMAIN}`)'
       - 'traefik.http.routers.uptime-https.entrypoints=websecure'

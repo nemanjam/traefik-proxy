@@ -15,6 +15,7 @@ services:
       - .env.local
     labels:
       - 'traefik.enable=true'
+      - 'traefik.docker.network=proxy'
       - 'traefik.http.routers.nextjs-prisma-secure.rule=Host(`${HOSTNAME}`)'
       - 'traefik.http.routers.nextjs-prisma-secure.entrypoints=websecure'
       - 'traefik.http.routers.nextjs-prisma-secure.service=nextjs-prisma-svc'

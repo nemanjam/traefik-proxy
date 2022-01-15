@@ -1,43 +1,35 @@
-# Reference
+# Traefik proxy
 
-Forked from [rafrasenberg/docker-traefik-portainer](https://github.com/rafrasenberg/docker-traefik-portainer) and [dbartumeu/docker-traefik-portainer](https://github.com/dbartumeu/docker-traefik-portainer)
+Traefik v2 reverse proxy that enables hosting multuple Docker containers on a single server mapped to different sub-domains with Let's Encrypt certificate.
 
-# Docker container management with Traefik v2 and Portainer
+## References
 
-A configuration set-up for a Traefik v2 reverse proxy along with Portainer and Docker Compose.
+Forked from:
 
-This set-up makes container management & deployment a breeze and the reverse proxy allows for running multiple applications on one Docker host. Traefik will route all the incoming traffic to the appropriate docker containers and through the open-source app Portainer you can speed up software deployments, troubleshoot problems and simplify migrations.
+- original repo with Traefik configuration, Portainer and tutorial: [rafrasenberg/docker-traefik-portainer](https://github.com/rafrasenberg/docker-traefik-portainer)
+- fork with added env variables and Readme: [dbartumeu/docker-traefik-portainer](https://github.com/dbartumeu/docker-traefik-portainer)
 
-## Prerequisites
+## Currently installed containers
 
-### docker
+**core:**
 
-```bash
-apt update && apt upgrade
-```
+- Traefik `v2.5.6`
+- Portainer `portainer/portainer-ce:2.9.3`
 
-```bash
-apt install apt-transport-https ca-certificates curl software-properties-common && curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - && add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
-```
+**apps:**
 
-Make sure we are installing it from docker:
+- Uptime kuma `louislam/uptime-kuma` - measure website uptime
+- Adminer `adminer:4.8.1-standalone` - administer Postgres databases
+- Postgres external `postgres:14-alpine` - db container independant from Traefik, configured to accept remote connections on the port 5433
+- Nextjs-prisma-boilerplate `nemanjamitic/nextjs-prisma-boilerplate:latest` - fullstack Next.js application with `postgres:14-alpine` internal database
 
-```bash
-apt-cache policy docker-ce
-apt install docker-ce
-```
+---
 
-Testing installation:
+---
 
-```bash
-systemctl status docker
-```
+---
 
-### docker compose
-
-```bash
-curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && chmod +x /usr/local/bin/docker-compose
-```
+---
 
 ## How to run it?
 
@@ -123,24 +115,3 @@ networks:
 ```
 
 Make sure to change `myservice`, `myservice.yourdomain.com` and `myserviceport` for meaningful values.
-
----
-
----
-
-# Docker container management with Traefik v2 and Portainer
-
-A configuration set-up for a Traefik v2 reverse proxy along with Portainer and Docker Compose.
-
-This set-up makes container management & deployment a breeze and the reverse proxy allows for running multiple applications on one Docker host. Traefik will route all the incoming traffic to the appropriate docker containers and through the open-source app Portainer you can speed up software deployments, troubleshoot problems and simplify migrations.
-
-Detailed explanation how to use this in my blog post:
-[Docker container management with Traefik v2 and Portainer](https://rafrasenberg.com/posts/docker-container-management-with-traefik-v2-and-portainer/)
-
-## How to run it?
-
-```
-$ git clone https://github.com/rafrasenberg/docker-traefik-portainer ./src
-$ cd src/core
-$ docker-compose up -d
-```
