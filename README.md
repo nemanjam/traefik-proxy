@@ -1,15 +1,15 @@
 # Traefik proxy
 
-Traefik v2 reverse proxy that enables hosting multuple Docker containers on a single server mapped to different sub-domains with Let's Encrypt certificate.
+Traefik v2 reverse proxy that enables hosting multuple Docker containers on a single server mapped to different subdomains with Let's Encrypt certificate.
 
 ## References
 
-Forked from:
+**Forked from:**
 
 - original repo with Traefik configuration, Portainer and tutorial: [rafrasenberg/docker-traefik-portainer](https://github.com/rafrasenberg/docker-traefik-portainer)
 - fork with added env variables and Readme: [dbartumeu/docker-traefik-portainer](https://github.com/dbartumeu/docker-traefik-portainer)
 
-## Currently installed containers
+## Installed containers
 
 **core:**
 
@@ -20,7 +20,7 @@ Forked from:
 
 - Uptime kuma `louislam/uptime-kuma` - measure website uptime
 - Adminer `adminer:4.8.1-standalone` - administer Postgres databases
-- Postgres external `postgres:14-alpine` - db container independant from Traefik, configured to accept remote connections on the port 5433
+- Postgres external `postgres:14-alpine` - db container independant from Traefik, configured to accept remote connections on port 5433
 - Nextjs-prisma-boilerplate `nemanjamitic/nextjs-prisma-boilerplate:latest` - fullstack Next.js application with `postgres:14-alpine` internal database
 
 ---
