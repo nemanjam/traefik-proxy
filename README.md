@@ -23,6 +23,10 @@ Traefik v2 reverse proxy that enables hosting multuple Docker containers on a si
 - Postgres external `postgres:14-alpine` - db container independant from Traefik, configured to accept remote connections on port 5433
 - Nextjs-prisma-boilerplate `nemanjamitic/nextjs-prisma-boilerplate:latest` - fullstack Next.js application with `postgres:14-alpine` internal database
 
+## Installation and running
+
+## Adding new app container
+
 ---
 
 ---
