@@ -4,11 +4,10 @@
 
 const { PrismaClient } = require('@prisma/client');
 const { hashSync } = require('bcryptjs');
-const { lorem } = require('faker');
+const { lorem } = require('@faker-js/faker').faker;
 const { readdir, unlink } = require('fs');
 const { promisify } = require('util');
 const { loadEnvConfig } = require('@next/env');
-
 const rootDirAbsolutePath = process.cwd();
 
 // load process.env.DATABASE_URL from .env.local
@@ -33,6 +32,7 @@ const _unlink = promisify(unlink);
 const prisma = new PrismaClient();
 const password = hashSync('123', 10);
 const numberOfUsers = 4;
+const numberOfPosts = 6;
 
 const createPosts = (n) => {
   return Array.from(Array(n).keys()).map(() => ({
@@ -43,20 +43,22 @@ const createPosts = (n) => {
 };
 
 const createUsers = (n) => {
-  return Array.from(Array(n).keys()).map((index) => ({
-    name: `user${index} name`,
-    username: `user${index}`,
-    email: `user${index}@email.com`,
-    // undefined for placeholder, prisma converts it to null
-    image: index === 3 ? undefined : `avatar${index % 4}.jpg`, // 0...3
-    headerImage: index === 3 ? undefined : `header${index % 4}.jpg`,
-    password,
-    bio: lorem.sentences(3),
-    role: index === 0 ? 'admin' : 'user',
-    posts: {
-      create: createPosts(getRandomInteger(3, 6)),
-    },
-  }));
+  return Array.from(Array(n).keys())
+    .reverse()
+    .map((index) => ({
+      name: `user${index} name`,
+      username: `user${index}`,
+      email: `user${index}@email.com`,
+      // undefined for placeholder, prisma converts it to null
+      image: index === 3 ? undefined : `avatar${index % 4}.jpg`, // 0...3
+      headerImage: index === 3 ? undefined : `header${index % 4}.jpg`,
+      password,
+      bio: lorem.sentences(3),
+      role: index === 0 ? 'admin' : 'user',
+      posts: {
+        create: createPosts(numberOfPosts),
+      },
+    }));
 };
 
 const deleteAllAvatars = async () => {
