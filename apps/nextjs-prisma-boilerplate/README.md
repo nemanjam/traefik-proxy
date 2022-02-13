@@ -29,3 +29,11 @@ scp ./apps/nextjs-prisma-boilerplate/.env ubuntu@amd1:~/traefik-proxy/apps/nextj
 ### to reflect NEXTAUTH_URL in `.env.production` change you must rebuild container
 
 - gateway timeout error, nextjs should be only on a single network (proxy external)
+
+- git restore . // discard git changes
+- git pull
+-
+- cd traefik-proxy/apps/nextjs-prisma-boilerplate/
+- docker-compose down
+- docker image rm nemanjamitic/nextjs-prisma-boilerplate:latest
+- docker-compose up -d // will do pull
