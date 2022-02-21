@@ -8,7 +8,9 @@ services:
     #command: sleep infinity
     volumes:
       - ./uploads:/app/uploads
-      - ./prisma:/app/prisma
+      # uncomment for external access
+      # - ./prisma/pg-config/pg_hba.conf:/etc/postgresql.conf
+      # - ./prisma/pg-config/postgresql.conf:/etc/pg_hba.conf
     env_file:
       - .env.production
       # for now
