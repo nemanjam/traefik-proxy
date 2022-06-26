@@ -1,6 +1,7 @@
 
-prisma/pg-data/
-.env.local
+prisma/pg-data/data-*
+.env*.local
+.env
 
 
 !uploads/avatars

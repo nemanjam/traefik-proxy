@@ -1,6 +1,5 @@
 /**/.env
-/**/.env.local
-/**/pg-data/
+/**/.env*.local
 
 core/traefik-data/acme.json
 core/portainer-data/
