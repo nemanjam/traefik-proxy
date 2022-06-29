@@ -3,3 +3,6 @@
 
 core/traefik-data/acme.json
 core/portainer-data/
+
+# ignore db volumes
+/**/pg-data/data-*
