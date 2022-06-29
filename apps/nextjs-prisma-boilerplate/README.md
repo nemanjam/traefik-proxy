@@ -49,3 +49,20 @@ export MY_GID=$(id -g)
 ```
 
 - check with `printenv MY_UID`
+
+- copy single `.env` file, alternative 1
+
+```bash
+# .env for docker-compose.yml
+scp ./apps/nextjs-prisma-boilerplate/.env ubuntu@amd1:~/traefik-proxy/apps/nextjs-prisma-boilerplate
+```
+
+- must remove image, or pass some arg or up
+
+```bash
+docker image rm nemanjamitic/nextjs-prisma-boilerplate:latest
+docker-compose up -d # will do pull
+# ----
+# maybe
+docker-compose pull
+```
