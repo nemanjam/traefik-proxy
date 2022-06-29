@@ -60,7 +60,13 @@ scp ./apps/nextjs-prisma-boilerplate/.env ubuntu@amd1:~/traefik-proxy/apps/nextj
 - must remove image, or pass some arg or up
 
 ```bash
+# ssh action...
+cd /home/ubuntu/traefik-proxy/apps/nextjs-prisma-boilerplate
+# stop and remove containers
+docker-compose down
+# remove image
 docker image rm nemanjamitic/nextjs-prisma-boilerplate:latest
+# pull and run
 docker-compose up -d # will do pull
 # ----
 # maybe
