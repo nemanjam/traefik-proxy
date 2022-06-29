@@ -1,18 +1,21 @@
 version: '3.8'
 services:
   postgres-external:
-    image: postgres:14-alpine
+    image: postgres:14.3-bullseye
     container_name: postgres-external
     restart: unless-stopped
     command: postgres -p 5433 -c config_file=/etc/postgresql.conf
     ports:
       - '5433:5433'
+    user: '${MY_UID}:${MY_GID}'
     env_file:
       - .env.local
     volumes:
       - ./pg-data:/var/lib/postgresql/data
       - ./pg-config/postgresql.conf:/etc/postgresql.conf
       - ./pg-config/pg_hba.conf:/etc/pg_hba.conf
+    environment:
+      - PGDATA=/var/lib/postgresql/data/data-external
     networks:
       - proxy
 

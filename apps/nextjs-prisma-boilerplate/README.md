@@ -37,3 +37,15 @@ scp ./apps/nextjs-prisma-boilerplate/.env ubuntu@amd1:~/traefik-proxy/apps/nextj
 - docker-compose down
 - docker image rm nemanjamitic/nextjs-prisma-boilerplate:latest
 - docker-compose up -d // will do pull
+
+### New deployment
+
+- add global env vars to `~/.bashrc` and restart terminal, ssh
+
+```bash
+# UID and GID env vars for Docker volumes permissions
+export MY_UID=$(id -u)
+export MY_GID=$(id -g)
+```
+
+- check with `printenv MY_UID`
