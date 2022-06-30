@@ -69,6 +69,6 @@ docker image rm nemanjamitic/nextjs-prisma-boilerplate:latest
 # pull and run
 docker-compose up -d # will do pull
 # ----
-# maybe
+# this pulls new image but also leaves old image to take space, dont use it
 docker-compose pull
 ```
