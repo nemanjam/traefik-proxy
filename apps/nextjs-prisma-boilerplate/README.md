@@ -72,3 +72,12 @@ docker-compose up -d # will do pull
 # this pulls new image but also leaves old image to take space, dont use it
 docker-compose pull
 ```
+
+- single line sh Github Action
+
+```bash
+cd /home/ubuntu/traefik-proxy/apps/nextjs-prisma-boilerplate && \
+docker-compose down && \
+docker image rm nemanjamitic/nextjs-prisma-boilerplate:latest && \
+docker-compose up -d
+```
