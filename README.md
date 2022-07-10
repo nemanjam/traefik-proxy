@@ -35,6 +35,15 @@ DOMAIN=localhost3000.live
 TRAEFIC_AUTH=
 ```
 
+Copy local .env files to server.
+
+```bash
+# core .env
+scp ./core/.env ubuntu@amd1:/home/ubuntu/traefik-proxy/core
+# uptime-kuma .env
+scp ./apps/uptime-kuma/.env ubuntu@amd1:/home/ubuntu/traefik-proxy/apps/uptime-kuma
+```
+
 #### Main Traefik setup.
 
 ```bash
@@ -49,14 +58,6 @@ echo $(htpasswd -nb <username> <password>)
 # if htpasswd not defined
 sudo apt-get install apache2-utils
 
-# local terminal
-# copy local .env files to server
-# core .env
-scp ./core/.env ubuntu@amd1:/home/ubuntu/traefik-proxy/core
-# uptime-kuma .env
-scp ./apps/uptime-kuma/.env ubuntu@amd1:/home/ubuntu/traefik-proxy/apps/uptime-kuma
-
-# server terminal
 # create proxy network
 docker network create proxy
 
