@@ -2,7 +2,9 @@
 /**/.env*.local
 
 core/traefik-data/acme.json
+core/traefik-data/acme.json.*
 core/portainer-data/
+
 
 # ignore db volumes
 /**/pg-data/data-*
