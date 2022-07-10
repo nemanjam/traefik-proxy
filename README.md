@@ -1,6 +1,6 @@
 # Traefik proxy
 
-Traefik v2 reverse proxy that enables hosting multuple Docker containers on a single server mapped to different subdomains with Let's Encrypt certificate.
+Traefik v2 reverse proxy that enables hosting multuple Docker containers on a single server mapped to different subdomains with Let's Encrypt https certificate.
 
 ## References
 
@@ -34,6 +34,8 @@ ACME_EMAIL=myemail@gmail.com
 DOMAIN=localhost3000.live
 TRAEFIC_AUTH=
 ```
+
+Main Traefik setup.
 
 ```bash
 # server terminal
@@ -188,6 +190,8 @@ Detailed explanation...
 Adminer example. Traefik only needs `subdomain.domain.com` and `port`, that's it.
 
 ```yml
+# apps/adminer/docker-compose.yml
+
 # adminer.${DOMAIN} - subdomain.domain.com
 # 8080 - port
 
