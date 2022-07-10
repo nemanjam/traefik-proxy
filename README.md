@@ -11,12 +11,12 @@ Traefik v2 reverse proxy that enables hosting multuple Docker containers on a si
 
 ## Installed containers
 
-**core:**
+#### core:
 
 - Traefik `traefik:v2.5.6`
 - Portainer `portainer/portainer-ce:2.9.3`
 
-**apps:**
+#### apps:
 
 - Uptime kuma `louislam/uptime-kuma` - measure website uptime
 - Adminer `adminer:4.8.1-standalone` - administer Postgres databases
