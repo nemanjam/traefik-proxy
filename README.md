@@ -20,7 +20,7 @@ Traefik v2 reverse proxy that enables hosting multuple Docker containers on a si
 
 - Uptime kuma `louislam/uptime-kuma` - measure website uptime
 - Adminer `adminer:4.8.1-standalone` - administer Postgres databases
-- Postgres external `postgres:14.3-bullseye` - db container independant from Traefik, configured to accept remote connections on port 5433
+- Postgres external `postgres:14.3-bullseye` - db container independant from Traefik, configured to accept remote connections on port `5433`
 - Nextjs Prisma boilerplate `nemanjamitic/nextjs-prisma-boilerplate:latest` - full stack Next.js application with `postgres:14.3-bullseye` internal database
 
 ## Installation (core containers)
@@ -35,7 +35,7 @@ DOMAIN=localhost3000.live
 TRAEFIC_AUTH=
 ```
 
-Main Traefik setup.
+#### Main Traefik setup.
 
 ```bash
 # server terminal
@@ -160,7 +160,7 @@ docker image rm nemanjamitic/nextjs-prisma-boilerplate:latest && \
 docker-compose up -d
 ```
 
-`git pull`, `git checkout .`...
+Update `docker-compose.yml` itself `git pull`, `git checkout .`...
 
 ## Run Postgres external
 
