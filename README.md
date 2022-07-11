@@ -1,6 +1,6 @@
 # Traefik proxy
 
-Traefik v2 reverse proxy that enables hosting multuple Docker containers on a single server mapped to different subdomains with Let's Encrypt https certificate.
+Traefik v2 reverse proxy that enables hosting multuple Docker containers on a single server mapped to different subdomains with Let's Encrypt ssl certificate.
 
 ## References
 
