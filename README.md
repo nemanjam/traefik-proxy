@@ -4,10 +4,14 @@ Traefik v2 reverse proxy that enables hosting multuple Docker containers on a si
 
 ## References
 
-**Forked from:**
+#### Forked from:
 
 - original repo with Traefik configuration, Portainer: [rafrasenberg/docker-traefik-portainer](https://github.com/rafrasenberg/docker-traefik-portainer) and [tutorial](https://rafrasenberg.hashnode.dev/docker-container-management-with-traefik-v2-and-portainer)
 - fork with added env variables and Readme: [dbartumeu/docker-traefik-portainer](https://github.com/dbartumeu/docker-traefik-portainer)
+
+## Related projects
+
+- [nemanjam/nextjs-prisma-boilerplate](https://github.com/nemanjam/nextjs-prisma-boilerplate)
 
 ## Installed containers
 
