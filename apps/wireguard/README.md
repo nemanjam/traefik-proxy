@@ -24,6 +24,9 @@ export MY_PUBLIC_SERVER_IP_V4=$(dig @resolver4.opendns.com myip.opendns.com +sho
 source ~/.bashrc
 printenv MY_PUBLIC_SERVER_IP_V4
 ```
+### Open port in firewall
+
+- add `UDP 51820` as destination port in server firewall
 
 ### Create config folder
 
@@ -31,3 +34,27 @@ printenv MY_PUBLIC_SERVER_IP_V4
 sudo mkdir /opt/wireguard-server
 ```
 
+### Run and check Wireguard
+
+```bash
+# check if running and peers
+docker exec -it wireguard wg
+
+# cd config folder
+cd /opt/wireguard-server/config
+ls
+
+```
+
+# Download client credentials
+
+```bash
+# run in LOCAL terminal
+
+# config file
+scp ubuntu@amd1:/opt/wireguard-server/config/peer1/peer1.conf  ~/Desktop/peer1.conf
+
+# qr code for Android
+scp ubuntu@amd1:/opt/wireguard-server/config/peer1/peer1.png   ~/Desktop/peer1.png
+
+```
