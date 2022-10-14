@@ -46,7 +46,7 @@ ls
 
 ```
 
-# Download client credentials
+### Download client credentials
 
 ```bash
 # run in LOCAL terminal
