@@ -8,3 +8,8 @@ core/portainer-data/
 
 # ignore db volumes
 /**/pg-data/data-*
+
+# dokku
+!dokku/dokku-data
+dokku/dokku-data/*
+!dokku/dokku-data/plugin-list

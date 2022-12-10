@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  dokku:
+    image: dokku/dokku:0.29.0
+    container_name: dokku
+    ports:
+      - "3022:22"
+      # - "8443:443"
+      # - "8080:80"
+    environment:
+      - DOKKU_HOSTNAME="dokku.${DOMAIN}"
+      - DOKKU_HOST_ROOT=/var/lib/dokku/home/dokku
+    volumes:
+      - ./dokku-data:/mnt/dokku
+      - /var/run/docker.sock:/var/run/docker.sock
+      # - /var/lib/dokku:/mnt/dokku
+    networks:
+      - proxy
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.docker.network=proxy'
+      - 'traefik.http.routers.dokku-https.rule=Host(`dokku.${DOMAIN}`)'
+      - 'traefik.http.routers.dokku-https.entrypoints=websecure'
+      - 'traefik.http.services.dokku-svc.loadbalancer.server.port=80'
+
+networks:
+  proxy:
+    external: true
