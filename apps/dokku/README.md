@@ -65,7 +65,23 @@ docker exec -it dokku bash
 rm -rf ./dokku_docker_amd1__id_rsa.pub
 ls -la
 
-
 ```
 
+### Deploy an app (this builds image on server - needs RAM)
+
+- deploy app [docs](https://dokku.com/docs/deployment/application-deployment/)
+
+```bash
+# 1. without database
+
+# on server (in dokku container)
+# for url: lure-shop-react.dokku.localhost3000.live
+docker exec -it dokku bash dokku apps:create lure-shop-react
+
+# add remote (in local app git repo)
+git remote add dokku dokku@dokku.localhost3000.live:lure-shop-react
+git push dokku master:master
+
+
+```
 
