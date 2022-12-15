@@ -67,7 +67,7 @@ ls -la
 
 ```
 
-### Deploy an app (this builds image on server - needs RAM)
+### Deploy an app from src (this builds image on server - needs RAM)
 
 - deploy app [docs](https://dokku.com/docs/deployment/application-deployment/)
 
@@ -84,4 +84,9 @@ git push dokku master:master
 
 
 ```
+
+### Deploy app from Docker image
+
+- [docs](https://dokku.com/docs/deployment/methods/git/#initializing-an-app-repository-from-a-docker-image)
+
 
