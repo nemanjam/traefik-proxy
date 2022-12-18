@@ -1,0 +1,5 @@
+
+
+!dokku-data
+dokku-data/*
+!dokku-data/plugin-list
