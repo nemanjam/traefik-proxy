@@ -76,7 +76,8 @@ services:
     labels:
       - 'traefik.enable=true'
       - 'traefik.docker.network=proxy'
-      - 'traefik.http.routers.mb-server-secure.rule=Host(`${SITE_HOSTNAME}`) && PathPrefix(`/(api|public/images)/`)'
+      # - 'traefik.http.routers.mb-server-secure.rule=Host(`${SITE_HOSTNAME}`) && PathPrefix(`/(api|public/images)/`)'
+      - 'traefik.http.routers.mb-server-secure.rule=Host(`${SITE_HOSTNAME}`)'
       - 'traefik.http.routers.mb-server-secure.entrypoints=websecure'
       - 'traefik.http.routers.mb-server-secure.service=mb-server-svc'
       - 'traefik.http.services.mb-server-svc.loadbalancer.server.port=80'
