@@ -63,6 +63,7 @@ services:
     #   - ./server/.env
     networks:
       - internal-client
+      - default
 
     # either open port or route through traefik
     # ports:
@@ -93,7 +94,11 @@ services:
     #   - ./server/.env
     volumes:
       - ./server/docker/mongo-data:/data/db
+    networks:
+      - default
 
 networks:
   internal-client:
     name: mdp-client
+  default:
+    name: mdp-default
