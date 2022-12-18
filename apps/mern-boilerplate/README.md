@@ -42,5 +42,10 @@ networks:
 - 'traefik.http.routers.mb-server-secure.rule=Host(`${SITE_HOSTNAME}`) && PathPrefix(`/(api|public/images)/`)'
 
 # must do it like this
-- 'traefik.http.routers.mb-server-secure.rule=Host(`${SITE_HOSTNAME}`) && (PathPrefix(`/api`) || PathPrefix(`/public/images`))'
+- 'traefik.http.routers.mb-client-secure.rule=Host(`${SITE_HOSTNAME}`) && !(PathPrefix(`/api`) || PathPrefix(`/auth`) || PathPrefix(`/public/images`))'
+- 'traefik.http.routers.mb-server-secure.rule=Host(`${SITE_HOSTNAME}`) && (PathPrefix(`/api`) || PathPrefix(`/auth`) || PathPrefix(`/public/images`))'
 ```
+
+- update readme
+- update redirect urls in google and facebook
+- buy new domain
