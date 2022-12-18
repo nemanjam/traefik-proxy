@@ -3,6 +3,7 @@ services:
   npb-app-live:
     container_name: npb-app-live
     image: nemanjamitic/nextjs-prisma-boilerplate:latest
+    restart: unless-stopped
     #command: sleep infinity
     volumes:
       - ./uploads:/app/uploads
