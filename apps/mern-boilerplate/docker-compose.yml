@@ -36,7 +36,7 @@ services:
     labels:
       - 'traefik.enable=true'
       - 'traefik.docker.network=proxy'
-      - 'traefik.http.routers.mb-client-secure.rule=Host(`${SITE_HOSTNAME}`) && (!PathPrefix(`/api`) || !PathPrefix(`/public/images`))'
+      - 'traefik.http.routers.mb-client-secure.rule=Host(`${SITE_HOSTNAME}`) && !(PathPrefix(`/api`) || PathPrefix(`/public/images`))'
       - 'traefik.http.routers.mb-client-secure.entrypoints=websecure'
       - 'traefik.http.routers.mb-client-secure.service=mb-client-svc'
       - 'traefik.http.services.mb-client-svc.loadbalancer.server.port=80'
