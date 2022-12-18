@@ -64,6 +64,8 @@ services:
     networks:
       - internal-client
       - default
+    volumes:
+      - ./server/public/images:/home/node/app/server/public/images
 
     # either open port or route through traefik
     # ports:
