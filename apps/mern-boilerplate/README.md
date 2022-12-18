@@ -34,3 +34,13 @@ networks:
 ```
 
 - Solution 2: append `&directConnection=true` to connection string
+
+### Traefik routes
+
+```yml
+# this doesnt work
+- 'traefik.http.routers.mb-server-secure.rule=Host(`${SITE_HOSTNAME}`) && PathPrefix(`/(api|public/images)/`)'
+
+# must do it like this
+- 'traefik.http.routers.mb-server-secure.rule=Host(`${SITE_HOSTNAME}`) && (PathPrefix(`/api`) || PathPrefix(`/public/images`))'
+```
