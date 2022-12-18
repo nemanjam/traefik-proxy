@@ -18,6 +18,7 @@ services:
       - mdp-server
     networks:
       - internal-client
+      - proxy
     environment:
       - NODE_ENV=production
       # forwarded
@@ -62,8 +63,9 @@ services:
     # env_file:
     #   - ./server/.env
     networks:
-      - internal-client
       - default
+      - internal-client
+      - proxy
     volumes:
       - ./server/public/images:/home/node/app/server/public/images
 
@@ -102,6 +104,8 @@ services:
 
 networks:
   internal-client:
-    name: mdp-client
+    internal: true
   default:
-    name: mdp-default
+    internal: true
+  proxy:
+    external: true
