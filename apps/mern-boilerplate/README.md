@@ -11,13 +11,26 @@ scp ./apps/mern-boilerplate/.env ubuntu@amd1:~/traefik-proxy/apps/mern-boilerpla
 
 ### Connect to Mongo docker-compose
 
+- **Error 1:** `MongoError: Authentication failed`
+- Solution: append `?authSource=admin` to connection string
 - append `?authSource=admin`
-- **Important: must delete files in `server/docker/mongo-data` volume to reconnect**
+- Important: must delete files in `server/docker/mongo-data` volume
 
 ```bash
-# MongoError: Authentication failed
-# from mern-boilerplate folder
-sudo rm -rf ./server/docker/mongo-data/*
+sudo rm -rf ./server/docker/mongo-data/* # doesn't delete files with .
+sudo rm -rf ./server/docker/mongo-data/.mongodb
 
+# example url
 MONGO_URI_PROD=mongodb://username:$password@mongo-service:27017/db-name?authSource=admin
 ```
+
+- **Error 2:** `MongooseServerSelectionError: getaddrinfo EAI_AGAIN mdp-mongo`
+
+- Solution 1: add default network in `docker-compose.yml` mongo and server
+
+```yml
+networks:
+  - default
+```
+
+- Solution 2: append `&directConnection=true` to connection string
