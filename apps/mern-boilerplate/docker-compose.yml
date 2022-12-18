@@ -5,7 +5,7 @@ version: '3.8'
 #   - ./client/.env
 # env_file:
 #   - ./server/.env
-# 
+#
 # alternative 2 - put all vars into single .env and forward vars through docker-compose.yml
 # environment: ...
 
@@ -14,10 +14,6 @@ services:
     container_name: mdp-client
     restart: unless-stopped
     image: nemanjamitic/mern-boilerplate-client:latest
-    build:
-      # src must be in context
-      context: ./client
-      dockerfile: docker/Dockerfile
     depends_on:
       - mdp-server
     networks:
@@ -28,7 +24,7 @@ services:
       - REACT_APP_BASE_URL
     # env_file:
     #   - ./client/.env
-    
+
     # nginx ports
     # either open port or route through traefik
     # ports:
@@ -48,9 +44,6 @@ services:
     container_name: mdp-server
     restart: unless-stopped
     image: nemanjamitic/mern-boilerplate-server:latest
-    build:
-      context: ./server
-      dockerfile: docker/Dockerfile
     depends_on:
       - mdp-mongo
     environment:
@@ -75,7 +68,7 @@ services:
     # either open port or route through traefik
     # ports:
     #   - '5000'
-      
+
     # must be exposed through traefik too
     # handles /api and /public/images
     labels:
@@ -94,9 +87,9 @@ services:
       - '27017'
     environment:
       # forwarded
-    - MONGO_INITDB_DATABASE
-    - MONGO_INITDB_ROOT_USERNAME
-    - MONGO_INITDB_ROOT_PASSWORD
+      - MONGO_INITDB_DATABASE
+      - MONGO_INITDB_ROOT_USERNAME
+      - MONGO_INITDB_ROOT_PASSWORD
     # env_file:
     #   - ./server/.env
     volumes:
