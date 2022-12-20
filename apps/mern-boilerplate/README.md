@@ -2,31 +2,34 @@
 
 - 2 images, client and server
 
-### Copy local `.env` to server
+#### Copy local `.env` file to server
 
 ```bash
 # run from traefik-proxy folder
 scp ./apps/mern-boilerplate/.env ubuntu@amd1:~/traefik-proxy/apps/mern-boilerplate
 ```
 
-### Connect to Mongo docker-compose
+#### Troubleshooting MongoDB connection running in a container
 
-- **Error 1:** `MongoError: Authentication failed`
+##### Error 1: `MongoError: Authentication failed`
+
 - Solution: append `?authSource=admin` to connection string
-- append `?authSource=admin`
-- Important: must delete files in `server/docker/mongo-data` volume
+- **Important:** must delete files in `server/docker/mongo-data` volume
 
 ```bash
 sudo rm -rf ./server/docker/mongo-data/* # doesn't delete files with .
 sudo rm -rf ./server/docker/mongo-data/.mongodb
+```
 
-# example url
+- example of a working MongoDB url:
+
+```bash
 MONGO_URI_PROD=mongodb://username:$password@mongo-service:27017/db-name?authSource=admin
 ```
 
-- **Error 2:** `MongooseServerSelectionError: getaddrinfo EAI_AGAIN mdp-mongo`
+##### Error 2: `MongooseServerSelectionError: getaddrinfo EAI_AGAIN mdp-mongo`
 
-- Solution 1: add default network in `docker-compose.yml` mongo and server
+- Solution 1: add default network in `docker-compose.yml` mongo and server services
 
 ```yml
 networks:

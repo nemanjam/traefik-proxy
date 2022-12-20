@@ -65,6 +65,9 @@ sudo apt-get install apache2-utils
 # create proxy network
 docker network create proxy
 
+# create acme.json
+touch ~/traefik-proxy/core/traefik-data/acme.json
+
 # give proper permissions to acme.json
 sudo chmod 600 ~/traefik-proxy/core/traefik-data/acme.json
 # backup file
