@@ -6,7 +6,7 @@ Traefik v2 reverse proxy that enables hosting multuple Docker containers on a si
 
 #### Forked from:
 
-- original repo with Traefik configuration, Portainer: [rafrasenberg/docker-traefik-portainer](https://github.com/rafrasenberg/docker-traefik-portainer) and [tutorial](https://rafrasenberg.hashnode.dev/docker-container-management-with-traefik-v2-and-portainer)
+- original repo with Traefik configuration, Portainer: [rafrasenberg/docker-traefik-portainer](https://github.com/rafrasenberg/docker-traefik-portainer) and [tutorial](https://rafrasenberg.com/docker-compose-traefik-v2)
 - fork with added env variables and Readme: [dbartumeu/docker-traefik-portainer](https://github.com/dbartumeu/docker-traefik-portainer)
 
 ## Related projects
