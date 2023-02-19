@@ -15,7 +15,7 @@ services:
       - ./dokku-data:/mnt/dokku
       - /var/run/docker.sock:/var/run/docker.sock
       # mount pack binary
-      - /usr/local/bin:/usr/local/bin
+      - /usr/local/bin/pack:/usr/local/bin/pack
       # - /var/lib/dokku:/mnt/dokku
     networks:
       - proxy
