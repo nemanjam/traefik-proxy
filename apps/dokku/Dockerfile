@@ -7,5 +7,5 @@ RUN (curl -sSL "https://github.com/buildpacks/pack/releases/download/v0.28.0/pac
 
 RUN pack version
 RUN pack trust-builder gliderlabs/herokuish:latest-20
-RUN pack buildpack inspect gliderlabs/herokuish:latest-20
+# RUN pack buildpack inspect gliderlabs/herokuish:latest-20
 
