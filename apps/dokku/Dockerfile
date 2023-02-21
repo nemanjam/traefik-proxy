@@ -6,6 +6,8 @@ RUN apt-get update -qq && apt-get -qq -y --no-install-recommends install curl
 RUN (curl -sSL "https://github.com/buildpacks/pack/releases/download/v0.28.0/pack-v0.28.0-linux-arm64.tgz" | sudo tar -C /usr/local/bin/ --no-same-owner -xzv pack)
 
 RUN pack version
-RUN pack trust-builder gliderlabs/herokuish:latest-20
+# RUN pack trust-builder gliderlabs/herokuish:latest-20
+RUN pack trust-builder paketo-buildpacks/nodejs
+
 # RUN pack buildpack inspect gliderlabs/herokuish:latest-20
 

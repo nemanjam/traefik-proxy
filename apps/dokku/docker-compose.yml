@@ -14,6 +14,7 @@ services:
     environment:
       - DOKKU_HOSTNAME=dokku.${DOMAIN}
       - DOKKU_HOST_ROOT=/var/lib/dokku/home/dokku
+      - BUILDPACK_URL=https://github.com/paketo-buildpacks/nodejs.git
     volumes:
       - ./dokku-data:/mnt/dokku
       - /var/run/docker.sock:/var/run/docker.sock
