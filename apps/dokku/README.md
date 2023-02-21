@@ -6,7 +6,6 @@
 - Dokku Docker installation [docs](https://dokku.com/docs/getting-started/install/docker/)
 - Dokku install on host [freecodecamp](https://www.freecodecamp.org/news/how-to-build-your-on-heroku-with-dokku/)
 
-
 ### Generate key at /home/username/.ssh/id_rsa (on Desktop, for Git)
 
 ```bash
@@ -40,19 +39,21 @@ scp ~/.ssh/oracle_amd1/dokku_docker_amd1__id_rsa.pub ubuntu@amd1:/home/ubuntu/do
 
 # on server
 # prefix to exec commands in container (no need to enter container)
-docker exec -it dokku bash 
+docker exec -it dokku bash
 
 # list keys
 docker exec -it dokku bash dokku ssh-keys:list
 
 # copy key in /tmp in container (maybe add shared volume)
-docker cp /home/ubuntu/dokku_docker_amd1__id_rsa.pub 07beeed1fa9d:/tmp/
+# container id changes every time
+docker cp /home/ubuntu/dokku_docker_amd1__id_rsa.pub d0b2477737d5:/tmp/
+
 
 # check if copied
 # enter container
 docker exec -it dokku bash
 # list /tmp/
-ls -la 
+ls -la
 
 # add SSH key from container to Dokku
 docker exec -it dokku bash dokku ssh-keys:add admin /tmp/dokku_docker_amd1__id_rsa.pub
@@ -61,7 +62,7 @@ docker exec -it dokku bash dokku ssh-keys:add admin /tmp/dokku_docker_amd1__id_r
 docker exec -it dokku bash dokku ssh-keys:list
 
 # delete temp key
-docker exec -it dokku bash 
+docker exec -it dokku bash
 rm -rf ./dokku_docker_amd1__id_rsa.pub
 ls -la
 
@@ -88,5 +89,3 @@ git push dokku master:master
 ### Deploy app from Docker image
 
 - [docs](https://dokku.com/docs/deployment/methods/git/#initializing-an-app-repository-from-a-docker-image)
-
-
