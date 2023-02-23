@@ -9,8 +9,8 @@ services:
     container_name: dokku
     ports:
       - '3022:22'
-      # - "8443:443"
-      # - "8080:80"
+      - '443:443'
+      - '80:80'
     environment:
       - DOKKU_HOSTNAME=dokku.${DOMAIN}
       - DOKKU_HOST_ROOT=/var/lib/dokku/home/dokku
@@ -21,16 +21,17 @@ services:
       # mount pack binary
       # - /usr/local/bin/pack:/usr/local/bin/pack
       # - /var/lib/dokku:/mnt/dokku
-    networks:
-      - proxy
-    labels:
-      - 'traefik.enable=true'
-      - 'traefik.docker.network=proxy'
-      - 'traefik.http.routers.dokku-https.rule=Host(`dokku.${DOMAIN}`)'
-      - 'traefik.http.routers.dokku-https.entrypoints=websecure'
-      - 'traefik.http.routers.dokku-https.service=dokku-svc'
-      - 'traefik.http.services.dokku-svc.loadbalancer.server.port=80'
 
-networks:
-  proxy:
-    external: true
+    # dokku must handle routing, it generates apps subdomains
+    # networks:
+    #   - proxy
+    # labels:
+    #   - 'traefik.enable=true'
+    #   - 'traefik.docker.network=proxy'
+    #   - 'traefik.http.routers.dokku-https.rule=Host(`dokku.${DOMAIN}`)'
+    #   - 'traefik.http.routers.dokku-https.entrypoints=websecure'
+    #   - 'traefik.http.routers.dokku-https.service=dokku-svc'
+    #   - 'traefik.http.services.dokku-svc.loadbalancer.server.port=80'
+# networks:
+#   proxy:
+#     external: true
