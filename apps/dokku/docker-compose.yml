@@ -9,8 +9,8 @@ services:
     container_name: dokku
     ports:
       - '3022:22'
-      - '443:443'
-      - '80:80'
+      - '8443:443'
+      - '8080:80'
     environment:
       - DOKKU_HOSTNAME=dokku.${DOMAIN}
       - DOKKU_HOST_ROOT=/var/lib/dokku/home/dokku
