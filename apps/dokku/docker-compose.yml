@@ -28,10 +28,10 @@ services:
       - '80:80'
       - '443:443'
     restart: unless-stopped
-    external_links:
-      - traefik:traefik
-    depends_on:
-      - traefik
+    # external_links:
+    #   - traefik:traefik
+    # depends_on:
+    #   - traefik
     networks:
       - proxy
     labels:
