@@ -4,10 +4,10 @@ api:
 entryPoints:
   web:
     address: :80
-    # http:
-    #   redirections:
-    #     entryPoint:
-    #       to: websecure
+    http:
+      redirections:
+        entryPoint:
+          to: websecure
 
   websecure:
     address: :443
