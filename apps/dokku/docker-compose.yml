@@ -22,6 +22,7 @@ services:
 
   # take dokku apps trafic from host and forward it to traefik
   port-forward:
+    container_name: port-forward
     image: alpine/socat:1.7.4.4
     command: TCP4-LISTEN:80,fork,reuseaddr TCP4:traefik:8080 & TCP4-LISTEN:443,fork,reuseaddr TCP4:traefik:8443 &
     restart: unless-stopped
