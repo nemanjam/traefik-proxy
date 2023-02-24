@@ -15,7 +15,7 @@ services:
       # - '8080:80'
     environment:
       - DOKKU_HOSTNAME=dokku.${SERVER_HOSTNAME}
-      - DOKKU_HOST_ROOT=${PWD}/dokku-data
+      - DOKKU_HOST_ROOT=${PWD}/dokku-data/home/dokku
     volumes:
       - ${PWD}/dokku-data:/mnt/dokku
       - /var/run/docker.sock:/var/run/docker.sock
