@@ -24,14 +24,15 @@ services:
   port-forward:
     image: alpine/socat:1.7.4.4
     command: TCP4-LISTEN:80,fork,reuseaddr TCP4:traefik:8080 & TCP4-LISTEN:443,fork,reuseaddr TCP4:traefik:8443 &
-    ports:
-      - '80:80'
-      - '443:443'
     restart: unless-stopped
+    # ports:
+    #   - '80:80'
+    #   - '443:443'
     # external_links:
     #   - traefik:traefik
     # depends_on:
     #   - traefik
+    network_mode: host
     networks:
       - proxy
     labels:
