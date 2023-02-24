@@ -28,13 +28,13 @@ services:
       - 'traefik.http.routers.dokku-http.rule=HostRegexp(`{subdomain:[[:ascii:]]+}.dokku.${SERVER_HOSTNAME}`)'
       - 'traefik.http.routers.dokku-http.entrypoints=web'
       # dokku default exposes 80 and 443
-      - 'traefik.http.services.dokku-http.loadbalancer.server.port=8080'
+      - 'traefik.http.services.dokku-http.loadbalancer.server.port=80'
       # passthrough https
       - 'traefik.tcp.routers.dokku-https.tls=true'
       - 'traefik.tcp.routers.dokku-https.tls.passthrough=true'
       - 'traefik.tcp.routers.dokku-https.rule=HostSNIRegexp(`{subdomain:[[:ascii:]]+}.dokku.${SERVER_HOSTNAME}`)'
       - 'traefik.tcp.routers.dokku-https.entrypoints=websecure'
-      - 'traefik.tcp.services.dokku-https.loadbalancer.server.port=8443'
+      - 'traefik.tcp.services.dokku-https.loadbalancer.server.port=443'
 
   # 8080 -> 8080 -> traefik
   # 8443 -> 8443 -> traefik
