@@ -11,14 +11,27 @@ services:
     ports:
       - '3022:22'
       # this exposes all app containers and not dokku container
-      - '8443:443'
-      - '8080:80'
+      # - '8443:443'
+      # - '8080:80'
     environment:
       - DOKKU_HOSTNAME=dokku.${SERVER_HOSTNAME}
       - DOKKU_HOST_ROOT=/var/lib/dokku/home/dokku
     volumes:
       - ./dokku-data:/mnt/dokku
       - /var/run/docker.sock:/var/run/docker.sock
+
+  # take dokku apps trafic from host and forward it to traefik
+  port-forward:
+    image: alpine/socat:1.7.4.4
+    command: TCP4-LISTEN:80,fork,reuseaddr TCP4:traefik:8080 & TCP4-LISTEN:443,fork,reuseaddr TCP4:traefik:8443 &
+    ports:
+      - '80:80'
+      - '443:443'
+    restart: unless-stopped
+    external_links:
+      - traefik:traefik
+    depends_on:
+      - traefik
     networks:
       - proxy
     labels:
