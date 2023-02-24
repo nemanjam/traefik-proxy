@@ -29,8 +29,8 @@ services:
     command: TCP4-LISTEN:8080,fork,reuseaddr TCP4:traefik:9080 & TCP4-LISTEN:8443,fork,reuseaddr TCP4:traefik:9443 &
     restart: unless-stopped
     ports:
-      - '8080'
-      - '8443'
+      - '8080:8080'
+      - '8443:8443'
     # external_links:
     #   - traefik:traefik
     # depends_on:
