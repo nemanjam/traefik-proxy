@@ -13,31 +13,28 @@ services:
       # this exposes all app containers and not dokku container
       # - '8443:443'
       # - '8080:80'
-      - '443:443'
-      - '5001:80'
     environment:
       - DOKKU_HOSTNAME=dokku.${SERVER_HOSTNAME}
       - DOKKU_HOST_ROOT=/var/lib/dokku/home/dokku
     volumes:
       - ./dokku-data:/mnt/dokku
       - /var/run/docker.sock:/var/run/docker.sock
-
-    # networks:
-    #   - proxy
-    # labels:
-    #   - 'traefik.enable=true'
-    #   - 'traefik.docker.network=proxy'
-    #   # traefik will handle letsencrypt
-    #   - 'traefik.http.routers.dokku-http.rule=HostRegexp(`{subdomain:[[:ascii:]]+}.dokku.${SERVER_HOSTNAME}`)'
-    #   - 'traefik.http.routers.dokku-http.entrypoints=web'
-    #   # dokku default exposes 80 and 443
-    #   - 'traefik.http.services.dokku-http.loadbalancer.server.port=80'
-    #   # passthrough https
-    #   - 'traefik.tcp.routers.dokku-https.tls=true'
-    #   - 'traefik.tcp.routers.dokku-https.tls.passthrough=true'
-    #   - 'traefik.tcp.routers.dokku-https.rule=HostSNIRegexp(`{subdomain:[[:ascii:]]+}.dokku.${SERVER_HOSTNAME}`)'
-    #   - 'traefik.tcp.routers.dokku-https.entrypoints=websecure'
-    #   - 'traefik.tcp.services.dokku-https.loadbalancer.server.port=443'
+    networks:
+      - proxy
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.docker.network=proxy'
+      # traefik will handle letsencrypt
+      - 'traefik.http.routers.dokku-http.rule=HostRegexp(`{subdomain:[[:ascii:]]+}.dokku.${SERVER_HOSTNAME}`)'
+      - 'traefik.http.routers.dokku-http.entrypoints=web'
+      # dokku default exposes 80 and 443
+      - 'traefik.http.services.dokku-http.loadbalancer.server.port=80'
+      # passthrough https
+      - 'traefik.tcp.routers.dokku-https.tls=true'
+      - 'traefik.tcp.routers.dokku-https.tls.passthrough=true'
+      - 'traefik.tcp.routers.dokku-https.rule=HostSNIRegexp(`{subdomain:[[:ascii:]]+}.dokku.${SERVER_HOSTNAME}`)'
+      - 'traefik.tcp.routers.dokku-https.entrypoints=websecure'
+      - 'traefik.tcp.services.dokku-https.loadbalancer.server.port=443'
 
 networks:
   proxy:
