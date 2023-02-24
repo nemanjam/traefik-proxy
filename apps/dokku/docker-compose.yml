@@ -11,8 +11,8 @@ services:
     ports:
       - '3022:22'
       # this exposes all app containers and not dokku container
-      # - '8443:443'
-      # - '8080:80'
+      - '8443:443'
+      - '8080:80'
     environment:
       - DOKKU_HOSTNAME=dokku.${SERVER_HOSTNAME}
       - DOKKU_HOST_ROOT=/var/lib/dokku/home/dokku
@@ -20,21 +20,23 @@ services:
       - ./dokku-data:/mnt/dokku
       - /var/run/docker.sock:/var/run/docker.sock
 
+  # 8080 -> 9080 -> traefik
+  # 8443 -> 9443 -> traefik
   # take dokku apps trafic from host and forward it to traefik
   port-forward:
     container_name: port-forward
     image: alpine/socat:1.7.4.4
-    command: TCP4-LISTEN:80,fork,reuseaddr TCP4:traefik:8080 & TCP4-LISTEN:443,fork,reuseaddr TCP4:traefik:8443 &
+    command: TCP4-LISTEN:8080,fork,reuseaddr TCP4:traefik:9080 & TCP4-LISTEN:8443,fork,reuseaddr TCP4:traefik:9443 &
     restart: unless-stopped
-    # ports:
-    #   - '80:80'
-    #   - '443:443'
+    ports:
+      - '8080'
+      - '8443'
     # external_links:
     #   - traefik:traefik
     # depends_on:
     #   - traefik
-    extra_hosts:
-      - 'host.docker.internal:host-gateway'
+    # extra_hosts:
+    #   - 'host.docker.internal:host-gateway'
     networks:
       - proxy
     labels:
@@ -44,13 +46,13 @@ services:
       - 'traefik.http.routers.dokku-http.rule=HostRegexp(`{subdomain:[[:ascii:]]+}.dokku.${SERVER_HOSTNAME}`)'
       - 'traefik.http.routers.dokku-http.entrypoints=web'
       # dokku default exposes 80 and 443
-      - 'traefik.http.services.dokku-http.loadbalancer.server.port=8080'
+      - 'traefik.http.services.dokku-http.loadbalancer.server.port=9080'
       # passthrough https
       - 'traefik.tcp.routers.dokku-https.tls=true'
       - 'traefik.tcp.routers.dokku-https.tls.passthrough=true'
       - 'traefik.tcp.routers.dokku-https.rule=HostSNIRegexp(`{subdomain:[[:ascii:]]+}.dokku.${SERVER_HOSTNAME}`)'
       - 'traefik.tcp.routers.dokku-https.entrypoints=websecure'
-      - 'traefik.tcp.services.dokku-https.loadbalancer.server.port=8443'
+      - 'traefik.tcp.services.dokku-https.loadbalancer.server.port=9443'
 
 networks:
   proxy:
