@@ -14,7 +14,7 @@ services:
       - '443:443'
     environment:
       - ACME_EMAIL
-      - TRAEFIC_AUTH
+      - TRAEFIC_AUTH=${TRAEFIC_AUTH}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro

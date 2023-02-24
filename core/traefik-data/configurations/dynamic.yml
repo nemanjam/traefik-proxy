@@ -9,10 +9,10 @@ http:
         stsPreload: true
         stsSeconds: 31536000
 
-    # user-auth:
-    #   basicAuth:
-    #     users:
-    #       - '{{ env "TRAEFIC_AUTH" }}'
+    user-auth:
+      basicAuth:
+        users:
+          - '{{ env "TRAEFIC_AUTH" }}'
 
 tls:
   options:
