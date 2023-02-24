@@ -1,2 +1,3 @@
 postgres: https://github.com/dokku/dokku-postgres.git
 mongo: https://github.com/dokku/dokku-mongo.git
+letsencrypt: https://github.com/dokku/dokku-letsencrypt.git
