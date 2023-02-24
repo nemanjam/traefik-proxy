@@ -20,23 +20,16 @@ services:
       - ./dokku-data:/mnt/dokku
       - /var/run/docker.sock:/var/run/docker.sock
 
-  # 8080 -> 8081 -> 9080 -> traefik
-  # 8443 -> 8444 -> 9443 -> traefik
-  # take dokku apps trafic from host and forward it to traefik
+  # 8080 -> 8080 -> traefik
+  # 8443 -> 8443 -> traefik
+  # take dokku apps trafic from default network and forward it to traefik
   port-forward:
     container_name: port-forward
     image: alpine/socat:1.7.4.4
-    command: TCP4-LISTEN:8081,fork,reuseaddr TCP4:traefik:9080 & TCP4-LISTEN:8444,fork,reuseaddr TCP4:traefik:9443 &
+    command: tcp-listen:8080,fork,reuseaddr tcp-connect:dokku:8080 & tcp-listen:8443,fork,reuseaddr tcp-connect:dokku:8443 &
     restart: unless-stopped
-    ports:
-      - '8080:8081'
-      - '8443:8444'
-    # external_links:
-    #   - traefik:traefik
-    # depends_on:
-    #   - traefik
-    # extra_hosts:
-    #   - 'host.docker.internal:host-gateway'
+    depends_on:
+      - dokku
     networks:
       - proxy
     labels:
@@ -46,13 +39,13 @@ services:
       - 'traefik.http.routers.dokku-http.rule=HostRegexp(`{subdomain:[[:ascii:]]+}.dokku.${SERVER_HOSTNAME}`)'
       - 'traefik.http.routers.dokku-http.entrypoints=web'
       # dokku default exposes 80 and 443
-      - 'traefik.http.services.dokku-http.loadbalancer.server.port=9080'
+      - 'traefik.http.services.dokku-http.loadbalancer.server.port=8080'
       # passthrough https
       - 'traefik.tcp.routers.dokku-https.tls=true'
       - 'traefik.tcp.routers.dokku-https.tls.passthrough=true'
       - 'traefik.tcp.routers.dokku-https.rule=HostSNIRegexp(`{subdomain:[[:ascii:]]+}.dokku.${SERVER_HOSTNAME}`)'
       - 'traefik.tcp.routers.dokku-https.entrypoints=websecure'
-      - 'traefik.tcp.services.dokku-https.loadbalancer.server.port=9443'
+      - 'traefik.tcp.services.dokku-https.loadbalancer.server.port=8443'
 
 networks:
   proxy:
