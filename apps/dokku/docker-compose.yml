@@ -19,6 +19,8 @@ services:
     volumes:
       - ./dokku-data:/mnt/dokku
       - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - default
 
   # 8080 -> 8080 -> traefik
   # 8443 -> 8443 -> traefik
@@ -32,6 +34,7 @@ services:
       - dokku
     networks:
       - proxy
+      - default
     labels:
       - 'traefik.enable=true'
       - 'traefik.docker.network=proxy'
@@ -50,3 +53,5 @@ services:
 networks:
   proxy:
     external: true
+  default:
+    internal: true
