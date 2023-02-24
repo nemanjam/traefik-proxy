@@ -20,17 +20,17 @@ services:
       - ./dokku-data:/mnt/dokku
       - /var/run/docker.sock:/var/run/docker.sock
 
-  # 8080 -> 9080 -> traefik
-  # 8443 -> 9443 -> traefik
+  # 8080 -> 8081 -> 9080 -> traefik
+  # 8443 -> 8444 -> 9443 -> traefik
   # take dokku apps trafic from host and forward it to traefik
   port-forward:
     container_name: port-forward
     image: alpine/socat:1.7.4.4
-    command: TCP4-LISTEN:8080,fork,reuseaddr TCP4:traefik:9080 & TCP4-LISTEN:8443,fork,reuseaddr TCP4:traefik:9443 &
+    command: TCP4-LISTEN:8081,fork,reuseaddr TCP4:traefik:9080 & TCP4-LISTEN:8444,fork,reuseaddr TCP4:traefik:9443 &
     restart: unless-stopped
     ports:
-      - '8080:8080'
-      - '8443:8443'
+      - '8080:8081'
+      - '8443:8444'
     # external_links:
     #   - traefik:traefik
     # depends_on:
