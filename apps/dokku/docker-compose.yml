@@ -32,7 +32,7 @@ services:
     #   - traefik:traefik
     # depends_on:
     #   - traefik
-    network_mode: host
+    # network_mode: host
     networks:
       - proxy
     labels:
