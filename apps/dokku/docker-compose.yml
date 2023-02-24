@@ -2,36 +2,39 @@ version: '3.8'
 
 services:
   dokku:
-    # image: dokku/dokku:0.29.0
+    container_name: dokku
+    # image: dokku/dokku:0.30.1
     build:
       context: .
+      # install pack in Dockerfile
       dockerfile: Dockerfile
-    container_name: dokku
     ports:
       - '3022:22'
-      - '8443:443'
-      - '8080:80'
+      # - '8443:443'
+      # - '8080:80'
     environment:
-      - DOKKU_HOSTNAME=dokku.${DOMAIN}
+      - DOKKU_HOSTNAME=dokku.${SERVER_HOSTNAME}
       - DOKKU_HOST_ROOT=/var/lib/dokku/home/dokku
-      # - BUILDPACK_URL=https://github.com/paketo-buildpacks/nodejs.git
     volumes:
       - ./dokku-data:/mnt/dokku
       - /var/run/docker.sock:/var/run/docker.sock
-      # mount pack binary
-      # - /usr/local/bin/pack:/usr/local/bin/pack
-      # - /var/lib/dokku:/mnt/dokku
+    networks:
+      - proxy
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.docker.network=proxy'
+      # traefik will handle letsencrypt
+      - 'traefik.http.routers.dokku-http.rule=HostRegexp(`{subdomain:[[:ascii:]]+}.dokku.${SERVER_HOSTNAME}`)'
+      - 'traefik.http.routers.dokku-http.entrypoints=web'
+      # dokku default exposes 80 and 443
+      - 'traefik.http.services.dokku-http.loadbalancer.server.port=80'
+      # passthrough https
+      - 'traefik.tcp.routers.dokku-https.tls=true'
+      - 'traefik.tcp.routers.dokku-https.tls.passthrough=true'
+      - 'traefik.tcp.routers.dokku-https.rule=HostSNIRegexp(`{subdomain:[[:ascii:]]+}.dokku.${SERVER_HOSTNAME}`)'
+      - 'traefik.tcp.routers.dokku-https.entrypoints=websecure'
+      - 'traefik.tcp.services.dokku-https.loadbalancer.server.port=443'
 
-    # dokku must handle routing, it generates apps subdomains
-    # networks:
-    #   - proxy
-    # labels:
-    #   - 'traefik.enable=true'
-    #   - 'traefik.docker.network=proxy'
-    #   - 'traefik.http.routers.dokku-https.rule=Host(`dokku.${DOMAIN}`)'
-    #   - 'traefik.http.routers.dokku-https.entrypoints=websecure'
-    #   - 'traefik.http.routers.dokku-https.service=dokku-svc'
-    #   - 'traefik.http.services.dokku-svc.loadbalancer.server.port=80'
-# networks:
-#   proxy:
-#     external: true
+networks:
+  proxy:
+    external: true
