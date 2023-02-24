@@ -33,7 +33,8 @@ services:
     #   - traefik:traefik
     # depends_on:
     #   - traefik
-    # network_mode: host
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
     networks:
       - proxy
     labels:
