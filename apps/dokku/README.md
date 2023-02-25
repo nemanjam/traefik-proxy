@@ -89,3 +89,184 @@ git push dokku master:master
 ### Deploy app from Docker image
 
 - [docs](https://dokku.com/docs/deployment/methods/git/#initializing-an-app-repository-from-a-docker-image)
+
+---
+
+#### Aliases
+
+```
+nano ~/.bashrc
+
+# exec dokku in container
+alias dokkuc="docker exec -it dokku bash dokku"
+
+# docker compose up/down
+alias dcdown="docker compose down"
+alias dcup="docker compose up -d"
+
+# reload shell to apply
+source ~/.bashrc
+```
+
+## Add public key to dokku container (on server) - simpler way
+
+### Reset Dokku container
+
+```bash
+# remove dokku container
+ssh ubuntu@arm1 "
+cd ~/traefik-proxy/apps/dokku &&
+docker compose down
+"
+
+# delete dokku volume
+ssh ubuntu@arm1 "
+sudo rm -rf ~/traefik-proxy/apps/dokku/dokku-data &&
+ls -la ~/traefik-proxy/apps/dokku
+"
+
+# start dokku container
+ssh ubuntu@arm1 "
+cd ~/traefik-proxy/apps/dokku &&
+docker compose up -d
+"
+```
+
+#### Oneliner set local key to remote container
+
+```bash
+# set key, works multiline
+scp ~/.ssh/oracle/dokku_docker__id_rsa.pub ubuntu@arm1:/tmp/ && \
+ssh ubuntu@arm1 " \
+  docker exec -i dokku bash dokku ssh-keys:add admin < /tmp/dokku_docker__id_rsa.pub && \
+  rm /tmp/dokku_docker__id_rsa.pub \
+"
+
+# remove key
+ssh ubuntu@arm1 "docker exec dokku bash dokku ssh-keys:remove admin"
+
+# list keys
+ssh ubuntu@arm1 "docker exec dokku bash dokku ssh-keys:list"
+
+```
+
+# Prepare ARM server for buildpacks - IMPORTANT
+
+```bash
+docker run --privileged --rm tonistiigi/binfmt --install all
+```
+
+# Attach all app containers to traefik and dokku external network - IMPORTANT
+
+```bash
+dokku network:set --global initial-network proxy
+```
+
+### Add remote, create app and push
+
+```bash
+# add remote
+git remote add dokku dokku@dokku.arm1.localhost3002.live:nextjs-app
+
+# create app
+dokku apps:create nextjs-app
+
+# list all apps
+dokku apps:list
+
+# check app networks
+dokku network:report nextjs-app
+
+# list all networks
+dokku network:list
+
+# push
+git push dokku main:main
+```
+
+### Setup Lets Encrypt
+
+```bash
+# lista all installed plugins
+dokku plugin:list
+
+# check if letsencrypt is installed
+# it is included in apps/dokku/dokku-data/plugin-list
+dokku plugin:installed letsencrypt
+
+# if not installed already
+dokku plugin:install https://github.com/dokku/dokku-letsencrypt.git
+
+# set global email for all apps
+# cant be set per app...
+dokku config:set --global DOKKU_LETSENCRYPT_EMAIL= miroljub.petrovic.acc@gmail.com
+
+# enable for app
+dokku letsencrypt:enable nextjs-app
+
+# check for app
+dokku letsencrypt:active nextjs-app
+
+# enable auto-renewal
+dokku letsencrypt:cron-job --add
+```
+
+### Start, stop, rebuild app
+
+```bash
+# debug all config
+dokku config:show nextjs-app
+
+# debug processes
+dokku ps:report
+
+# debug ports
+dokku proxy:ports nextjs-app
+
+# stop
+dokku ps:stop nextjs-app
+
+# start
+dokku ps:start nextjs-app
+
+# rebuild, redeploy app
+dokku ps:rebuild nextjs-app
+
+# test https, -v
+curl http://nextjs-app.dokku.arm1.localhost3002.live
+curl https://nextjs-app.dokku.arm1.localhost3002.live
+
+# disable hsts nginx
+dokku nginx:set --global hsts false
+
+# debug domains
+dokku domains:report --global
+dokku domains:report nextjs-app
+
+# debug nginx - default proxy
+dokku nginx:show-config
+```
+
+### Volume and env var must match - ${PWD}/dokku-data
+
+```yaml
+environment:
+  - DOKKU_HOST_ROOT=${PWD}/dokku-data/home/dokku
+volumes:
+  - ${PWD}/dokku-data:/mnt/dokku
+```
+
+### Set custom buildpacks
+
+```bash
+# pack installed in Dockerfile
+
+# report
+dokku buildpacks:report
+
+# set globally
+dokku buildpacks:set-property --global stack paketobuildpacks/builder:base
+
+# unset globally, reset to default gliderlabs/herokuish:latest
+dokku buildpacks:set-property --global stack
+```
