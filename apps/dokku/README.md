@@ -199,7 +199,10 @@ dokku plugin:install https://github.com/dokku/dokku-letsencrypt.git
 
 # set global email for all apps
 # cant be set per app...
-dokku config:set --global DOKKU_LETSENCRYPT_EMAIL= miroljub.petrovic.acc@gmail.com
+dokku config:set --global DOKKU_LETSENCRYPT_EMAIL=miroljub.petrovic.acc@gmail.com
+
+# it prints i have to set email like this
+dokku letsencrypt:set nextjs-app email miroljub.petrovic.acc@gmail.com
 
 # enable for app
 dokku letsencrypt:enable nextjs-app
@@ -248,6 +251,14 @@ dokku domains:report nextjs-app
 
 # debug nginx - default proxy
 dokku nginx:show-config
+
+
+# verbose, complete
+# print everything about app
+dokku report nextjs-app
+dokku ps:inspect $APP
+sudo apt install tree
+tree -da .
 ```
 
 ### Volume and env var must match - ${PWD}/dokku-data
@@ -296,3 +307,11 @@ Paketo Buildpacks:     paketobuildpacks/builder:tiny
 4. push and deploy
 5. letsencript ssl
 6.
+
+### Errors
+
+```bash
+-----> Getting letsencrypt certificate for nextjs-app via HTTP-01
+        - Domain 'nextjs-app.dokku.arm1.localhost3002.live'
+docker: open /home/ubuntu/traefik-proxy/apps/dokku/dokku-data/home/dokku/nextjs-app/letsencrypt/certs/ac00fb3b1783f8750bfd5ca350e514d4918ca459/docker.env: no such file or directory.
+```
