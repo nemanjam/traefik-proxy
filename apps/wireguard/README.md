@@ -6,7 +6,6 @@
 - How to add/install Wireguard on Oracle Cloud to create your own VPN - Sauber-Lab UK [Youtube](https://www.youtube.com/watch?v=ocsVUGjVSpI)
 - Run WireGuard VPN Server in Docker Container with Docker Compose [tutorial](https://techviewleo.com/run-wireguard-server-in-docker-container)
 
-
 ### Get IP into env var
 
 - get public IP command [stackexchange](https://unix.stackexchange.com/questions/22615/how-can-i-get-my-external-ip-address-in-a-shell-script)
@@ -93,4 +92,3 @@ docker exec -it wireguard wg
 ```bash
 docker-compose up -d --force-recreate
 ```
-
