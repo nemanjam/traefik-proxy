@@ -190,7 +190,7 @@ git push dokku main:main
 # lista all installed plugins
 dokku plugin:list
 
-# check if letsencrypt is installed
+# check if letsencrypt is installed, doesnt work
 # it is included in apps/dokku/dokku-data/plugin-list
 dokku plugin:installed letsencrypt
 
@@ -214,6 +214,9 @@ dokku letsencrypt:cron-job --add
 ### Start, stop, rebuild app
 
 ```bash
+# enter container
+docker exec -it dokku bash
+
 # debug all config
 dokku config:show nextjs-app
 
@@ -256,6 +259,7 @@ environment:
   - DOKKU_HOST_ROOT=${PWD}/dokku-data/home/dokku
 volumes:
   - ${PWD}/dokku-data:/mnt/dokku
+  - ${PWD}/plugin-list:/mnt/dokku/plugin-list
 ```
 
 ### Set custom buildpacks
