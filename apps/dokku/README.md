@@ -269,4 +269,15 @@ dokku buildpacks:set-property --global stack paketobuildpacks/builder:base
 
 # unset globally, reset to default gliderlabs/herokuish:latest
 dokku buildpacks:set-property --global stack
+
+# possible buildpack options
+# must run in js app folder
+ubuntu@arm1:~/NODE-JS-APP$ pack builder suggest
+Suggested builders:
+Google:                gcr.io/buildpacks/builder:v1
+Heroku:                heroku/builder:22
+Heroku:                heroku/buildpacks:20
+Paketo Buildpacks:     paketobuildpacks/builder:base
+Paketo Buildpacks:     paketobuildpacks/builder:full
+Paketo Buildpacks:     paketobuildpacks/builder:tiny
 ```
