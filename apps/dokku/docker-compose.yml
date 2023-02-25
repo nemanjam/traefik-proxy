@@ -18,6 +18,7 @@ services:
       - DOKKU_HOST_ROOT=${PWD}/dokku-data/home/dokku
     volumes:
       - ${PWD}/dokku-data:/mnt/dokku
+      - ${PWD}/plugin-list:/mnt/dokku/plugin-list
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - proxy

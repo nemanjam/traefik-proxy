@@ -239,7 +239,7 @@ curl https://nextjs-app.dokku.arm1.localhost3002.live
 # disable hsts nginx
 dokku nginx:set --global hsts false
 
-# debug domains
+# debug domains, .env file
 dokku domains:report --global
 dokku domains:report nextjs-app
 
@@ -250,6 +250,8 @@ dokku nginx:show-config
 ### Volume and env var must match - ${PWD}/dokku-data
 
 ```yaml
+# DOKKU_HOST_ROOT = path on host, volume path + /home/dokku
+
 environment:
   - DOKKU_HOST_ROOT=${PWD}/dokku-data/home/dokku
 volumes:
@@ -281,3 +283,12 @@ Paketo Buildpacks:     paketobuildpacks/builder:base
 Paketo Buildpacks:     paketobuildpacks/builder:full
 Paketo Buildpacks:     paketobuildpacks/builder:tiny
 ```
+
+### Steps
+
+1. set ssh key
+2. attach all aps to external network
+3. create app, add remote
+4. push and deploy
+5. letsencript ssl
+6.
