@@ -341,3 +341,7 @@ ubuntu@arm1:~/traefik-proxy$ ls -la /home/ubuntu/traefik-proxy/apps/dokku/dokku-
 sudo vi /home/dokku/nextjs-app/letsencrypt/certs/ac00fb3b1783f8750bfd5ca350e514d4918ca459/docker.env
 
 ```
+
+Ovo je fora, mora da bude dostupan https i http, a ne iza traefik, ovde reko
+
+https://github.com/dokku/dokku-letsencrypt#dockerfile-and-image-based-deploys
