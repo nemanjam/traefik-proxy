@@ -135,7 +135,7 @@ docker compose up -d
 #### Oneliner set local key to remote container
 
 ```bash
-# set key, works multiline
+# set key, works multiline, container must run
 scp ~/.ssh/oracle/dokku_docker__id_rsa.pub ubuntu@arm1:/tmp/ && \
 ssh ubuntu@arm1 " \
   docker exec -i dokku bash dokku ssh-keys:add admin < /tmp/dokku_docker__id_rsa.pub && \

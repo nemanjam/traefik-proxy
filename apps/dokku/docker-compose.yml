@@ -11,8 +11,8 @@ services:
     ports:
       - '3022:22'
       # this exposes all app containers and not dokku container
-      - '443:443'
-      - '80:80'
+      # - '443:443'
+      # - '80:80'
     environment:
       - DOKKU_HOSTNAME=dokku.${SERVER_HOSTNAME}
       - DOKKU_HOST_ROOT=${PWD}/dokku-data/home/dokku
@@ -22,21 +22,21 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - proxy
-    # labels:
-    #   - 'traefik.enable=true'
-    #   - 'traefik.docker.network=proxy'
-    #   # entrypoints.websecure - traefik will handle letsencrypt
-    #   # entrypoints.web - will pass http
-    #   - 'traefik.http.routers.dokku-http.entrypoints=web'
-    #   - 'traefik.http.routers.dokku-http.rule=HostRegexp(`{subdomain:[[:ascii:]]+}.dokku.${SERVER_HOSTNAME}`)'
-    #   # dokku default exposes 80 and 443
-    #   - 'traefik.http.services.dokku-http.loadbalancer.server.port=80'
-    #   # passthrough https
-    #   - 'traefik.tcp.routers.dokku-https.tls=true'
-    #   - 'traefik.tcp.routers.dokku-https.tls.passthrough=true'
-    #   - 'traefik.tcp.routers.dokku-https.entrypoints=websecure'
-    #   - 'traefik.tcp.routers.dokku-https.rule=HostSNIRegexp(`{subdomain:[[:ascii:]]+}.dokku.${SERVER_HOSTNAME}`)'
-    #   - 'traefik.tcp.services.dokku-https.loadbalancer.server.port=443'
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.docker.network=proxy'
+      # entrypoints.websecure - traefik will handle letsencrypt
+      # entrypoints.web - will pass http
+      - 'traefik.http.routers.dokku-http.entrypoints=web'
+      - 'traefik.http.routers.dokku-http.rule=HostRegexp(`{subdomain:[[:ascii:]]+}.dokku.${SERVER_HOSTNAME}`)'
+      # dokku default exposes 80 and 443
+      - 'traefik.http.services.dokku-http.loadbalancer.server.port=80'
+      # passthrough https
+      - 'traefik.tcp.routers.dokku-https.tls=true'
+      - 'traefik.tcp.routers.dokku-https.tls.passthrough=true'
+      - 'traefik.tcp.routers.dokku-https.entrypoints=websecure'
+      - 'traefik.tcp.routers.dokku-https.rule=HostSNIRegexp(`{subdomain:[[:ascii:]]+}.dokku.${SERVER_HOSTNAME}`)'
+      - 'traefik.tcp.services.dokku-https.loadbalancer.server.port=443'
 
 networks:
   proxy:
