@@ -32,11 +32,12 @@ services:
       # dokku default exposes 80 and 443
       - 'traefik.http.services.dokku-http.loadbalancer.server.port=80'
       # passthrough https
-      - 'traefik.tcp.routers.dokku-https.tls=true'
-      - 'traefik.tcp.routers.dokku-https.tls.passthrough=true'
-      - 'traefik.tcp.routers.dokku-https.entrypoints=websecure'
-      - 'traefik.tcp.routers.dokku-https.rule=HostSNIRegexp(`{subdomain:[a-z1-9\-]+}.dokku.${SERVER_HOSTNAME}`)'
-      - 'traefik.tcp.services.dokku-https.loadbalancer.server.port=443'
+      # curl: (35) error:0A000126:SSL routines::unexpected eof while reading
+      # - 'traefik.tcp.routers.dokku-https.tls=true'
+      # - 'traefik.tcp.routers.dokku-https.tls.passthrough=true'
+      # - 'traefik.tcp.routers.dokku-https.entrypoints=websecure'
+      # - 'traefik.tcp.routers.dokku-https.rule=HostSNIRegexp(`{subdomain:[a-z1-9\-]+}.dokku.${SERVER_HOSTNAME}`)'
+      # - 'traefik.tcp.services.dokku-https.loadbalancer.server.port=443'
 
 networks:
   proxy:
