@@ -342,6 +342,51 @@ sudo vi /home/dokku/nextjs-app/letsencrypt/certs/ac00fb3b1783f8750bfd5ca350e514d
 
 ```
 
+### Dokku is behind Traefik, this isn't the problem
+
 Ovo je fora, mora da bude dostupan https i http, a ne iza traefik, ovde reko
 
 https://github.com/dokku/dokku-letsencrypt#dockerfile-and-image-based-deploys
+
+### Run Dokku in http hsts mode - wrong, wont work
+
+Traefik can set it too...
+
+```bash
+# remove containers
+
+# print options
+dokku nginx:report nextjs-app
+
+# disable hsts check, default is true
+dokku nginx:set --global hsts false
+
+# rebuild proxy after edit
+dokku proxy:build-config nextjs-app
+
+# create and run containers
+```
+
+### Switch to Traefik proxy for Lets encrypt
+
+```bash
+# switch to treafik
+dokku proxy:set nextjs-app traefik
+
+# rebuild app, not just proxy
+dokku ps:rebuild nextjs-app
+
+# start/stop treafik
+dokku traefik:start
+
+# enable letsencrypt for traefik globally
+dokku traefik:set --global letsencrypt-email miroljub.petrovic.acc@gmail.com
+
+# report
+dokku traefik:report
+```
+
+probaj ovo
+
+https://github.com/dokku/dokku-letsencrypt/issues/274
+sudo dokku plugin:install https://github.com/dokku/dokku-letsencrypt.git --committish 0.17.0
