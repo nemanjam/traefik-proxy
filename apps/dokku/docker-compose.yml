@@ -28,17 +28,15 @@ services:
       # entrypoints.websecure - traefik will handle letsencrypt
       # entrypoints.web - will pass http
       - 'traefik.http.routers.dokku-http.entrypoints=websecure'
-      # - 'traefik.http.routers.dokku-http.rule=HostRegexp(`{subdomain:[[:ascii:]]+}.dokku.${SERVER_HOSTNAME}`)'
       - 'traefik.http.routers.dokku-http.rule=HostRegexp(`{subdomain:[a-z1-9\-]+}.dokku.${SERVER_HOSTNAME}`)'
-      # - 'traefik.http.routers.dokku-http.rule=Host(`nextjs-app.dokku.${SERVER_HOSTNAME}`)'
       # dokku default exposes 80 and 443
       - 'traefik.http.services.dokku-http.loadbalancer.server.port=80'
       # passthrough https
-      # - 'traefik.tcp.routers.dokku-https.tls=true'
-      # - 'traefik.tcp.routers.dokku-https.tls.passthrough=true'
-      # - 'traefik.tcp.routers.dokku-https.entrypoints=websecure'
-      # - 'traefik.tcp.routers.dokku-https.rule=HostSNIRegexp(`{subdomain:[[:ascii:]]+}.dokku.${SERVER_HOSTNAME}`)'
-      # - 'traefik.tcp.services.dokku-https.loadbalancer.server.port=443'
+      - 'traefik.tcp.routers.dokku-https.tls=true'
+      - 'traefik.tcp.routers.dokku-https.tls.passthrough=true'
+      - 'traefik.tcp.routers.dokku-https.entrypoints=websecure'
+      - 'traefik.tcp.routers.dokku-https.rule=HostSNIRegexp(`{subdomain:[a-z1-9\-]+}.dokku.${SERVER_HOSTNAME}`)'
+      - 'traefik.tcp.services.dokku-https.loadbalancer.server.port=443'
 
 networks:
   proxy:
