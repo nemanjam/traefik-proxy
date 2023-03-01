@@ -1,4 +1,5 @@
-# Dynamic configuration
+# dynamic configuration
+
 http:
   middlewares:
     secureHeaders:
@@ -12,7 +13,7 @@ http:
     user-auth:
       basicAuth:
         users:
-          - '{{ env "TRAEFIC_AUTH" }}'
+          - '{{ env "TRAEFIK_AUTH" }}'
 
 tls:
   options:

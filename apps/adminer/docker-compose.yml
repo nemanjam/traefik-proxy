@@ -10,7 +10,7 @@ services:
     labels:
       - 'traefik.enable=true'
       - 'traefik.docker.network=proxy'
-      - 'traefik.http.routers.adminer-https.rule=Host(`adminer.${DOMAIN}`)'
+      - 'traefik.http.routers.adminer-https.rule=Host(`adminer.${SERVER_HOSTNAME}`)'
       - 'traefik.http.routers.adminer-https.entrypoints=websecure'
       - 'traefik.http.services.adminer-svc.loadbalancer.server.port=8080'
 
