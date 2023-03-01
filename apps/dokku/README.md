@@ -182,6 +182,9 @@ dokku network:list
 
 # push
 git push dokku main:main
+
+# destroy app
+dokku apps:destroy --force nextjs-app
 ```
 
 ### Setup Lets Encrypt
@@ -386,7 +389,19 @@ dokku traefik:set --global letsencrypt-email miroljub.petrovic.acc@gmail.com
 dokku traefik:report
 ```
 
-probaj ovo
+### App with database
 
-https://github.com/dokku/dokku-letsencrypt/issues/274
-sudo dokku plugin:install https://github.com/dokku/dokku-letsencrypt.git --committish 0.17.0
+```bash
+# create db container
+dokku postgres:create mern-boilerplate-database
+
+# link db to app
+dokku postgres:link mern-boilerplate-database mern-boilerplate
+
+# add remote and push
+git remote add dokku dokku@dokku.arm1.localhost3002.live:mern-boilerplate
+git push dokku dokku-deployment:dokku-deployment
+
+# set env vars
+dokku config:set mern-boilerplate PORT=3000 FOO=another_value
+```
