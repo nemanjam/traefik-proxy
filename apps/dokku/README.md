@@ -393,10 +393,10 @@ dokku traefik:report
 
 ```bash
 # create db container
-dokku postgres:create mern-boilerplate-database
+dokku mongo:create mern-boilerplate-database
 
 # link db to app
-dokku postgres:link mern-boilerplate-database mern-boilerplate
+dokku mongo:link mern-boilerplate-database mern-boilerplate
 
 # add remote and push
 git remote add dokku dokku@dokku.arm1.localhost3002.live:mern-boilerplate
