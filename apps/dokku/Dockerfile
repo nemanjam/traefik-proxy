@@ -1,4 +1,4 @@
-FROM dokku/dokku:0.30.1
+FROM dokku/dokku:0.30.3
 
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update -qq && apt-get -qq -y --no-install-recommends install curl apparmor

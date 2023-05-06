@@ -193,6 +193,9 @@ dokku apps:destroy --force nextjs-app
 # lista all installed plugins
 dokku plugin:list
 
+# update
+dokku plugin:update mongo
+
 # check if letsencrypt is installed, doesnt work
 # it is included in apps/dokku/dokku-data/plugin-list
 dokku plugin:installed letsencrypt
@@ -393,10 +396,10 @@ dokku traefik:report
 
 ```bash
 # create db container
-dokku mongo:create mern-boilerplate-database
+dokku mongo:create mern_boilerplate_database
 
 # link db to app
-dokku mongo:link mern-boilerplate-database mern-boilerplate
+dokku mongo:link mern_boilerplate_database mern-boilerplate
 
 # add remote and push
 git remote add dokku dokku@dokku.arm1.localhost3002.live:mern-boilerplate
