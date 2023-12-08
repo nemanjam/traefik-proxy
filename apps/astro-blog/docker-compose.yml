@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  astro-blog:
+    image: nemanjamitic/astro-blog:0.0.1
+    container_name: astro-blog
+    environment:
+      - SITE_HOSTNAME
+      # - PORT
+    networks:
+      - proxy
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.docker.network=proxy'
+      - 'traefik.http.routers.npb-app-secure.rule=Host(`${SITE_HOSTNAME}`)'
+      - 'traefik.http.routers.npb-app-secure.entrypoints=websecure'
+      - 'traefik.http.routers.npb-app-secure.service=astro-blog'
+      - 'traefik.http.services.astro-blog.loadbalancer.server.port=8080'
+
+networks:
+  proxy:
+    external: true
