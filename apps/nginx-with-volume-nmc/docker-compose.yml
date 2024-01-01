@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  nginx-with-volume:
+    image: nginx:stable-alpine3.17-slim
+    container_name: nginx-with-volume
+    volumes:
+      - ./website:/usr/share/nginx/html
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    networks:
+      - proxy
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.docker.network=proxy'
+      - 'traefik.http.routers.nginx-with-volume.rule=Host(`${SITE_HOSTNAME}`)'
+      - 'traefik.http.routers.nginx-with-volume.entrypoints=websecure'
+      - 'traefik.http.routers.nginx-with-volume.service=nginx-with-volume'
+      - 'traefik.http.services.nginx-with-volume.loadbalancer.server.port=8080'
+
+networks:
+  proxy:
+    external: true
