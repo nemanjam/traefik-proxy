@@ -4,9 +4,9 @@ services:
   astro-blog:
     image: nemanjamitic/astro-blog:0.0.1
     container_name: astro-blog
-    # environment:
-    #   - SITE_HOSTNAME
-    #   - PORT
+    environment:
+    # - PUBLIC_SITE_HOSTNAME # https:// + SITE_HOSTNAME
+    # - PORT
     networks:
       - proxy
     labels:
