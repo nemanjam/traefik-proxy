@@ -1,9 +1,9 @@
 version: '3.8'
 
 services:
-  nginx-with-volume-nmc:
+  nmc-nginx-with-volume:
     image: nginx:stable-alpine3.17-slim
-    container_name: nginx-with-volume-nmc
+    container_name: nmc-nginx-with-volume
     volumes:
       - ./website:/usr/share/nginx/html
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
@@ -12,10 +12,10 @@ services:
     labels:
       - 'traefik.enable=true'
       - 'traefik.docker.network=proxy'
-      - 'traefik.http.routers.nginx-with-volume-nmc.rule=Host(`${SITE_HOSTNAME}`)'
-      - 'traefik.http.routers.nginx-with-volume-nmc.entrypoints=websecure'
-      - 'traefik.http.routers.nginx-with-volume-nmc.service=nginx-with-volume-nmc'
-      - 'traefik.http.services.nginx-with-volume-nmc.loadbalancer.server.port=8080'
+      - 'traefik.http.routers.nmc-nginx-with-volume.rule=Host(`${SITE_HOSTNAME}`)'
+      - 'traefik.http.routers.nmc-nginx-with-volume.entrypoints=websecure'
+      - 'traefik.http.routers.nmc-nginx-with-volume.service=nmc-nginx-with-volume'
+      - 'traefik.http.services.nmc-nginx-with-volume.loadbalancer.server.port=8080'
 
 networks:
   proxy:
