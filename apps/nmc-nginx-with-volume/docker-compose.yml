@@ -12,7 +12,7 @@ services:
     labels:
       - 'traefik.enable=true'
       - 'traefik.docker.network=proxy'
-      - 'traefik.http.routers.nginx-with-volume-nmc.rule=Host(`${TRAEFIK_SITE_HOSTNAME}`)'
+      - 'traefik.http.routers.nginx-with-volume-nmc.rule=Host(`${SITE_HOSTNAME}`)'
       - 'traefik.http.routers.nginx-with-volume-nmc.entrypoints=websecure'
       - 'traefik.http.routers.nginx-with-volume-nmc.service=nginx-with-volume-nmc'
       - 'traefik.http.services.nginx-with-volume-nmc.loadbalancer.server.port=8080'
