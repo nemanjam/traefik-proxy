@@ -3,7 +3,7 @@ services:
   postgres-external:
     image: postgres:14.3-bullseye
     container_name: postgres-external
-    restart: unless-stopped
+    # restart: unless-stopped
     command: postgres -p 5433 -c config_file=/etc/postgresql.conf
     ports:
       - '5433:5433'

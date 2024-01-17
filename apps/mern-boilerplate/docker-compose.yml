@@ -12,7 +12,7 @@ version: '3.8'
 services:
   mdp-client:
     container_name: mdp-client
-    # restart: unless-stopped
+    restart: unless-stopped
     image: nemanjamitic/mern-boilerplate-client:latest
     depends_on:
       - mdp-server
@@ -43,7 +43,7 @@ services:
 
   mdp-server:
     container_name: mdp-server
-    # restart: unless-stopped
+    restart: unless-stopped
     image: nemanjamitic/mern-boilerplate-server:latest
     depends_on:
       - mdp-mongo
@@ -86,7 +86,7 @@ services:
   mdp-mongo:
     image: mongo:6.0.3
     container_name: mdp-mongo
-    # restart: unless-stopped
+    restart: unless-stopped
     ports:
       - '27017:27017'
     environment:

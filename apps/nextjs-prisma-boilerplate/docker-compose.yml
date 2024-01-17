@@ -3,7 +3,7 @@ services:
   npb-app-live:
     container_name: npb-app-live
     image: nemanjamitic/nextjs-prisma-boilerplate:latest
-    # restart: unless-stopped
+    restart: unless-stopped
     #command: sleep infinity
     volumes:
       - ./uploads:/app/uploads
@@ -42,7 +42,7 @@ services:
   npb-db-live:
     image: postgres:14.3-bullseye
     container_name: npb-db-live
-    # restart: unless-stopped
+    restart: unless-stopped
     ports:
       - '5432:5432'
     user: '${MY_UID}:${MY_GID}'
