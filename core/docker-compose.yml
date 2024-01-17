@@ -4,10 +4,10 @@ services:
   traefik:
     image: 'traefik:v2.9.8'
     container_name: traefik
+    restart: unless-stopped
     command:
       # moved from static conf to pass email as env var
       - '--certificatesresolvers.letsencrypt.acme.email=${TRAEFIK_LETSENCRYPT_EMAIL}'
-    restart: unless-stopped
     security_opt:
       - no-new-privileges:true
     networks:
