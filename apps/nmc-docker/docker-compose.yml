@@ -2,9 +2,9 @@ version: '3.8'
 
 services:
   nmc-docker:
-    image: nemanjamitic/astro-blog:0.0.1
+    image: nemanjamitic/nemanjam.github.io:latest
     container_name: nmc-docker
-    # restart: unless-stopped
+    restart: unless-stopped
     environment:
     # - PUBLIC_SITE_HOSTNAME # https:// + SITE_HOSTNAME
     # - PORT
@@ -16,6 +16,7 @@ services:
       - 'traefik.http.routers.nmc-docker-secure.rule=Host(`${SITE_HOSTNAME}`)'
       - 'traefik.http.routers.nmc-docker-secure.entrypoints=websecure'
       - 'traefik.http.routers.nmc-docker-secure.service=nmc-docker'
+      # nginx.conf and Dockerfile
       - 'traefik.http.services.nmc-docker.loadbalancer.server.port=8080'
 
 networks:
