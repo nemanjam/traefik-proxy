@@ -5,9 +5,6 @@ services:
     image: nemanjamitic/nemanjam.github.io:latest
     container_name: nmc-docker
     restart: unless-stopped
-    environment:
-    # - PUBLIC_SITE_HOSTNAME # https:// + SITE_HOSTNAME
-    # - PORT
     networks:
       - proxy
     labels:
