@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.9'
 services:
   postgres-external:
     image: postgres:14.3-bullseye

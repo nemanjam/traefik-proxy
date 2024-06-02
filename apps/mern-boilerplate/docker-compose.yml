@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.9'
 
 # alternative 1 - inject separate env files into containers
 # env_file:
