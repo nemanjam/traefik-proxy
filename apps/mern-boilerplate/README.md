@@ -6,7 +6,7 @@
 
 ```bash
 # run from traefik-proxy folder
-scp ./apps/mern-boilerplate/.env ubuntu@amd1:~/traefik-proxy/apps/mern-boilerplate
+scp ./apps/mern-boilerplate/.env ubuntu@arm1:~/traefik-proxy/apps/mern-boilerplate
 ```
 
 #### Troubleshooting MongoDB connection running in a container
