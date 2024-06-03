@@ -3,3 +3,4 @@
 3. cp .env.example .env # and fill in vars
 4. acme.json create and chmod
 5. docker network create proxy
+6. uncomment staging certificate
