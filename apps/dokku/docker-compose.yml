@@ -14,7 +14,7 @@ services:
       # - '8443:443'
       # - '8080:80'
     environment:
-      - DOKKU_HOSTNAME=dokku.${SERVER_HOSTNAME}
+      - DOKKU_HOSTNAME=dokku.${SITE_HOSTNAME}
       - DOKKU_HOST_ROOT=${PWD}/dokku-data/home/dokku
     volumes:
       - ${PWD}/dokku-data:/mnt/dokku
@@ -29,7 +29,7 @@ services:
       # entrypoints.websecure - traefik will handle letsencrypt
       # entrypoints.web - will pass http
       - 'traefik.http.routers.dokku-http.entrypoints=websecure'
-      - 'traefik.http.routers.dokku-http.rule=HostRegexp(`{subdomain:[a-z1-9\-]+}.dokku.${SERVER_HOSTNAME}`)'
+      - 'traefik.http.routers.dokku-http.rule=HostRegexp(`{subdomain:[a-z1-9\-]+}.dokku.${SITE_HOSTNAME}`)'
       # dokku default exposes 80 and 443
       - 'traefik.http.services.dokku-http.loadbalancer.server.port=80'
       # passthrough https
@@ -37,7 +37,7 @@ services:
       # - 'traefik.tcp.routers.dokku-https.tls=true'
       # - 'traefik.tcp.routers.dokku-https.tls.passthrough=true'
       # - 'traefik.tcp.routers.dokku-https.entrypoints=websecure'
-      # - 'traefik.tcp.routers.dokku-https.rule=HostSNIRegexp(`{subdomain:[a-z1-9\-]+}.dokku.${SERVER_HOSTNAME}`)'
+      # - 'traefik.tcp.routers.dokku-https.rule=HostSNIRegexp(`{subdomain:[a-z1-9\-]+}.dokku.${SITE_HOSTNAME}`)'
       # - 'traefik.tcp.services.dokku-https.loadbalancer.server.port=443'
 
 networks:

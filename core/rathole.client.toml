@@ -12,10 +12,10 @@ remote_public_key = "public_key"
 # DONT do ANY mapping in docker-compose, just pass traffic from rathole on ports traefik expects
 # in same docker-compose.yml for depends_on
 [client.services.traefik-http]
-token = "my-secret"
+token = "secret_token"
 local_addr = "traefik:80"
 
 [client.services.traefik-https]
-token = "my-secret"
+token = "secret_token"
 local_addr = "traefik:443"  
 

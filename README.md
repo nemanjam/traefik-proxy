@@ -35,7 +35,7 @@ Environment variables needed for `core/docker-compose.yml`.
 # core/.env
 
 TRAEFIK_LETSENCRYPT_EMAIL=myemail@gmail.com
-SERVER_HOSTNAME=localhost3000.live
+SITE_HOSTNAME=localhost3000.live
 TRAEFIK_AUTH=
 ```
 
@@ -230,7 +230,7 @@ Adminer example. Traefik only needs `subdomain.domain.com` and `port`, that's it
 ```yml
 # apps/adminer/docker-compose.yml
 
-# adminer.${SERVER_HOSTNAME} - subdomain.domain.com
+# adminer.${SITE_HOSTNAME} - subdomain.domain.com
 # 8080 - port
 
 services:
@@ -242,7 +242,7 @@ services:
     labels:
       - 'traefik.enable=true'
       - 'traefik.docker.network=proxy'
-      - 'traefik.http.routers.adminer-https.rule=Host(`adminer.${SERVER_HOSTNAME}`)'
+      - 'traefik.http.routers.adminer-https.rule=Host(`adminer.${SITE_HOSTNAME}`)'
       - 'traefik.http.routers.adminer-https.entrypoints=websecure'
       - 'traefik.http.services.adminer-svc.loadbalancer.server.port=8080'
 
