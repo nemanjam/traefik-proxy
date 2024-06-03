@@ -31,8 +31,8 @@ certificatesResolvers:
     acme:
       # email moved to docker-compose command: for env var
       # email: changeme@changeme.org
-      # caServer: "https://acme-staging-v02.api.letsencrypt.org/directory"
-      caServer: 'https://acme-v02.api.letsencrypt.org/directory'
+      caServer: "https://acme-staging-v02.api.letsencrypt.org/directory"
+      # caServer: 'https://acme-v02.api.letsencrypt.org/directory'
       storage: acme.json
       keyType: EC384
       httpChallenge:

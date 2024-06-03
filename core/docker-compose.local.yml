@@ -1,10 +1,23 @@
 version: '3.9'
 
 services:
+
+  rathole:
+    image: rapiz1/rathole:v0.5.0
+    container_name: rathole
+    command: --client /config/rathole.client.toml
+    restart: unless-stopped
+    volumes:
+      - ./rathole.client.toml:/config/rathole.client.toml:ro
+    networks:
+      - proxy
+
   traefik:
     image: 'traefik:v2.9.8'
     container_name: traefik
     restart: unless-stopped
+    depends_on:
+      - rathole
     command:
       # moved from static conf to pass email as env var
       - '--certificatesresolvers.letsencrypt.acme.email=${TRAEFIK_LETSENCRYPT_EMAIL}'
@@ -12,9 +25,11 @@ services:
       - no-new-privileges:true
     networks:
       - proxy
-    ports:
-      - '80:80'
-      - '443:443'
+    # rathole will pass traffic through proxy network directly on 80 and 443
+    # defined in rathole.client.toml
+    # ports:
+    #   - '80:80'
+    #   - '443:443'
     environment:
       - TRAEFIK_AUTH=${TRAEFIK_AUTH}
     volumes:
@@ -30,6 +45,7 @@ services:
       - 'traefik.http.routers.traefik-secure.rule=Host(`traefik.${SERVER_HOSTNAME}`)'
       - 'traefik.http.routers.traefik-secure.middlewares=user-auth@file'
       - 'traefik.http.routers.traefik-secure.service=api@internal'
+
 
   portainer:
     image: 'portainer/portainer-ce:2.20.3'
