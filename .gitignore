@@ -15,3 +15,9 @@ core/portainer-data/
 !dokku/dokku-data
 dokku/dokku-data/*
 !dokku/dokku-data/plugin-list
+
+# nginx websites
+!/**/website
+/**/website/*
+!/**/website/index.html
+

@@ -4,6 +4,3 @@ node_modules/
 /**/.env*.local
 
 
-!website
-website//*
-!website/index.html
