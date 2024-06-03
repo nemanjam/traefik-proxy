@@ -1,6 +1,27 @@
 1. clone
-2. set public key and token in rathole.client.toml
-3. cp .env.example .env # and fill in vars
+2. set public key and token in `rathole.client.toml`
+3. create `.env` file and fill in vars
+
+```bash
+cp .env.example .env
+
+```
+
 4. acme.json create and chmod
-5. docker network create proxy
-6. uncomment staging certificate
+
+```bash
+touch ~/homelab/traefik-proxy/core/traefik-data/acme.json
+
+sudo chmod 600 ~/homelab/traefik-proxy/core/traefik-data/acme.json
+```
+
+5. create proxy network
+
+```bash
+docker network create proxy
+```
+6. uncomment staging certificate, must clear contents of old acme.json
+
+```bash
+truncate -s 0 acme.json
+```
