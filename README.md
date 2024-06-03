@@ -70,12 +70,11 @@ docker network create proxy
 # create acme.json
 touch ~/traefik-proxy/core/traefik-data/acme.json
 
-touch ~/homelab/traefik-proxy/core/traefik-data/acme.json
-
 # give proper permissions to acme.json
-sudo chmod 600 ~/homelab/traefik-proxy/core/traefik-data/acme.json
+sudo chmod 600 ~/traefik-proxy/core/traefik-data/acme.json
+
 # backup file
-cp ~/homelab/traefik-proxy/core/traefik-data/acme.json ~/acme.json.bak
+cp ~/traefik-proxy/core/traefik-data/acme.json ~/acme.json.bak
 
 ```
 
