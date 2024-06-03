@@ -20,6 +20,14 @@ sudo chmod 600 ~/homelab/traefik-proxy/core/traefik-data/acme.json
 ```bash
 docker network create proxy
 ```
+6. run containers
+
+```bash
+# up must be at end
+
+docker compose -f docker-compose.local.yml up -d
+```
+
 6. uncomment staging certificate, must clear contents of old acme.json
 
 ```bash
