@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  iperf3:
+    # has no tags, only latest 
+    image: networkstatic/iperf3
+    container_name: iperf3
+    command: ['-s']
+    restart: no
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.docker.network=proxy'
+      - 'traefik.http.routers.iperf3-secure.rule=Host(`${SITE_HOSTNAME}`)'
+      - 'traefik.http.routers.iperf3-secure.entrypoints=websecure'
+      - 'traefik.http.routers.iperf3-secure.service=iperf3'
+      - 'traefik.http.services.iperf3.loadbalancer.server.port=5201'
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
