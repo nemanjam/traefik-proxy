@@ -10,10 +10,11 @@ services:
     labels:
       - 'traefik.enable=true'
       - 'traefik.docker.network=proxy'
-      - 'traefik.http.routers.iperf3-secure.rule=Host(`${SITE_HOSTNAME}`)'
-      - 'traefik.http.routers.iperf3-secure.entrypoints=websecure'
-      - 'traefik.http.routers.iperf3-secure.service=iperf3'
+      - 'traefik.http.routers.iperf3-http.rule=Host(`${SITE_HOSTNAME}`)'
+      - 'traefik.http.routers.iperf3-http.entrypoints=web'
+      - 'traefik.http.routers.iperf3-http.service=iperf3'
       - 'traefik.http.services.iperf3.loadbalancer.server.port=5201'
+      - 'traefik.http.middlewares.iperf3-http-redirect.redirectscheme.scheme=http'
     networks:
       - proxy
 

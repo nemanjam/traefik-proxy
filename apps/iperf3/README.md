@@ -10,6 +10,10 @@
 cp .env.example .env
 
 # run client
-iperf3 -c iperf.local.nemanjamitic.com -p 443
+# iperf, works
+iperf -c iperf.local.nemanjamitic.com -p 80
+
+# iperf3, fails
+iperf3 -c iperf.local.nemanjamitic.com --cport 80
 
 ```
