@@ -10,10 +10,13 @@
 cp .env.example .env
 
 # run client
-# iperf, works
+# iperf, works...
 iperf -c iperf3.local.nemanjamitic.com -p 80
 
 # iperf3, fails
 iperf3 -c iperf3.local.nemanjamitic.com --cport 80
 
 ```
+
+- **iperf cant run through Traefik, must use separate port on Rathole, it's tcp, not http or https**
+- maybe this https://github.com/librespeed/speedtest
