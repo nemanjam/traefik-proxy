@@ -249,3 +249,17 @@ networks:
   proxy:
     external: true
 ```
+
+## Export global environment variables on every server
+
+```bash
+# ~/.bashrc
+
+# UID and GID env vars for Docker volumes permissions
+export MY_UID=$(id -u)
+export MY_GID=$(id -g)
+
+# export server public IP v4
+export MY_PUBLIC_SERVER_IP_V4=$(dig @resolver4.opendns.com myip.opendns.com +short)
+
+```
