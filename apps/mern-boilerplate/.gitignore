@@ -5,3 +5,7 @@ server/public/images/*
 !server/public/images/avatar0.jpg
 !server/public/images/avatar1.jpg
 !server/public/images/avatar2.jpg
+
+!server/docker/mongo-data
+server/docker/mongo-data/*
+!server/docker/mongo-data/.gitkeep
