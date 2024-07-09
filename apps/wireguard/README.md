@@ -57,6 +57,9 @@ scp ubuntu@amd1:/opt/wireguard-server/config/peer1/peer1.conf  ~/Desktop/peer1.c
 # qr code for Android
 scp ubuntu@amd1:/opt/wireguard-server/config/peer1/peer1.png   ~/Desktop/peer1.png
 
+# copy config folder
+scp -r ubuntu@152.70.160.21:/opt/wireguard-server/config   ~/Desktop/wireguard-config
+scp -r ~/Desktop/wireguard-config username@192.168.1.77:~/Desktop/wireguard-config
 ```
 
 ### Display QR code for a client
@@ -80,6 +83,9 @@ scp ubuntu@amd1:/opt/wireguard-server/config/peer1/peer1.conf  /etc/wireguard/wg
 # run Wireguard on client
 wg-quick up wg0
 
+# shut down
+wg-quick down wg0
+
 # check if client is connected
 sudo wg
 
@@ -91,4 +97,13 @@ docker exec -it wireguard wg
 
 ```bash
 docker-compose up -d --force-recreate
+```
+
+#### Exclude LAN from tunnel
+
+```bash
+# peer1.conf
+
+AllowedIPs = 0.0.0.0/0, ::/0, !192.168.1.0/24
+
 ```
