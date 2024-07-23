@@ -1,0 +1,33 @@
+version: 3.8
+
+services:
+  openssh-server:
+    image: lscr.io/linuxserver/openssh-server:latest
+    container_name: openssh-server
+    restart: unless-stopped
+    hostname: openssh-server #optional
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - SUDO_ACCESS=false #optional
+      - PASSWORD_ACCESS=false #optional
+      # - PUBLIC_KEY=yourpublickey #optional
+      # - PUBLIC_KEY_FILE=/path/to/file #optional
+      # - PUBLIC_KEY_DIR=/path/to/directory/containing/_only_/pubkeys #optional
+      # - PUBLIC_KEY_URL=https://github.com/username.keys #optional
+      # - USER_PASSWORD=password #optional
+      # - USER_PASSWORD_FILE=/path/to/file #optional
+      # - USER_NAME=linuxserver.io #optional
+      # - LOG_STDOUT= #optional
+    volumes:
+      - /path/to/openssh-server/config:/config
+    ports:
+      - 1081:2222
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.docker.network=proxy'
+      - 'traefik.http.routers.ssh-server.rule=Host(`${SITE_HOSTNAME}`)'
+      - 'traefik.http.routers.ssh-server.entrypoints=websecure'
+      - 'traefik.http.routers.ssh-server.service=ssh-server'
+      - 'traefik.http.services.ssh-server.loadbalancer.server.port=2222'
