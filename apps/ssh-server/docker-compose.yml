@@ -21,7 +21,7 @@ services:
       # - USER_NAME=linuxserver.io #optional
       # - LOG_STDOUT= #optional
     volumes:
-      - /path/to/openssh-server/config:/config
+      - /path/to/openssh-server/config:/config # fix this
     ports:
       - 1081:2222
     labels:
