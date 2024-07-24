@@ -7,8 +7,9 @@ services:
     restart: unless-stopped
     hostname: openssh-server #optional
     environment:
-      - PUID=1000
-      - PGID=1000
+      # set correct for current host user
+      - PUID=1001
+      - PGID=1001
       - TZ=Etc/UTC
       # forward env var, important
       - PUBLIC_KEY 
