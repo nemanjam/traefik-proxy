@@ -10,14 +10,14 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Etc/UTC
-      - SUDO_ACCESS=false #optional
-      - PASSWORD_ACCESS=false #optional
+      - PUBLIC_KEY
+      - SUDO_ACCESS=true #optional
       - USER_NAME=username #optional
-      # - PUBLIC_KEY=yourpublickey #optional
+      - PASSWORD_ACCESS=false #optional
+      # - USER_PASSWORD=password #optional
       # - PUBLIC_KEY_FILE=/path/to/file #optional
       # - PUBLIC_KEY_DIR=/path/to/directory/containing/_only_/pubkeys #optional
       # - PUBLIC_KEY_URL=https://github.com/username.keys #optional
-      # - USER_PASSWORD=password #optional
       # - USER_PASSWORD_FILE=/path/to/file #optional
       # - LOG_STDOUT= #optional
     volumes:
