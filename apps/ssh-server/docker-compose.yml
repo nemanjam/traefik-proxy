@@ -10,7 +10,8 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Etc/UTC
-      - PUBLIC_KEY
+      # forward env var, important
+      - PUBLIC_KEY 
       - SUDO_ACCESS=true #optional
       - USER_NAME=username #optional
       - PASSWORD_ACCESS=false #optional
@@ -31,3 +32,9 @@ services:
       - 'traefik.http.routers.ssh-server.entrypoints=websecure'
       - 'traefik.http.routers.ssh-server.service=ssh-server'
       - 'traefik.http.services.ssh-server.loadbalancer.server.port=2222'
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
