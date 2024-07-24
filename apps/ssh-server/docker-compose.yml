@@ -8,9 +8,9 @@ services:
     hostname: openssh-server #optional
     # https://github.com/linuxserver/docker-mods/tree/openssh-server-ssh-tunnel
     expose:
-      - 3005 # for traefik
+      - 1081 # for traefik
     ports:
-      - 1081:2222 # can do 22
+      - 22:2222 # can do 22
     environment:
       - DOCKER_MODS=linuxserver/mods:openssh-server-ssh-tunnel
       - SHELL_NOLOGIN=false
@@ -37,7 +37,7 @@ services:
       - 'traefik.http.routers.ssh-server.rule=Host(`${SITE_HOSTNAME}`)'
       - 'traefik.http.routers.ssh-server.entrypoints=websecure'
       - 'traefik.http.routers.ssh-server.service=ssh-server'
-      - 'traefik.http.services.ssh-server.loadbalancer.server.port=3005'
+      - 'traefik.http.services.ssh-server.loadbalancer.server.port=1081'
     networks:
       - proxy
 
