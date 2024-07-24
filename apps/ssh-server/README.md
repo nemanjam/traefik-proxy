@@ -20,3 +20,7 @@ GatewayPorts yes
 sudo systemctl restart sshd
 
 ```
+
+https://github.com/linuxserver/docker-openssh-server/issues/22
+
+https://github.com/linuxserver/docker-mods/tree/openssh-server-ssh-tunnel
