@@ -24,12 +24,13 @@ http:
       entryPoints:
         - web
         - websecure
-      rule: "HostRegexp(`{host:.+}`)"
+      rule: "HostRegexp(`{host:^www\\..+}|{host:.+}`)"
       middlewares:
         - redirect-to-non-www
         - secureHeaders
         - user-auth
       service: noop-service
+      tls: {}  # Ensure SSL certificate is requested for both www and non-www domains
       priority: 1
 
   services:
