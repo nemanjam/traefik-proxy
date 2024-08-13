@@ -1,11 +1,7 @@
+# dynamic configuration
+
 http:
   middlewares:
-    redirect-to-non-www:
-      redirectRegex:
-        regex: "^https?://www\\.(.*)"
-        replacement: "https://$1"
-        permanent: true
-
     secureHeaders:
       headers:
         sslRedirect: true
@@ -18,25 +14,6 @@ http:
       basicAuth:
         users:
           - '{{ env "TRAEFIK_AUTH" }}'
-
-  routers:
-    default-router:
-      entryPoints:
-        - web
-        - websecure
-      rule: "HostRegexp(`{host:.+}`)"
-      middlewares:
-        - redirect-to-non-www
-        - secureHeaders
-        - user-auth
-      service: noop-service
-      priority: 1
-
-  services:
-    noop-service:
-      loadBalancer:
-        servers:
-          - url: "http://0.0.0.0"
 
 tls:
   options:
