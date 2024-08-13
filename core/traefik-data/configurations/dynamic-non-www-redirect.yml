@@ -1,0 +1,58 @@
+# dynamic configuration
+
+http:
+  middlewares:
+    # Middleware for redirecting www to non-www
+    redirect-to-non-www:
+      redirectRegex:
+        regex: "^https?://www\\.(.*)"
+        replacement: "https://$${1}"
+        permanent: true
+
+    # Middleware for enforcing HTTPS and secure headers
+    secureHeaders:
+      headers:
+        sslRedirect: true  # Enforce HTTPS redirection
+        forceSTSHeader: true
+        stsIncludeSubdomains: true
+        stsPreload: true
+        stsSeconds: 31536000
+
+    # Middleware for basic authentication
+    user-auth:
+      basicAuth:
+        users:
+          - '{{ env "TRAEFIK_AUTH" }}'
+
+  routers:
+    # Define global router for handling redirects, authentication, and HTTPS
+    default-router:
+      entryPoints:
+        - web
+        - websecure
+      rule: "HostRegexp(`{host:.+}`)"  # Match all hosts
+      middlewares:
+        - redirect-to-non-www  # Apply non-www redirect first
+        - secureHeaders  # Apply HTTPS redirection and secure headers second
+        - user-auth  # Apply basic authentication last
+      service: noop-service  # Traefik requires a service, even if it's not used
+      priority: 1  # Ensure this router has the appropriate priority
+
+  services:
+    # Define a dummy service (necessary for Traefik routing)
+    noop-service:
+      loadBalancer:
+        servers:
+          - url: "http://0.0.0.0"  # A dummy service that does nothing
+
+tls:
+  options:
+    default:
+      cipherSuites:
+        - TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+        - TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        - TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256
+        - TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        - TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305
+        - TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305
+      minVersion: VersionTLS12
