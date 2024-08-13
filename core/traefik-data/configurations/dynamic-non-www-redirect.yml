@@ -1,49 +1,42 @@
-# dynamic configuration
-
 http:
   middlewares:
-    # Middleware for redirecting www to non-www
     redirect-to-non-www:
       redirectRegex:
         regex: "^https?://www\\.(.*)"
-        replacement: "https://$${1}"
+        replacement: "https://$1"
         permanent: true
 
-    # Middleware for enforcing HTTPS and secure headers
     secureHeaders:
       headers:
-        sslRedirect: true  # Enforce HTTPS redirection
+        sslRedirect: true
         forceSTSHeader: true
         stsIncludeSubdomains: true
         stsPreload: true
         stsSeconds: 31536000
 
-    # Middleware for basic authentication
     user-auth:
       basicAuth:
         users:
           - '{{ env "TRAEFIK_AUTH" }}'
 
   routers:
-    # Define global router for handling redirects, authentication, and HTTPS
     default-router:
       entryPoints:
         - web
         - websecure
-      rule: "HostRegexp(`{host:.+}`)"  # Match all hosts
+      rule: "HostRegexp(`{host:.+}`)"
       middlewares:
-        - redirect-to-non-www  # Apply non-www redirect first
-        - secureHeaders  # Apply HTTPS redirection and secure headers second
-        - user-auth  # Apply basic authentication last
-      service: noop-service  # Traefik requires a service, even if it's not used
-      priority: 1  # Ensure this router has the appropriate priority
+        - redirect-to-non-www
+        - secureHeaders
+        - user-auth
+      service: noop-service
+      priority: 1
 
   services:
-    # Define a dummy service (necessary for Traefik routing)
     noop-service:
       loadBalancer:
         servers:
-          - url: "http://0.0.0.0"  # A dummy service that does nothing
+          - url: "http://0.0.0.0"
 
 tls:
   options:
