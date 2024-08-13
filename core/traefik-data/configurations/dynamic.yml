@@ -15,6 +15,34 @@ http:
         users:
           - '{{ env "TRAEFIK_AUTH" }}'
 
+    # chatGpt bellow, redirect www. to non-www globally
+    # Global Middleware for redirecting www to non-www for any domain
+    redirect-to-non-www:
+      redirectRegex:
+        regex: "^https?://www\\.(.*)"
+        replacement: "https://$${1}"
+        permanent: true
+
+  routers:
+    # Define global router for redirecting www to non-www
+    default-router:
+      entryPoints:
+        - websecure
+        - web
+      rule: "HostRegexp(`{host:.+}`)"  # Match all hosts
+      middlewares:
+        - redirect-to-non-www
+      service: noop-service  # Traefik requires a service, even if it's not used
+      priority: 1  # Lower priority to ensure it's applied to all requests
+
+  services:
+    # Define a dummy service (necessary for Traefik routing)
+    noop-service:
+      loadBalancer:
+        servers:
+          - url: "http://0.0.0.0"  # A dummy service that does nothing
+  # end chatGpt global redirect to non-www
+
 tls:
   options:
     default:
