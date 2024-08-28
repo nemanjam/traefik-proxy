@@ -31,7 +31,7 @@ services:
     image: postgres:16-alpine
     container_name: plausible_db
     restart: unless-stopped
-    user: '${MY_UID}:${MY_GID}'
+    # user: '${MY_UID}:${MY_GID}'
     volumes:
       - ./plausible-data/db-data:/var/lib/postgresql/data
     environment:
@@ -43,7 +43,7 @@ services:
     image: clickhouse/clickhouse-server:24.3.3.102-alpine
     container_name: plausible_events_db
     restart: unless-stopped
-    user: '${MY_UID}:${MY_GID}'
+    # user: '${MY_UID}:${MY_GID}'
     volumes:
       - ./plausible-data/event-data:/var/lib/clickhouse
       - ./plausible-data/event-logs:/var/log/clickhouse-server
