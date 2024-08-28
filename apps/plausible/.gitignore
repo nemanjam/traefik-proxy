@@ -1,0 +1,9 @@
+
+.env
+
+!plausible-data
+plausible-data/*
+!plausible-data/.gitkeep
+
+
+

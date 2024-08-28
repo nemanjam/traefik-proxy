@@ -1,0 +1,72 @@
+version: '3.8'
+
+services:
+  plausible:
+    image: ghcr.io/plausible/community-edition:v2.1.1
+    container_name: plausible
+    command: sh -c "sleep 10 && /entrypoint.sh db createdb && /entrypoint.sh db migrate && /entrypoint.sh run"
+    restart: unless-stopped
+    ports:
+      - 127.0.0.1:8000:8000
+    env_file:
+      - .env
+    depends_on:
+      - plausible_db
+      - plausible_events_db
+      # - mail 
+    networks:
+      - internal-plausible
+      - proxy
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.docker.network=proxy'
+      - 'traefik.http.routers.plausible-secure.rule=Host(`${SITE_HOSTNAME}`)'
+      - 'traefik.http.routers.plausible-secure.entrypoints=websecure'
+      - 'traefik.http.routers.plausible-secure.service=plausible'
+      - 'traefik.http.services.plausible.loadbalancer.server.port=8000'
+  
+  plausible_db:
+    # Plausible v2.1.1 was tested against PostgreSQL versions 15 and 16
+    # https://github.com/plausible/analytics/blob/v2.1.1/.github/workflows/elixir.yml#L21-L32
+    image: postgres:16-alpine
+    container_name: plausible_db
+    restart: unless-stopped
+    user: '${MY_UID}:${MY_GID}'
+    volumes:
+      - ./plausible-data/db-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    networks:
+      - internal-plausible
+
+  plausible_events_db:
+    image: clickhouse/clickhouse-server:24.3.3.102-alpine
+    container_name: plausible_events_db
+    restart: unless-stopped
+    user: '${MY_UID}:${MY_GID}'
+    volumes:
+      - ./plausible-data/event-data:/var/lib/clickhouse
+      - ./plausible-data/event-logs:/var/log/clickhouse-server
+      - ./plausible-data/clickhouse/clickhouse-config.xml:/etc/clickhouse-server/config.d/logging.xml:ro
+      - ./plausible-data/clickhouse/clickhouse-user-config.xml:/etc/clickhouse-server/users.d/logging.xml:ro
+    ulimits:
+      nofile:
+        soft: 262144
+        hard: 262144
+    networks:
+      - internal-plausible
+
+  # diable for now
+  # mail:
+  #   image: bytemark/smtp
+  #   container_name: plausible_mail
+  #   restart: unless-stopped
+  #   networks:
+  #     - internal-plausible
+
+networks:
+  internal-plausible:
+    name: internal-plausible
+    internal: true
+  proxy:
+    external: true
