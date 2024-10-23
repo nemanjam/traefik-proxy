@@ -11,11 +11,24 @@ remote_public_key = "public_key"
 # rathole knows traffic comes from 5080 and 5443, controll chanell told him
 # DONT do ANY mapping in docker-compose, just pass traffic from rathole on ports traefik expects
 # in same docker-compose.yml for depends_on
+
+# separated based on token, use same port
+
+# local
 [client.services.traefik-http]
-token = "secret_token"
+token = "secret_token_1"
 local_addr = "traefik:80"
 
 [client.services.traefik-https]
-token = "secret_token"
+token = "secret_token_1"
+local_addr = "traefik:443"
+
+# pi
+[client.services.pi-traefik-http]
+token = "secret_token_2"
+local_addr = "traefik:80"
+
+[client.services.pi-traefik-https]
+token = "secret_token_2"
 local_addr = "traefik:443"  
 
