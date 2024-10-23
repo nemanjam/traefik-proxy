@@ -7,6 +7,9 @@ core/traefik-data/acme.json
 core/traefik-data/acme.json.*
 core/portainer-data/
 
+# acts as .env
+core/rathole.client.toml
+
 
 # ignore db volumes
 /**/pg-data/data-*
