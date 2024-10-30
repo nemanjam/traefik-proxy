@@ -32,7 +32,7 @@ services:
       - 'traefik.http.routers.traefik-secure.service=api@internal'
 
   portainer:
-    image: 'portainer/portainer-ce:2.20.3'
+    image: 'portainer/portainer-ce'
     container_name: portainer
     restart: unless-stopped
     security_opt:

@@ -33,3 +33,38 @@ docker compose -f docker-compose.local.yml up -d
 ```bash
 truncate -s 0 acme.json
 ```
+
+## For OrangePi, the only difference
+
+```yaml
+# docker-compose.local.yml
+
+# doesn't exist image for arm, build it
+rathole:
+    # image: rapiz1/rathole:v0.5.0
+    build: https://github.com/rapiz1/rathole.git#main
+    platform: linux/arm64
+
+# set platform, not necessary
+traefik:
+    image: 'traefik:v2.9.8'
+    platform: linux/arm64
+
+portainer:
+    image: 'portainer/portainer-ce'
+    platform: linux/arm64
+
+```
+#### Always start with staging Acme server and change on success
+
+```yaml
+# core/traefik-data/traefik.yml
+
+certificatesResolvers:
+  letsencrypt:
+    acme:
+      # always start with staging certificate
+      caServer: "https://acme-staging-v02.api.letsencrypt.org/directory"
+      # caServer: 'https://acme-v02.api.letsencrypt.org/directory'
+```
+
