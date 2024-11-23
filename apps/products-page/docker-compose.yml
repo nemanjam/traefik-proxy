@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  products-page:
+    container_name: products-page
+    restart: unless-stopped
+    image: nemanjamitic/products-page:latest
+    environment:
+      - PORT=3006
+    networks:
+      - proxy
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.docker.network=proxy'
+      - 'traefik.http.routers.products-page-secure.rule=Host(`${SITE_HOSTNAME}`)'
+      - 'traefik.http.routers.products-page-secure.entrypoints=websecure'
+      - 'traefik.http.routers.products-page-secure.service=products-page-svc'
+      - 'traefik.http.services.products-page-svc.loadbalancer.server.port=3006'
+
+networks:
+  proxy:
+    external: true
