@@ -1,0 +1,30 @@
+# prod file
+
+services:
+  hn-new-jobs:
+    container_name: hn-new-jobs
+    restart: unless-stopped
+    image: nemanjamitic/hn-new-jobs:latest
+    # use single .env
+    env_file:
+      - .env
+    environment:
+      - PORT=3007
+    # fixes file permissions for volume
+    # uid=1000(username) gid=1000(username)
+    user: '${MY_UID}:${MY_GID}'
+    volumes:
+      - ./data:/app/data
+    networks:
+      - proxy
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.docker.network=proxy'
+      - 'traefik.http.routers.hn-new-jobs-secure.rule=Host(`${SITE_HOSTNAME}`)'
+      - 'traefik.http.routers.hn-new-jobs-secure.entrypoints=websecure'
+      - 'traefik.http.routers.hn-new-jobs-secure.service=hn-new-jobs-svc'
+      - 'traefik.http.services.hn-new-jobs-svc.loadbalancer.server.port=3007'
+
+networks:
+  proxy:
+    external: true
