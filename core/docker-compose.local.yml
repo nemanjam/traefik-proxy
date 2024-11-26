@@ -4,6 +4,9 @@ services:
 
   rathole:
     image: rapiz1/rathole:v0.5.0
+    # built for pi
+    # image: nemanjamitic/my-rathole-arm64:v1.0
+
     # build for arm
     # build: https://github.com/rapiz1/rathole.git#main
     # platform: linux/arm64
