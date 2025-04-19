@@ -4,10 +4,10 @@
 cp .env.example .env
 
 # MUST have *: before, important
-ssh -R *:1082:localhost:3000 amd1c
+ssh -R *:1081:localhost:3000 amd1c
 
 
-curl https://preview.amd1.nemanjamitic.com
+curl https://preview1.amd1.nemanjamitic.com
 
 ```
 
@@ -22,9 +22,9 @@ GatewayPorts yes
 sudo systemctl restart sshd
 
 ```
-ssh 1081 -> 2222
-http 1082 for traefik
-localhost:3000 -> tunnel:1082 -> traefik
+ssh 1080 -> 2222 // ssh channel
+http 1081 for traefik
+localhost:3000 -> tunnel:1081 -> traefik // tunnel1
 
 https://github.com/linuxserver/docker-openssh-server/issues/22
 

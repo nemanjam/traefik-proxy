@@ -6,23 +6,27 @@ services:
     container_name: openssh-server
     restart: unless-stopped
     hostname: openssh-server #optional
-    # https://github.com/linuxserver/docker-mods/tree/openssh-server-ssh-tunnel
+    # tunneled services, remote ports
     expose:
-      - 1082 # for traefik
+      - 1081 # tunnel1
+      - 1082 # tunnel2
+      - 1083 # tunnel3
     ports:
-      - 1081:2222 # can do 22
+      - 1080:2222 # 1080 is SSH channel port
     environment:
+      # https://github.com/linuxserver/docker-mods/tree/openssh-server-ssh-tunnel
       - DOCKER_MODS=linuxserver/mods:openssh-server-ssh-tunnel
       - SHELL_NOLOGIN=false
       # set correct for current host user
       - PUID=1001
       - PGID=1001
       - TZ=Etc/UTC
-      # forward env var, important
+      # important
       - PUBLIC_KEY 
-      - SUDO_ACCESS=true #optional
-      - USER_NAME=username #optional
-      - PASSWORD_ACCESS=false #optional
+      # optional env vars bellow
+      - SUDO_ACCESS=true 
+      - USER_NAME=username 
+      - PASSWORD_ACCESS=false
       # - USER_PASSWORD=password #optional
       # - PUBLIC_KEY_FILE=/path/to/file #optional
       # - PUBLIC_KEY_DIR=/path/to/directory/containing/_only_/pubkeys #optional
@@ -30,14 +34,31 @@ services:
       # - USER_PASSWORD_FILE=/path/to/file #optional
       # - LOG_STDOUT= #optional
     volumes:
-      - ./config:/config 
+      - ./config:/config
+    # Traefik configuration bellow
     labels:
+      # common config
       - 'traefik.enable=true'
       - 'traefik.docker.network=proxy'
-      - 'traefik.http.routers.ssh-server.rule=Host(`${SITE_HOSTNAME}`)'
-      - 'traefik.http.routers.ssh-server.entrypoints=websecure'
-      - 'traefik.http.routers.ssh-server.service=ssh-server'
-      - 'traefik.http.services.ssh-server.loadbalancer.server.port=1082'
+
+      # tunnel1 (port 3000 -> 1081)
+      - 'traefik.http.routers.tunnel1.rule=Host(`preview1.${SITE_HOSTNAME}`)'
+      - 'traefik.http.routers.tunnel1.entrypoints=websecure'
+      - 'traefik.http.routers.tunnel1.tls.certresolver=letsencrypt'
+      - 'traefik.http.services.tunnel1.loadbalancer.server.port=1081'
+
+      # tunnel2 (port 5000 -> 1082)
+      - 'traefik.http.routers.tunnel2.rule=Host(`preview2.${SITE_HOSTNAME}`)'
+      - 'traefik.http.routers.tunnel2.entrypoints=websecure'
+      - 'traefik.http.routers.tunnel2.tls.certresolver=letsencrypt'
+      - 'traefik.http.services.tunnel2.loadbalancer.server.port=1082'
+
+      # tunnel3 (port 5001 -> 1083)
+      - 'traefik.http.routers.tunnel3.rule=Host(`preview3.${SITE_HOSTNAME}`)'
+      - 'traefik.http.routers.tunnel3.entrypoints=websecure'
+      - 'traefik.http.routers.tunnel3.tls.certresolver=letsencrypt'
+      - 'traefik.http.services.tunnel3.loadbalancer.server.port=1083'
+
     networks:
       - proxy
 
