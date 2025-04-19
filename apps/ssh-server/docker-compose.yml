@@ -42,22 +42,22 @@ services:
       - 'traefik.docker.network=proxy'
 
       # tunnel1 (port 3000 -> 1081)
-      - 'traefik.http.routers.tunnel1.rule=Host(`preview1.${SITE_HOSTNAME}`)'
-      - 'traefik.http.routers.tunnel1.entrypoints=websecure'
-      - 'traefik.http.routers.tunnel1.service=tunnel1'
-      - 'traefik.http.services.tunnel1.loadbalancer.server.port=1081'
+      - 'traefik.http.routers.ssh-tunnel1.rule=Host(`preview1.${SITE_HOSTNAME}`)'
+      - 'traefik.http.routers.ssh-tunnel1.entrypoints=websecure'
+      - 'traefik.http.routers.ssh-tunnel1.service=ssh-tunnel1'
+      - 'traefik.http.services.ssh-tunnel1.loadbalancer.server.port=1081'
 
       # tunnel2 (port 5000 -> 1082)
-      - 'traefik.http.routers.tunnel2.rule=Host(`preview2.${SITE_HOSTNAME}`)'
-      - 'traefik.http.routers.tunnel2.entrypoints=websecure'
-      - 'traefik.http.routers.tunnel2.service=tunnel2'
-      - 'traefik.http.services.tunnel2.loadbalancer.server.port=1082'
+      - 'traefik.http.routers.ssh-tunnel2.rule=Host(`preview2.${SITE_HOSTNAME}`)'
+      - 'traefik.http.routers.ssh-tunnel2.entrypoints=websecure'
+      - 'traefik.http.routers.ssh-tunnel2.service=ssh-tunnel2'
+      - 'traefik.http.services.ssh-tunnel2.loadbalancer.server.port=1082'
 
       # tunnel3 (port 5001 -> 1083)
-      - 'traefik.http.routers.tunnel3.rule=Host(`preview3.${SITE_HOSTNAME}`)'
-      - 'traefik.http.routers.tunnel3.entrypoints=websecure'
-      - 'traefik.http.routers.tunnel3.service=tunnel3'
-      - 'traefik.http.services.tunnel3.loadbalancer.server.port=1083'
+      - 'traefik.http.routers.ssh-tunnel3.rule=Host(`preview3.${SITE_HOSTNAME}`)'
+      - 'traefik.http.routers.ssh-tunnel3.entrypoints=websecure'
+      - 'traefik.http.routers.ssh-tunnel3.service=ssh-tunnel3'
+      - 'traefik.http.services.ssh-tunnel3.loadbalancer.server.port=1083'
 
     networks:
       - proxy

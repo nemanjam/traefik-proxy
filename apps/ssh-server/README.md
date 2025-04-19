@@ -31,3 +31,12 @@ https://github.com/linuxserver/docker-openssh-server/issues/22
 https://github.com/linuxserver/docker-mods/tree/openssh-server-ssh-tunnel
 
 enable prod letsencrypt url in traefik.yml
+
+Multiple tunnels:
+
+```bash
+ssh \
+  -R *:1081:localhost:3000 \
+  -R *:1082:localhost:3000 \
+  amd1c
+```
