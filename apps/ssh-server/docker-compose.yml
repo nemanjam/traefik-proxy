@@ -12,7 +12,7 @@ services:
       - 1082 # tunnel2
       - 1083 # tunnel3
     ports:
-      - 1080:2222 # 1080 is SSH channel port
+      - 1080:2222 # 1080 is the main SSH connection port
     environment:
       # https://github.com/linuxserver/docker-mods/tree/openssh-server-ssh-tunnel
       - DOCKER_MODS=linuxserver/mods:openssh-server-ssh-tunnel

@@ -22,8 +22,8 @@ GatewayPorts yes
 sudo systemctl restart sshd
 
 ```
-ssh 1080 -> 2222 // ssh channel
-http 1081 for traefik
+ssh 1080 -> 2222 // the main SSH connection port
+http 1081 for traefik, tunneled service remote port
 localhost:3000 -> tunnel:1081 -> traefik // tunnel1
 
 https://github.com/linuxserver/docker-openssh-server/issues/22
