@@ -8,7 +8,7 @@ type = "noise"
 remote_public_key = "public_key"
 
 # this is most important
-# rathole knows traffic comes from 5080 and 5443, controll chanell told him
+# rathole knows traffic comes from 5080 and 5443, control channel told him
 # DONT do ANY mapping in docker-compose, just pass traffic from rathole on ports traefik expects
 # in same docker-compose.yml for depends_on
 
