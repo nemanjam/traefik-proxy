@@ -33,7 +33,7 @@ services:
       - 'traefik.http.routers.hn-new-jobs.rule=Host(`${SITE_HOSTNAME}`)'
       - 'traefik.http.routers.hn-new-jobs.entrypoints=websecure'
       - 'traefik.http.routers.hn-new-jobs.service=hn-new-jobs'
-      - 'traefik.http.services.hn-new-jobs.loadbalancer.server.port=8080'
+      - 'traefik.http.services.hn-new-jobs.loadbalancer.server.port=3007'
 
       # Redirect router
       - 'traefik.http.routers.hn-new-jobs-redirect-www.rule=Host(`www.${SITE_HOSTNAME}`)'
