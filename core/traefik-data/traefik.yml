@@ -24,7 +24,9 @@ providers:
     endpoint: 'unix:///var/run/docker.sock'
     exposedByDefault: false
   file:
-    filename: /configurations/dynamic.yml
+    # filename: /configurations/dynamic.yml
+    # with www redirect
+    filename: /configurations/dynamic-www-redirect.yml
 
 certificatesResolvers:
   letsencrypt:

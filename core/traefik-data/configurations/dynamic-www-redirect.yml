@@ -1,11 +1,5 @@
 http:
   middlewares:
-    redirect-to-non-www:
-      redirectRegex:
-        regex: "^https?://www\\.(.*)"
-        replacement: "https://$1"
-        permanent: true
-
     secureHeaders:
       headers:
         sslRedirect: true
@@ -19,29 +13,21 @@ http:
         users:
           - '{{ env "TRAEFIK_AUTH" }}'
 
+    redirect-to-non-www:
+      redirectRegex:
+        regex: "^https://www\\.(.+)"
+        replacement: "https://${1}"
+        permanent: true
+
   routers:
-    default-router:
+    redirect-www:
+      rule: "HostRegexp(`www.{domain:.+}`)"
       entryPoints:
-        - web
         - websecure
-      rule: "HostRegexp(`{host:^www\\..+}|{host:.+}`)"
       middlewares:
         - redirect-to-non-www
-        - secureHeaders
-        - user-auth
-      service: noop-service
-      tls:
-        domains:
-          - main: "{host:.+}"
-            sans:
-              - "www.{host:.+}"
-      priority: 1
-
-  services:
-    noop-service:
-      loadBalancer:
-        servers:
-          - url: "http://0.0.0.0"
+      tls: true
+      service: noop@internal
 
 tls:
   options:
