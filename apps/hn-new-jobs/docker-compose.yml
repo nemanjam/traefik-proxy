@@ -36,15 +36,15 @@ services:
       - 'traefik.http.services.hn-new-jobs.loadbalancer.server.port=8080'
 
       # Redirect router
-      - 'traefik.http.routers.redirect-www.rule=Host(`www.${SITE_HOSTNAME}`)'
-      - 'traefik.http.routers.redirect-www.entrypoints=websecure'
-      - 'traefik.http.routers.redirect-www.middlewares=redirect-to-non-www'
-      - 'traefik.http.routers.redirect-www.service=noop@internal'
+      - 'traefik.http.routers.hn-new-jobs-redirect-www.rule=Host(`www.${SITE_HOSTNAME}`)'
+      - 'traefik.http.routers.hn-new-jobs-redirect-www.entrypoints=websecure'
+      - 'traefik.http.routers.hn-new-jobs-redirect-www.middlewares=hn-new-jobs-redirect-to-non-www'
+      - 'traefik.http.routers.hn-new-jobs-redirect-www.service=noop@internal'
 
       # Middleware to redirect to non-www
-      - 'traefik.http.middlewares.redirect-to-non-www.redirectregex.regex=^https://www\\.(.+)'
-      - 'traefik.http.middlewares.redirect-to-non-www.redirectregex.replacement=https://$$\\1'
-      - 'traefik.http.middlewares.redirect-to-non-www.redirectregex.permanent=true'
+      - 'traefik.http.middlewares.hn-new-jobs-redirect-to-non-www.redirectregex.regex=^https://www\\.(.+)'
+      - 'traefik.http.middlewares.hn-new-jobs-redirect-to-non-www.redirectregex.replacement=https://$$\\1'
+      - 'traefik.http.middlewares.hn-new-jobs-redirect-to-non-www.redirectregex.permanent=true'
 
 networks:
   proxy:
