@@ -11,12 +11,33 @@ services:
     networks:
       - proxy
     labels:
+     # Common
       - 'traefik.enable=true'
       - 'traefik.docker.network=proxy'
+
+      # Old
+      # - 'traefik.http.routers.nmc-nginx-with-volume.rule=Host(`${SITE_HOSTNAME}`)'
+      # - 'traefik.http.routers.nmc-nginx-with-volume.entrypoints=websecure'
+      # - 'traefik.http.routers.nmc-nginx-with-volume.service=nmc-nginx-with-volume'
+      # - 'traefik.http.services.nmc-nginx-with-volume.loadbalancer.server.port=8080'
+
+      # New
+      # Main router
       - 'traefik.http.routers.nmc-nginx-with-volume.rule=Host(`${SITE_HOSTNAME}`)'
       - 'traefik.http.routers.nmc-nginx-with-volume.entrypoints=websecure'
       - 'traefik.http.routers.nmc-nginx-with-volume.service=nmc-nginx-with-volume'
       - 'traefik.http.services.nmc-nginx-with-volume.loadbalancer.server.port=8080'
+
+      # Redirect router
+      - 'traefik.http.routers.redirect-www.rule=Host(`www.${SITE_HOSTNAME}`)'
+      - 'traefik.http.routers.redirect-www.entrypoints=websecure'
+      - 'traefik.http.routers.redirect-www.middlewares=redirect-to-non-www'
+      - 'traefik.http.routers.redirect-www.service=noop@internal'
+
+      # Middleware to redirect to non-www
+      - 'traefik.http.middlewares.redirect-to-non-www.redirectregex.regex=^https://www\\.(.+)'
+      - 'traefik.http.middlewares.redirect-to-non-www.redirectregex.replacement=https://$$\\1'
+      - 'traefik.http.middlewares.redirect-to-non-www.redirectregex.permanent=true'
 
 networks:
   proxy:

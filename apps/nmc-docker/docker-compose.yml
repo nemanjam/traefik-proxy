@@ -8,13 +8,34 @@ services:
     networks:
       - proxy
     labels:
+      # Common
       - 'traefik.enable=true'
       - 'traefik.docker.network=proxy'
-      - 'traefik.http.routers.nmc-docker-secure.rule=Host(`${SITE_HOSTNAME}`)'
-      - 'traefik.http.routers.nmc-docker-secure.entrypoints=websecure'
-      - 'traefik.http.routers.nmc-docker-secure.service=nmc-docker'
-      # nginx.conf and Dockerfile
+
+      # Old
+      # - 'traefik.http.routers.nmc-docker-secure.rule=Host(`${SITE_HOSTNAME}`)'
+      # - 'traefik.http.routers.nmc-docker-secure.entrypoints=websecure'
+      # - 'traefik.http.routers.nmc-docker-secure.service=nmc-docker'
+      # # nginx.conf and Dockerfile
+      # - 'traefik.http.services.nmc-docker.loadbalancer.server.port=8080'
+
+      # New
+      # Main router
+      - 'traefik.http.routers.nmc-docker.rule=Host(`${SITE_HOSTNAME}`)'
+      - 'traefik.http.routers.nmc-docker.entrypoints=websecure'
+      - 'traefik.http.routers.nmc-docker.service=nmc-docker'
       - 'traefik.http.services.nmc-docker.loadbalancer.server.port=8080'
+
+      # Redirect router
+      - 'traefik.http.routers.redirect-www.rule=Host(`www.${SITE_HOSTNAME}`)'
+      - 'traefik.http.routers.redirect-www.entrypoints=websecure'
+      - 'traefik.http.routers.redirect-www.middlewares=redirect-to-non-www'
+      - 'traefik.http.routers.redirect-www.service=noop@internal'
+
+      # Middleware to redirect to non-www
+      - 'traefik.http.middlewares.redirect-to-non-www.redirectregex.regex=^https://www\\.(.+)'
+      - 'traefik.http.middlewares.redirect-to-non-www.redirectregex.replacement=https://$$\\1'
+      - 'traefik.http.middlewares.redirect-to-non-www.redirectregex.permanent=true'
 
 networks:
   proxy:

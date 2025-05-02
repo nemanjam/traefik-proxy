@@ -18,12 +18,33 @@ services:
     networks:
       - proxy
     labels:
+      # Common
       - 'traefik.enable=true'
       - 'traefik.docker.network=proxy'
-      - 'traefik.http.routers.hn-new-jobs-secure.rule=Host(`${SITE_HOSTNAME}`)'
-      - 'traefik.http.routers.hn-new-jobs-secure.entrypoints=websecure'
-      - 'traefik.http.routers.hn-new-jobs-secure.service=hn-new-jobs-svc'
-      - 'traefik.http.services.hn-new-jobs-svc.loadbalancer.server.port=3007'
+
+      # Old
+      # - 'traefik.http.routers.hn-new-jobs-secure.rule=Host(`${SITE_HOSTNAME}`)'
+      # - 'traefik.http.routers.hn-new-jobs-secure.entrypoints=websecure'
+      # - 'traefik.http.routers.hn-new-jobs-secure.service=hn-new-jobs-svc'
+      # - 'traefik.http.services.hn-new-jobs-svc.loadbalancer.server.port=3007'
+
+      # New
+      # Main router
+      - 'traefik.http.routers.hn-new-jobs.rule=Host(`${SITE_HOSTNAME}`)'
+      - 'traefik.http.routers.hn-new-jobs.entrypoints=websecure'
+      - 'traefik.http.routers.hn-new-jobs.service=hn-new-jobs'
+      - 'traefik.http.services.hn-new-jobs.loadbalancer.server.port=8080'
+
+      # Redirect router
+      - 'traefik.http.routers.redirect-www.rule=Host(`www.${SITE_HOSTNAME}`)'
+      - 'traefik.http.routers.redirect-www.entrypoints=websecure'
+      - 'traefik.http.routers.redirect-www.middlewares=redirect-to-non-www'
+      - 'traefik.http.routers.redirect-www.service=noop@internal'
+
+      # Middleware to redirect to non-www
+      - 'traefik.http.middlewares.redirect-to-non-www.redirectregex.regex=^https://www\\.(.+)'
+      - 'traefik.http.middlewares.redirect-to-non-www.redirectregex.replacement=https://$$\\1'
+      - 'traefik.http.middlewares.redirect-to-non-www.redirectregex.permanent=true'
 
 networks:
   proxy:
