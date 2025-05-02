@@ -15,18 +15,28 @@ http:
 
     redirect-to-non-www:
       redirectRegex:
-        regex: "^https://www\\.(.+)"
+        regex: "^https?://www\\.(.+)"
         replacement: "https://${1}"
         permanent: true
 
   routers:
-    redirect-www:
+    redirect-www-http:
+      rule: "HostRegexp(`www.{domain:.+}`)"
+      entryPoints:
+        - web
+      middlewares:
+        - redirect-to-non-www
+      service: noop@internal
+
+    redirect-www-https:
       rule: "HostRegexp(`www.{domain:.+}`)"
       entryPoints:
         - websecure
       middlewares:
         - redirect-to-non-www
-      tls: true
+      tls:
+        # you cant redirect https://www to https://non-www without resolving certificate
+        certResolver: letsencrypt
       service: noop@internal
 
 tls:
