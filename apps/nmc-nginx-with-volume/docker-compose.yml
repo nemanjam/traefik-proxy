@@ -11,7 +11,7 @@ services:
     networks:
       - proxy
     labels:
-     # Common
+      # Common
       - 'traefik.enable=true'
       - 'traefik.docker.network=proxy'
 
