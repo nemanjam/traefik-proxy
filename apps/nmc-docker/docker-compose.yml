@@ -33,10 +33,9 @@ services:
       - 'traefik.http.routers.nmc-docker-redirect-www.service=noop@internal'
 
       # Middleware to redirect to non-www
-      - 'traefik.http.middlewares.nmc-docker-redirect-to-non-www.redirectregex.regex=^https://www\\.(.+)'
-      - 'traefik.http.middlewares.nmc-docker-redirect-to-non-www.redirectregex.replacement=https://$$\\1'
+      - 'traefik.http.middlewares.nmc-docker-redirect-to-non-www.redirectregex.regex=^https://www\.(.+)'
+      - 'traefik.http.middlewares.nmc-docker-redirect-to-non-www.redirectregex.replacement=https://$$1'
       - 'traefik.http.middlewares.nmc-docker-redirect-to-non-www.redirectregex.permanent=true'
-
 
 networks:
   proxy:

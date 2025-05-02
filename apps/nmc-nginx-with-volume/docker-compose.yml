@@ -35,8 +35,8 @@ services:
       - 'traefik.http.routers.nmc-nginx-with-volume-redirect-www.service=noop@internal'
 
       # Middleware to redirect to non-www
-      - 'traefik.http.middlewares.nmc-nginx-with-volume-redirect-to-non-www.redirectregex.regex=^https://www\\.(.+)'
-      - 'traefik.http.middlewares.nmc-nginx-with-volume-redirect-to-non-www.redirectregex.replacement=https://$$\\1'
+      - 'traefik.http.middlewares.nmc-nginx-with-volume-redirect-to-non-www.redirectregex.regex=^https://www\.(.+)'
+      - 'traefik.http.middlewares.nmc-nginx-with-volume-redirect-to-non-www.redirectregex.replacement=https://$$1'
       - 'traefik.http.middlewares.nmc-nginx-with-volume-redirect-to-non-www.redirectregex.permanent=true'
 
 networks:

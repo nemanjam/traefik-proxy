@@ -42,8 +42,8 @@ services:
       - 'traefik.http.routers.hn-new-jobs-redirect-www.service=noop@internal'
 
       # Middleware to redirect to non-www
-      - 'traefik.http.middlewares.hn-new-jobs-redirect-to-non-www.redirectregex.regex=^https://www\\.(.+)'
-      - 'traefik.http.middlewares.hn-new-jobs-redirect-to-non-www.redirectregex.replacement=https://$$\\1'
+      - 'traefik.http.middlewares.hn-new-jobs-redirect-to-non-www.redirectregex.regex=^https://www\.(.+)'
+      - 'traefik.http.middlewares.hn-new-jobs-redirect-to-non-www.redirectregex.replacement=https://$$1'
       - 'traefik.http.middlewares.hn-new-jobs-redirect-to-non-www.redirectregex.permanent=true'
 
 networks:
