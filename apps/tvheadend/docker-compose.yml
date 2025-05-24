@@ -1,0 +1,37 @@
+version: '3.8'
+
+# this container can run only on local machine where you have TV card plugged in
+
+services:
+  tvheadend:
+    image: lscr.io/linuxserver/tvheadend:latest
+    container_name: tvheadend
+    restart: unless-stopped
+    environment:
+      - PUID=${MY_UID:-1000}
+      - PGID=${MY_GID:-1000}
+      - TZ=Europe/Belgrade
+      - RUN_OPTS= #optional
+    volumes:
+      - /path/to/tvheadend/data:/config
+      - /path/to/recordings:/recordings
+    devices:
+      - /dev/dri:/dev/dri
+      - /dev/dvb:/dev/dvb
+    ports:
+      - 9981:9981
+      - 9982:9982
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.docker.network=proxy'
+      - 'traefik.http.routers.tvheadend.rule=Host(`tvheadend.${SITE_HOSTNAME}`)'
+      - 'traefik.http.routers.tvheadend.entrypoints=websecure'
+      - 'traefik.http.routers.tvheadend.service=tvheadend-svc'
+      - 'traefik.http.services.tvheadend-svc.loadbalancer.server.port=9981'
+
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
