@@ -12,4 +12,6 @@ sudo wget https://github.com/OpenELEC/dvb-firmware/raw/master/firmware/dvb-tuner
 
 #### Scan muxes
 
-Select `ru-all` for Serbia and not default. Wait 20 minutes to find 47 channels.
+`Add network` -> `predefined muxes` -> `ru-all` for Serbia and not default. Wait 20 minutes to find 47 channels.
+Don't delete existing muxes, it will delete channels.
+For scan must `edit network` -> set `ru-all`. Force scan is sufficient. Tuner0 has less channels than tuner1.
