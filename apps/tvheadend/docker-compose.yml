@@ -13,8 +13,8 @@ services:
       - TZ=Europe/Belgrade
       - RUN_OPTS= #optional
     volumes:
-      - /path/to/tvheadend/data:/config
-      - /path/to/recordings:/recordings
+      - ./data/tvheadend/data:/config
+      - ./data/recordings:/recordings
     devices:
       - /dev/dri:/dev/dri
       - /dev/dvb:/dev/dvb
