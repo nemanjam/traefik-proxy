@@ -27,6 +27,7 @@ services:
       - 'traefik.http.routers.tvheadend.rule=Host(`tvheadend.${SITE_HOSTNAME}`)'
       - 'traefik.http.routers.tvheadend.entrypoints=websecure'
       - 'traefik.http.routers.tvheadend.service=tvheadend-svc'
+      - 'traefik.http.routers.tvheadend.middlewares=tvheadend-cors'
       - 'traefik.http.services.tvheadend-svc.loadbalancer.server.port=9981'
 
       # CORS middleware
@@ -35,7 +36,7 @@ services:
       - 'traefik.http.middlewares.tvheadend-cors.headers.accessControlAllowHeaders=*'
       - 'traefik.http.middlewares.tvheadend-cors.headers.accessControlAllowCredentials=true'
       - 'traefik.http.middlewares.tvheadend-cors.headers.addVaryHeader=true'
-      
+
     networks:
       - proxy
 
