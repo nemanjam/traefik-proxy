@@ -22,5 +22,5 @@ dokku/dokku-data/*
 # nginx websites
 !/**/website
 /**/website/*
-!/**/website/index.html
+!/**/website/index.html.example
 
