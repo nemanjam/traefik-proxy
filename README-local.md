@@ -68,3 +68,6 @@ certificatesResolvers:
       # caServer: 'https://acme-v02.api.letsencrypt.org/directory'
 ```
 
+#### Todo:
+
+- rename to `docker-compose.remote.yml` and `docker-compose.local.yml`, then `cp docker-compose.local.yml docker-compose.yml` to avoid `docker compose -f docker-compose.local up -d`
