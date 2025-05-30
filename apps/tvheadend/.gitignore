@@ -6,4 +6,5 @@
 data/*
 !data/.gitkeep
 
-
+# local backup for channels
+data-backup
