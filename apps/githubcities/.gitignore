@@ -1,0 +1,21 @@
+
+# ignore .env
+.env
+
+# ignore cache
+!data/cache
+data/cache/*
+!data/cache/.gitkeep
+
+# ignore database
+!data/database
+data/database/*
+!data/database/.gitkeep
+
+# ignore app logs
+!data/logs
+data/logs/*
+!data/logs/.gitkeep
+
+# backup is in git
+

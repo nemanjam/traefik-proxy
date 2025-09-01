@@ -1,0 +1,46 @@
+# prod file
+name: githubcities
+
+services:
+  frontend:
+    container_name: githubcities-frontend
+    restart: unless-stopped
+    image: nemanjamitic/githubcities-frontend:latest
+    # use single .env
+    env_file:
+      - .env
+    environment:
+      - PORT=3000
+    # fixes file permissions for volume
+    # uid=1000(username) gid=1000(username)
+    user: '${MY_UID}:${MY_GID}'
+    volumes:
+      - ./data:/app/data
+    networks:
+      - proxy
+    labels:
+      # Common
+      - 'traefik.enable=true'
+      - 'traefik.docker.network=proxy'
+
+      # New
+      # Main router
+      - 'traefik.http.routers.githubcities-frontend.rule=Host(`${SITE_HOSTNAME}`)'
+      - 'traefik.http.routers.githubcities-frontend.entrypoints=websecure'
+      - 'traefik.http.routers.githubcities-frontend.service=githubcities-frontend'
+      - 'traefik.http.services.githubcities-frontend.loadbalancer.server.port=3007'
+
+      # Redirect router
+      - 'traefik.http.routers.githubcities-frontend-redirect-www.rule=Host(`www.${SITE_HOSTNAME}`)'
+      - 'traefik.http.routers.githubcities-frontend-redirect-www.entrypoints=websecure'
+      - 'traefik.http.routers.githubcities-frontend-redirect-www.middlewares=githubcities-frontend-redirect-to-non-www'
+      - 'traefik.http.routers.githubcities-frontend-redirect-www.service=noop@internal'
+
+      # Middleware to redirect to non-www
+      - 'traefik.http.middlewares.githubcities-frontend-redirect-to-non-www.redirectregex.regex=^https://www\.(.+)'
+      - 'traefik.http.middlewares.githubcities-frontend-redirect-to-non-www.redirectregex.replacement=https://$$1'
+      - 'traefik.http.middlewares.githubcities-frontend-redirect-to-non-www.redirectregex.permanent=true'
+
+networks:
+  proxy:
+    external: true
