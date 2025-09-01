@@ -28,7 +28,7 @@ services:
       - 'traefik.http.routers.githubcities-frontend.rule=Host(`${SITE_HOSTNAME}`)'
       - 'traefik.http.routers.githubcities-frontend.entrypoints=websecure'
       - 'traefik.http.routers.githubcities-frontend.service=githubcities-frontend'
-      - 'traefik.http.services.githubcities-frontend.loadbalancer.server.port=3007'
+      - 'traefik.http.services.githubcities-frontend.loadbalancer.server.port=3000'
 
       # Redirect router
       - 'traefik.http.routers.githubcities-frontend-redirect-www.rule=Host(`www.${SITE_HOSTNAME}`)'
