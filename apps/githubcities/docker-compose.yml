@@ -64,7 +64,7 @@ services:
       - 'traefik.docker.network=proxy'
 
       # No www. support
-      - 'traefik.http.routers.githubcities-backend.rule=Host(`${SITE_HOSTNAME}`)'
+      - 'traefik.http.routers.githubcities-backend.rule=Host(`api.${SITE_HOSTNAME}`)'
       - 'traefik.http.routers.githubcities-backend.entrypoints=websecure'
       - 'traefik.http.routers.githubcities-backend.service=githubcities-backend'
       - 'traefik.http.services.githubcities-backend.loadbalancer.server.port=8000'
