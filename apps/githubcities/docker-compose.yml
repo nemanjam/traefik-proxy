@@ -72,6 +72,7 @@ services:
   database:
     image: postgres:17.5-alpine3.22
     restart: unless-stopped
+    container_name: githubcities-database
     env_file:
       - .env
     environment:
