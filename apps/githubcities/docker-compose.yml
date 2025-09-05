@@ -4,8 +4,9 @@ name: githubcities
 services:
   frontend:
     container_name: githubcities-frontend
-    restart: unless-stopped
     image: nemanjamitic/githubcities-frontend:latest
+    restart: unless-stopped
+    # Todo: use .env, .env.frontend, .env.backend
     # use single .env
     env_file:
       - .env
@@ -17,6 +18,7 @@ services:
     volumes:
       - ./data:/app/data
     networks:
+      - default
       - proxy
     labels:
       # Common
@@ -41,6 +43,59 @@ services:
       - 'traefik.http.middlewares.githubcities-frontend-redirect-to-non-www.redirectregex.replacement=https://$$1'
       - 'traefik.http.middlewares.githubcities-frontend-redirect-to-non-www.redirectregex.permanent=true'
 
+  backend:
+    container_name: githubcities-backend
+    image: nemanjamitic/githubcities-backend:latest
+    restart: unless-stopped
+    volumes:
+      # Todo: fix path
+      - ./app/migrations:/app/app/migrations
+    env_file:
+      - .env
+    depends_on:
+      - database
+    networks:
+      - default
+      - proxy
+
+    labels:
+      # Common
+      - 'traefik.enable=true'
+      - 'traefik.docker.network=proxy'
+
+      # No www. support
+      - 'traefik.http.routers.githubcities-backend.rule=Host(`${SITE_HOSTNAME}`)'
+      - 'traefik.http.routers.githubcities-backend.entrypoints=websecure'
+      - 'traefik.http.routers.githubcities-backend.service=githubcities-backend'
+      - 'traefik.http.services.githubcities-backend.loadbalancer.server.port=8000'
+
+  database:
+    image: postgres:17.5-alpine3.22
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      - PGDATA=/var/lib/postgresql/data/pgdata
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD?Variable not set}
+      - POSTGRES_USER=${POSTGRES_USER?Variable not set}
+      - POSTGRES_DB=${POSTGRES_DB?Variable not set}
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    volumes:
+      # Todo:
+      # user: '${MY_UID}:${MY_GID}'
+      # use bind mount with relative path
+      - app-db-data:/var/lib/postgresql/data/pgdata
+    networks:
+      # not on public network
+      - default
+
+volumes:
+  app-db-data:
+    driver: local
+
 networks:
+  default:
+    driver: bridge
   proxy:
     external: true
