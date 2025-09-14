@@ -48,8 +48,7 @@ services:
     container_name: githubcities-backend
     restart: unless-stopped
     volumes:
-      # Todo: fix path
-      - ./app/migrations:/app/app/migrations
+      - ./app/alembic:/app/app/alembic # not tested
     env_file:
       - .env
     depends_on:
@@ -84,7 +83,7 @@ services:
       - POSTGRES_USER=${POSTGRES_USER?Variable not set}
       - POSTGRES_DB=${POSTGRES_DB?Variable not set}
     volumes:
-      - ./backend/data/database:/var/lib/postgresql/data
+      - ./backend/data/database:/var/lib/postgresql/data # !without pgdata
     networks:
       - default # not on public network
 
