@@ -84,7 +84,7 @@ services:
       - POSTGRES_USER=${POSTGRES_USER?Variable not set}
       - POSTGRES_DB=${POSTGRES_DB?Variable not set}
     volumes:
-      - ./backend/data/database:/var/lib/postgresql/data/pgdata
+      - ./backend/data/database:/var/lib/postgresql/data
     networks:
       - default # not on public network
 
