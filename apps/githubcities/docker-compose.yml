@@ -73,6 +73,9 @@ services:
     image: postgres:17.5-alpine3.22
     restart: unless-stopped
     container_name: githubcities-database
+    user: '${MY_UID}:${MY_GID}'
+    ports:
+      - '${POSTGRES_PORT}:5432'
     env_file:
       - .env
     environment:
@@ -80,20 +83,11 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD?Variable not set}
       - POSTGRES_USER=${POSTGRES_USER?Variable not set}
       - POSTGRES_DB=${POSTGRES_DB?Variable not set}
-    ports:
-      - "${POSTGRES_PORT}:5432"
     volumes:
-      # Todo:
-      # user: '${MY_UID}:${MY_GID}'
-      # use bind mount with relative path
-      - app-db-data:/var/lib/postgresql/data/pgdata
+      - ./data/database:/var/lib/postgresql/data/pgdata
     networks:
       # not on public network
       - default
-
-volumes:
-  app-db-data:
-    driver: local
 
 networks:
   default:
