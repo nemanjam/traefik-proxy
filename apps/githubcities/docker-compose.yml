@@ -3,8 +3,8 @@ name: githubcities
 
 services:
   frontend:
-    container_name: githubcities-frontend
     image: nemanjamitic/githubcities-frontend:latest
+    container_name: githubcities-frontend
     restart: unless-stopped
     # Todo: use .env, .env.frontend, .env.backend
     # use single .env
@@ -44,8 +44,8 @@ services:
       - 'traefik.http.middlewares.githubcities-frontend-redirect-to-non-www.redirectregex.permanent=true'
 
   backend:
-    container_name: githubcities-backend
     image: nemanjamitic/githubcities-backend:latest
+    container_name: githubcities-backend
     restart: unless-stopped
     volumes:
       # Todo: fix path
@@ -71,8 +71,8 @@ services:
 
   database:
     image: postgres:17.5-alpine3.22
-    restart: unless-stopped
     container_name: githubcities-database
+    restart: unless-stopped
     user: '${MY_UID}:${MY_GID}'
     ports:
       - '${POSTGRES_PORT}:5432'
@@ -84,10 +84,9 @@ services:
       - POSTGRES_USER=${POSTGRES_USER?Variable not set}
       - POSTGRES_DB=${POSTGRES_DB?Variable not set}
     volumes:
-      - ./data/database:/var/lib/postgresql/data/pgdata
+      - ./backend/data/database:/var/lib/postgresql/data/pgdata
     networks:
-      # not on public network
-      - default
+      - default # not on public network
 
 networks:
   default:
