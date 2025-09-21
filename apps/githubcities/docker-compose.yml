@@ -73,8 +73,8 @@ services:
     container_name: githubcities-database
     restart: unless-stopped
     user: '${MY_UID}:${MY_GID}'
-    ports:
-      - '${POSTGRES_PORT}:5432'
+    # ports:
+    #   - '${POSTGRES_PORT}:5432'
     env_file:
       - .env
     environment:
@@ -86,6 +86,29 @@ services:
       - ./backend/data/database:/var/lib/postgresql/data # !without pgdata
     networks:
       - default # not on public network
+
+  adminer:
+    image: adminer:5.4.0-standalone
+    container_name: githubcities-adminer
+    restart: unless-stopped
+    depends_on:
+      - database
+    environment:
+      - ADMINER_DESIGN=nicu
+    networks:
+      - default
+      - proxy
+    labels:
+      # Common
+      - 'traefik.enable=true'
+      - 'traefik.docker.network=proxy'
+
+      # No www. support
+      - 'traefik.http.routers.githubcities-adminer.rule=Host(`adminer.${SITE_HOSTNAME}`)'
+      - 'traefik.http.routers.githubcities-adminer.entrypoints=websecure'
+      - 'traefik.http.routers.githubcities-adminer.service=githubcities-adminer'
+      - 'traefik.http.services.githubcities-adminer.loadbalancer.server.port=8080'
+
 
 networks:
   default:
