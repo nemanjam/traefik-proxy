@@ -15,8 +15,6 @@ services:
     # fixes file permissions for volume
     # uid=1000(username) gid=1000(username)
     user: '${MY_UID}:${MY_GID}'
-    volumes:
-      - ./data:/app/data
     networks:
       - default
       - proxy
