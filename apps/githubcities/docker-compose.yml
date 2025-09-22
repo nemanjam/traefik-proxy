@@ -47,8 +47,7 @@ services:
     image: nemanjamitic/githubcities-backend:latest
     container_name: githubcities-backend
     restart: unless-stopped
-    volumes:
-      - ./app/alembic:/app/app/alembic # not tested
+    # don't mount alembic as volume
     env_file:
       - .env
     depends_on:
