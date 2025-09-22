@@ -69,7 +69,8 @@ services:
     image: postgres:17.5-alpine3.22
     container_name: githubcities-database
     restart: unless-stopped
-    user: '${MY_UID}:${MY_GID}'
+    # postgres user 999:999 must own the volume
+    # user: '${MY_UID}:${MY_GID}'
     # ports:
     #   - '${POSTGRES_PORT}:5432'
     env_file:
