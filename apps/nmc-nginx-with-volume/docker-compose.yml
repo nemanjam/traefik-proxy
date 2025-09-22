@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   nmc-nginx-with-volume:
-    image: nginx:stable-alpine3.17-slim
+    image: nginx:1.29.1-alpine3.22-slim
     container_name: nmc-nginx-with-volume
     restart: unless-stopped
     volumes:
