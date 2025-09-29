@@ -1,0 +1,23 @@
+{
+	"complete": 1,
+	"modules": [
+		{
+			"id": "eit",
+			"services": [
+				"124cca969cdf9c9cabfb38bfae2feb57",
+				"2106f12fd80b85e457c1beb81f7e56e5",
+				"61a2964f6bc34328dbafdbff8cf35984",
+				"6656529f1cafd352a0206aacd79849d6",
+				"83e17934153ea2d5129612131e54aab4",
+				"b00016b40783b23b9022149e7894fb1f",
+				"c24f7b34bdc63999d853530a237c1c72",
+				"d54005e7c88b6467ac08cea437eef718",
+				"d9329679a10c7d6a7ed669be49ad10bc",
+				"fa3658871d8ddbcf0c1c5e0c953d6518"
+			]
+		},
+		{
+			"id": "psip"
+		}
+	]
+}

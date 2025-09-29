@@ -1,0 +1,21 @@
+{
+	"enabled": false,
+	"maptoch": true,
+	"mapopt": [
+		"mapradio",
+		"encrypted"
+	],
+	"chtag": [
+		"bouquet_tag"
+	],
+	"chtag_ref": "",
+	"name": "TV Vlaanderen HD",
+	"ssl_peer_verify": false,
+	"ext_url_period": 60,
+	"source": "dvb-fastscan://DVB-S,23.5E,12070000,H,27500000,911",
+	"services": {
+	},
+	"services_seen": 0,
+	"lcn_off": 0,
+	"shield": true
+}

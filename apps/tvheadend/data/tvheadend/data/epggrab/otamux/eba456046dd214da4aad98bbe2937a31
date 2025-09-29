@@ -1,0 +1,11 @@
+{
+	"complete": 1,
+	"modules": [
+		{
+			"id": "psip"
+		},
+		{
+			"id": "eit"
+		}
+	]
+}

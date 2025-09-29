@@ -1,0 +1,21 @@
+{
+	"enabled": false,
+	"maptoch": true,
+	"mapopt": [
+		"mapradio",
+		"encrypted"
+	],
+	"chtag": [
+		"bouquet_tag"
+	],
+	"chtag_ref": "",
+	"name": "TéléSAT HD",
+	"ssl_peer_verify": false,
+	"ext_url_period": 60,
+	"source": "dvb-fastscan://DVB-S2,23.5E,12187000,H,27500000,921",
+	"services": {
+	},
+	"services_seen": 0,
+	"lcn_off": 0,
+	"shield": true
+}

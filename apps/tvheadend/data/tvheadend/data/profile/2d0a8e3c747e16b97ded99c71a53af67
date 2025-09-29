@@ -1,0 +1,19 @@
+{
+	"webm": false,
+	"dvbsub_reorder": true,
+	"class": "profile-matroska",
+	"name": "matroska",
+	"enabled": true,
+	"default": false,
+	"comment": "Matroska",
+	"timeout": 0,
+	"timeout_start": 0,
+	"priority": 3,
+	"fpriority": 0,
+	"restart": false,
+	"contaccess": true,
+	"catimeout": 2000,
+	"swservice": true,
+	"svfilter": 0,
+	"shield": true
+}

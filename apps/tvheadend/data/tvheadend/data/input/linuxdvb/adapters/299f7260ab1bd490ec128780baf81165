@@ -1,0 +1,63 @@
+{
+	"rootpath": "/dev/dvb/adapter0",
+	"frontends": {
+		"DVB-C #0": {
+			"pids_max": 32,
+			"pids_use_all": true,
+			"powersave": false,
+			"tune_repeats": 0,
+			"skip_bytes": 0,
+			"ibuf_size": 188000,
+			"status_period": 1000,
+			"sig_multiplier": 100,
+			"snr_multiplier": 100,
+			"old_status": false,
+			"grace_period": 5,
+			"enabled": false,
+			"priority": 0,
+			"spriority": 0,
+			"displayname": "Silicon Labs Si2168 #0 : DVB-C #0",
+			"ota_epg": true,
+			"initscan": true,
+			"idlescan": true,
+			"free_weight": 0,
+			"remove_scrambled": false,
+			"networks": [
+			],
+			"linked": "",
+			"type": "DVB-C",
+			"uuid": "0b3786312661ebb1cdb41bbd87a772c1"
+		},
+		"DVB-T #0": {
+			"lna": false,
+			"pids_max": 32,
+			"pids_use_all": true,
+			"powersave": false,
+			"tune_repeats": 0,
+			"skip_bytes": 0,
+			"ibuf_size": 188000,
+			"status_period": 1000,
+			"sig_multiplier": 100,
+			"snr_multiplier": 100,
+			"old_status": false,
+			"grace_period": 5,
+			"enabled": true,
+			"priority": 0,
+			"spriority": 0,
+			"displayname": "Silicon Labs Si2168 #0 : DVB-T #0",
+			"ota_epg": true,
+			"initscan": true,
+			"idlescan": true,
+			"free_weight": 0,
+			"remove_scrambled": false,
+			"networks": [
+				"23278e2dc810a0f6e0b639d0e49ef893"
+			],
+			"linked": "",
+			"type": "DVB-T",
+			"uuid": "ec829e7356f4d4e3258038034cfc0b8e"
+		}
+	},
+	"ca_devices": {
+	}
+}

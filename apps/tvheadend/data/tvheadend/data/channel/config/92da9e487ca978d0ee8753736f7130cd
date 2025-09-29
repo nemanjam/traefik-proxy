@@ -1,0 +1,20 @@
+{
+	"enabled": true,
+	"number": 0,
+	"icon": "file:///picons/tvb92.png",
+	"epgauto": true,
+	"epglimit": 0,
+	"dvr_pre_time": 0,
+	"dvr_pst_time": 0,
+	"epg_running": -1,
+	"remote_timeshift": false,
+	"services": [
+		"cafdc185390381bcbb15cfae5fd18649"
+	],
+	"tags": [
+		"153ea487226302308b53b10c2bc30b87",
+		"74486d7516d362d791d3e1a5809d4021",
+		"39e70103b96c15cc2a1dac1bb192a228"
+	],
+	"bouquet": ""
+}

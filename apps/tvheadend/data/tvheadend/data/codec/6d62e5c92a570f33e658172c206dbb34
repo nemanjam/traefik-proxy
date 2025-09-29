@@ -1,0 +1,17 @@
+{
+	"bit_rate": 0,
+	"crf": 28,
+	"deadline": 1,
+	"cpu-used": 8,
+	"tune": 0,
+	"deinterlace": false,
+	"height": 384,
+	"scaling_mode": 0,
+	"hwaccel": false,
+	"hwaccel_details": 0,
+	"pix_fmt": -1,
+	"name": "webtv-vp8",
+	"description": "WEBTV codec VP8",
+	"codec_name": "libvpx",
+	"profile": 0
+}

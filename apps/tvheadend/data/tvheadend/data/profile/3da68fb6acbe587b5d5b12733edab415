@@ -1,0 +1,26 @@
+{
+	"container": 2,
+	"pro_vcodec": "webtv-h264",
+	"src_vcodec": [
+	],
+	"pro_acodec": "webtv-aac",
+	"src_acodec": [
+	],
+	"src_scodec": [
+	],
+	"class": "profile-transcode",
+	"name": "webtv-h264-aac-mpegts",
+	"enabled": true,
+	"default": false,
+	"comment": "WEBTV profile H264/AAC/MPEG-TS",
+	"timeout": 0,
+	"timeout_start": 0,
+	"priority": 3,
+	"fpriority": 0,
+	"restart": false,
+	"contaccess": true,
+	"catimeout": 2000,
+	"swservice": true,
+	"svfilter": 0,
+	"shield": true
+}

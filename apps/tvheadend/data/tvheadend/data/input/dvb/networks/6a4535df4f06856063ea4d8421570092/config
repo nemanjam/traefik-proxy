@@ -1,0 +1,16 @@
+{
+	"enabled": true,
+	"networkname": "net1",
+	"pnetworkname": "{90DDA122-D72A-44F4-8716-F5971397DE05}",
+	"nid": 1,
+	"autodiscovery": 1,
+	"bouquet": false,
+	"skipinitscan": true,
+	"idlescan": false,
+	"sid_chnum": false,
+	"ignore_chnum": false,
+	"satip_source": 0,
+	"localtime": 0,
+	"wizard": false,
+	"class": "dvb_network_dvbt"
+}

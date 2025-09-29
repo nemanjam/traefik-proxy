@@ -1,10 +1,5 @@
 
 .env
 
-
-!data
-data/*
-!data/.gitkeep
-
 # local backup for channels
 data-backup

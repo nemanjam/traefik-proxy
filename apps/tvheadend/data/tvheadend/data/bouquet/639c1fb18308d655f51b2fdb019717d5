@@ -1,0 +1,21 @@
+{
+	"enabled": false,
+	"maptoch": true,
+	"mapopt": [
+		"mapradio",
+		"encrypted"
+	],
+	"chtag": [
+		"bouquet_tag"
+	],
+	"chtag_ref": "",
+	"name": "Tvheadend Network",
+	"ssl_peer_verify": false,
+	"ext_url_period": 60,
+	"source": "tvh-network://global-bouquet",
+	"services": {
+	},
+	"services_seen": 0,
+	"comment": "Tvheadend",
+	"lcn_off": 0
+}
