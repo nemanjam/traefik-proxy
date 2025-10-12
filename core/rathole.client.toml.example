@@ -13,22 +13,34 @@ remote_public_key = "public_key"
 # in same docker-compose.yml for depends_on
 
 # separated based on token
+# tokens MUST be different
 # use ONLY ONE tunnel on Rathole client, comment out other one 
 
-# pi
-[client.services.pi-traefik-http]
+# mini pc
+[client.services.mpc-traefik-http]
 token = "secret_token_1"
 local_addr = "traefik:80"
 
-[client.services.pi-traefik-https]
+[client.services.mpc-traefik-https]
 token = "secret_token_1"
-local_addr = "traefik:443"  
+local_addr = "traefik:443"
 
-# local
-[client.services.local-traefik-http]
+# opi
+[client.services.opi-traefik-http]
 token = "secret_token_2"
 local_addr = "traefik:80"
 
-[client.services.local-traefik-https]
+[client.services.opi-traefik-https]
 token = "secret_token_2"
 local_addr = "traefik:443"
+
+# rpi
+[client.services.rpi-traefik-http]
+token = "secret_token_3"
+local_addr = "traefik:80"
+
+[client.services.rpi-traefik-https]
+token = "secret_token_3"
+local_addr = "traefik:443"  
+
+
