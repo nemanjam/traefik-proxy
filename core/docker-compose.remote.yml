@@ -2,7 +2,8 @@ version: '3.9'
 
 services:
   traefik:
-    image: 'traefik:v2.9.8'
+    # image: traefik:v2.9.8
+    image: traefik:v3.6.0
     container_name: traefik
     restart: unless-stopped
     command:
