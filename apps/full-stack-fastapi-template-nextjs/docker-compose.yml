@@ -1,0 +1,117 @@
+# prod file
+name: full-stack-fastapi-template-nextjs
+
+# full-stack-fastapi-template-nextjs = fsftn for labels
+
+services:
+  frontend:
+    image: nemanjamitic/full-stack-fastapi-template-nextjs-frontend:latest
+    container_name: full-stack-fastapi-template-nextjs-frontend
+    restart: unless-stopped
+    # Todo: use .env, .env.frontend, .env.backend
+    # use single .env
+    env_file:
+      - .env
+    environment:
+      - PORT=3000
+    # fixes file permissions for volume
+    # uid=1000(username) gid=1000(username)
+    user: '${MY_UID}:${MY_GID}'
+    networks:
+      - default
+      - proxy
+    labels:
+      # Common
+      - 'traefik.enable=true'
+      - 'traefik.docker.network=proxy'
+
+      # New
+      # Main router
+      - 'traefik.http.routers.fsftn-frontend.rule=Host(`${SITE_HOSTNAME}`)'
+      - 'traefik.http.routers.fsftn-frontend.entrypoints=websecure'
+      - 'traefik.http.routers.fsftn-frontend.service=fsftn-frontend'
+      - 'traefik.http.services.fsftn-frontend.loadbalancer.server.port=3000'
+
+      # Redirect router
+      - 'traefik.http.routers.fsftn-frontend-redirect-www.rule=Host(`www.${SITE_HOSTNAME}`)'
+      - 'traefik.http.routers.fsftn-frontend-redirect-www.entrypoints=websecure'
+      - 'traefik.http.routers.fsftn-frontend-redirect-www.middlewares=fsftn-frontend-redirect-to-non-www'
+      - 'traefik.http.routers.fsftn-frontend-redirect-www.service=noop@internal'
+
+      # Middleware to redirect to non-www
+      - 'traefik.http.middlewares.fsftn-frontend-redirect-to-non-www.redirectregex.regex=^https://www\.(.+)'
+      - 'traefik.http.middlewares.fsftn-frontend-redirect-to-non-www.redirectregex.replacement=https://$$1'
+      - 'traefik.http.middlewares.fsftn-frontend-redirect-to-non-www.redirectregex.permanent=true'
+
+  backend:
+    image: nemanjamitic/full-stack-fastapi-template-nextjs-backend:latest
+    container_name: full-stack-fastapi-template-nextjs-backend
+    restart: unless-stopped
+    # don't mount alembic as volume
+    env_file:
+      - .env
+    depends_on:
+      - database
+    networks:
+      - default
+      - proxy
+
+    labels:
+      # Common
+      - 'traefik.enable=true'
+      - 'traefik.docker.network=proxy'
+
+      # No www. support
+      - 'traefik.http.routers.fsftn-backend.rule=Host(`api.${SITE_HOSTNAME}`)'
+      - 'traefik.http.routers.fsftn-backend.entrypoints=websecure'
+      - 'traefik.http.routers.fsftn-backend.service=fsftn-backend'
+      - 'traefik.http.services.fsftn-backend.loadbalancer.server.port=8000'
+
+  database:
+    image: postgres:17.5-alpine3.22
+    container_name: full-stack-fastapi-template-nextjs-database
+    restart: unless-stopped
+    # postgres user 999:999 must own the volume
+    # user: '${MY_UID}:${MY_GID}'
+    # ports:
+    #   - '${POSTGRES_PORT}:5432'
+    env_file:
+      - .env
+    environment:
+      - PGDATA=/var/lib/postgresql/data/pgdata
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD?Variable not set}
+      - POSTGRES_USER=${POSTGRES_USER?Variable not set}
+      - POSTGRES_DB=${POSTGRES_DB?Variable not set}
+    volumes:
+      - ./backend/data/database:/var/lib/postgresql/data # !without pgdata
+    networks:
+      - default # not on public network
+
+  adminer:
+    image: adminer:5.4.0-standalone
+    container_name: full-stack-fastapi-template-nextjs-adminer
+    restart: unless-stopped
+    depends_on:
+      - database
+    environment:
+      - ADMINER_DESIGN=nicu
+    networks:
+      - default
+      - proxy
+    labels:
+      # Common
+      - 'traefik.enable=true'
+      - 'traefik.docker.network=proxy'
+
+      # No www. support
+      - 'traefik.http.routers.fsftn-adminer.rule=Host(`adminer.${SITE_HOSTNAME}`)'
+      - 'traefik.http.routers.fsftn-adminer.entrypoints=websecure'
+      - 'traefik.http.routers.fsftn-adminer.service=fsftn-adminer'
+      - 'traefik.http.services.fsftn-adminer.loadbalancer.server.port=8080'
+
+
+networks:
+  default:
+    driver: bridge
+  proxy:
+    external: true
