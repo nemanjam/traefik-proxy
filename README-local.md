@@ -10,9 +10,9 @@ cp .env.example .env
 4. acme.json create and chmod
 
 ```bash
-touch ~/homelab/traefik-proxy/core/traefik-data/acme.json
+touch ~/traefik-proxy/core/traefik-data/acme.json
 
-sudo chmod 600 ~/homelab/traefik-proxy/core/traefik-data/acme.json
+sudo chmod 600 ~/traefik-proxy/core/traefik-data/acme.json
 ```
 
 5. create proxy network
