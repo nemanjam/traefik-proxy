@@ -20,7 +20,7 @@ services:
 
   traefik:
     # image: traefik:v2.9.8
-    image: traefik:v3.6.0
+    image: traefik:v3.6.1
     container_name: traefik
     restart: unless-stopped
     depends_on:
