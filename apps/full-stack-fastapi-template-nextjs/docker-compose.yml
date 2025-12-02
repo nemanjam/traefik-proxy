@@ -62,7 +62,9 @@ services:
       - 'traefik.docker.network=proxy'
 
       # No www. support
-      - 'traefik.http.routers.fsftn-backend.rule=Host(`api.${SITE_HOSTNAME}`)'
+      # ! Must not use extra '.' here, use '-' instead
+      # Rathole tunnel has this regex `{subdomain:[a-z0-9-]+}.rpi.${SITE_HOSTNAME}`
+      - 'traefik.http.routers.fsftn-backend.rule=Host(`api-${SITE_HOSTNAME}`)'
       - 'traefik.http.routers.fsftn-backend.entrypoints=websecure'
       - 'traefik.http.routers.fsftn-backend.service=fsftn-backend'
       - 'traefik.http.services.fsftn-backend.loadbalancer.server.port=8000'
@@ -104,7 +106,8 @@ services:
       - 'traefik.docker.network=proxy'
 
       # No www. support
-      - 'traefik.http.routers.fsftn-adminer.rule=Host(`adminer.${SITE_HOSTNAME}`)'
+      # ! Must not use extra '.' here, use '-' instead
+      - 'traefik.http.routers.fsftn-adminer.rule=Host(`adminer-${SITE_HOSTNAME}`)'
       - 'traefik.http.routers.fsftn-adminer.entrypoints=websecure'
       - 'traefik.http.routers.fsftn-adminer.service=fsftn-adminer'
       - 'traefik.http.services.fsftn-adminer.loadbalancer.server.port=8080'
