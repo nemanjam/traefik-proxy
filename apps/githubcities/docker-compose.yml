@@ -60,7 +60,9 @@ services:
       - 'traefik.docker.network=proxy'
 
       # No www. support
-      - 'traefik.http.routers.githubcities-backend.rule=Host(`api.${SITE_HOSTNAME}`)'
+      # ! Must not use extra '.' here, use '-' instead
+      # Rathole tunnel has this regex `{subdomain:[a-z0-9-]+}.rpi.${SITE_HOSTNAME}`
+      - 'traefik.http.routers.githubcities-backend.rule=Host(`api-${SITE_HOSTNAME}`)'
       - 'traefik.http.routers.githubcities-backend.entrypoints=websecure'
       - 'traefik.http.routers.githubcities-backend.service=githubcities-backend'
       - 'traefik.http.services.githubcities-backend.loadbalancer.server.port=8000'
@@ -102,7 +104,8 @@ services:
       - 'traefik.docker.network=proxy'
 
       # No www. support
-      - 'traefik.http.routers.githubcities-adminer.rule=Host(`adminer.${SITE_HOSTNAME}`)'
+      # ! Must not use extra '.' here, use '-' instead
+      - 'traefik.http.routers.githubcities-adminer.rule=Host(`adminer-${SITE_HOSTNAME}`)'
       - 'traefik.http.routers.githubcities-adminer.entrypoints=websecure'
       - 'traefik.http.routers.githubcities-adminer.service=githubcities-adminer'
       - 'traefik.http.services.githubcities-adminer.loadbalancer.server.port=8080'

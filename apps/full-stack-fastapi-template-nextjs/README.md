@@ -1,5 +1,5 @@
 
-# Githubicities
+# Full stack FastAPI template Next.js
 
 ## Routes
 
