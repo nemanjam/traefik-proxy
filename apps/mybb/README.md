@@ -1,20 +1,11 @@
 
-# Githubicities
+# MyBB
 
-## Routes
 
-```bash
-# Frontend
-http://localhost:3000
-https://full-stack-fastapi-template-nextjs.arm1.nemanjamitic.com
+## References
 
-# Backend
-http://localhost:8000/docs
-https://api.full-stack-fastapi-template-nextjs.arm1.nemanjamitic.com/docs
+https://github.com/mybb/docker/tree/master
+https://github.com/GARIBALDOSSAURO/docker-mybb-nginx
+https://github.com/Steppenstreuner/mybb-docker
+https://github.com/mybb/mybb
 
-# openapi.json
-# API_V1_STR: str = "/api/v1"
-http://localhost:8000/api/v1/openapi.json
-https://api.full-stack-fastapi-template-nextjs.arm1.nemanjamitic.com/api/v1/openapi.json
-
-```
