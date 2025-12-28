@@ -1,0 +1,24 @@
+
+# ignore .env
+.env
+
+# ignore mybb
+!data/mybb-data
+data/mybb-data/*
+!data/mybb-data/.gitkeep
+
+# ignore mysql
+!data/mysql-data
+data/mysql-data/*
+!data/mysql-data/.gitkeep
+
+# ignore redis
+!data/redis-data
+data/redis-data/*
+!data/redis-data/.gitkeep
+
+# ignore nginx
+!data/nginx-data
+data/nginx-data/*
+!data/nginx-data/.gitkeep
+

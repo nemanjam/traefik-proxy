@@ -1,0 +1,102 @@
+version: '3.9'
+
+services:
+
+  mybb:
+    image: mybb/mybb:1.8.37
+    container_name: mybb
+    command: --skip-old-files php-fpm
+    restart: unless-stopped
+    env_file:
+      - .env
+    # environment:
+    #   DB_HOST: database
+    #   DB_NAME: mybb
+    #   DB_USER: mybbuser
+    #   DB_PASS: mybbpass
+    #   REDIS_HOST: redis
+    volumes:
+      - ./data/mybb-data:/var/www/html:rw
+    depends_on:
+      - database
+      - redis
+
+  nginx:
+    image: nginx:1.29.1-alpine3.22-slim
+    container_name: mybb-nginx
+    restart: unless-stopped
+    volumes:
+      - ./data/nginx-data:/etc/nginx/conf.d:ro
+      - ./data/mybb-data:/var/www/html:ro
+    depends_on:
+      - mybb
+    networks:
+      - proxy
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.docker.network=proxy'
+
+      # Main router
+      - 'traefik.http.routers.mybb.rule=Host(`${SITE_HOSTNAME}`)'
+      - 'traefik.http.routers.mybb.entrypoints=websecure'
+      - 'traefik.http.routers.mybb.service=mybb'
+      - 'traefik.http.services.mybb.loadbalancer.server.port=80'
+
+      # Redirect router
+      - 'traefik.http.routers.mybb-redirect-www.rule=Host(`www.${SITE_HOSTNAME}`)'
+      - 'traefik.http.routers.mybb-redirect-www.entrypoints=websecure'
+      - 'traefik.http.routers.mybb-redirect-www.middlewares=mybb-redirect-to-non-www'
+      - 'traefik.http.routers.mybb-redirect-www.service=noop@internal'
+
+      # Middleware to redirect to non-www
+      - 'traefik.http.middlewares.mybb-redirect-to-non-www.redirectregex.regex=^https://www\.(.+)'
+      - 'traefik.http.middlewares.mybb-redirect-to-non-www.redirectregex.replacement=https://$$1'
+      - 'traefik.http.middlewares.mybb-redirect-to-non-www.redirectregex.permanent=true'
+
+  database:
+    image: mysql:8.0
+    container_name: mybb-database
+    restart: unless-stopped
+    # environment:
+    #   MYSQL_ROOT_PASSWORD: rootpassword
+    #   MYSQL_DATABASE: mybb
+    #   MYSQL_USER: mybbuser
+    #   MYSQL_PASSWORD: mybbpass
+    env_file:
+      - .env
+    volumes:
+      - ./data/mysql-data:/var/lib/mysql
+
+  redis:
+    image: redis:7-alpine
+    container_name: mybb-redis
+    restart: unless-stopped
+    volumes:
+      - ./data/redis-data:/data
+
+  adminer:
+    image: adminer:5.4.0-standalone
+    container_name: mybb-adminer
+    restart: unless-stopped
+    depends_on:
+      - database
+    environment:
+      - ADMINER_DESIGN=nicu
+    networks:
+      - default
+      - proxy
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.docker.network=proxy'
+
+      # No www. support
+      # ! Must not use extra '.' here, use '-' instead
+      # adminer-mybb.rpi.nemanjamitic.com
+      - 'traefik.http.routers.mybb-adminer.rule=Host(`adminer-${SITE_HOSTNAME}`)'
+      - 'traefik.http.routers.mybb-adminer.entrypoints=websecure'
+      - 'traefik.http.routers.mybb-adminer.service=mybb-adminer'
+      - 'traefik.http.services.mybb-adminer.loadbalancer.server.port=8080'
+
+networks:
+  proxy:
+    external: true
