@@ -1,7 +1,8 @@
 
 # MyBB
 
-URL: https://mybb.rpi.nemanjamitic.com
+- URL: https://mybb.rpi.nemanjamitic.com
+- PHP info: https://mybb.rpi.nemanjamitic.com/info.php
 
 ## References
 
