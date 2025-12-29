@@ -13,7 +13,7 @@ https://github.com/mybb/mybb
 
 ```bash
 # build
-docker-compose build mybb
+docker compose build mybb
 
 # tag
 docker tag mybb:1.8.39 nemanjamitic/mybb:1.8.39
