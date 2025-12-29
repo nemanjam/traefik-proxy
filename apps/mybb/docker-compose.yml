@@ -110,5 +110,7 @@ services:
       - 'traefik.http.services.mybb-adminer.loadbalancer.server.port=8080'
 
 networks:
+  default:
+    internal: true
   proxy:
     external: true
