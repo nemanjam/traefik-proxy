@@ -1,6 +1,7 @@
 
 # MyBB
 
+URL: https://mybb.rpi.nemanjamitic.com
 
 ## References
 
