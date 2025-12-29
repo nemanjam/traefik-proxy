@@ -13,7 +13,7 @@ services:
         BUILD_AUTHORS: "Nemanja Mitic <me@nemanjamitic.com>"
         BUILD_DATE: "2025-12-28T23:20:39Z" # $(date -u +'%Y-%m-%dT%H:%M:%SZ')
         BUILD_SHA512SUM: 7266fb1613adbe0d652497aa189fb1ab5d80fe7da7182c4365dd54f71c0f3248b750400a5049f2a63ab18df2ea4a7fad981ba7f3a1b24e5760adea76d1a527ca
-        BUILD_VERSION: 1.8.39
+        BUILD_VERSION: 1839
     # command: --skip-old-files php-fpm
     env_file:
       - .env

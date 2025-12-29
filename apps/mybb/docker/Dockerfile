@@ -86,13 +86,15 @@ ENV MYBB_VERSION=$BUILD_VERSION
 ENV MYBB_SHA512=$BUILD_SHA512SUM
 
 RUN set -ex; \
-	curl -o mybb.tar.gz -fSL "https://github.com/mybb/mybb/archive/refs/tags/mybb_${MYBB_VERSION}.tar.gz"; \
-	echo "$MYBB_SHA512 *mybb.tar.gz" | sha512sum -c -; \
-	tar -xzf mybb.tar.gz -C /usr/src/; \
-	rm mybb.tar.gz; \
-	chown -R www-data:www-data /usr/src/mybb-mybb_${MYBB_VERSION}
+    curl -L -o mybb.zip "https://github.com/mybb/mybb/releases/download/mybb_${MYBB_VERSION}/mybb_${MYBB_VERSION}.zip"; \
+    echo "$MYBB_SHA512 *mybb.zip" | sha512sum -c -; \
+    unzip mybb.zip -d /usr/src/; \
+    rm mybb.zip; \
+	mv /usr/src/Upload /usr/src/mybb-${MYBB_VERSION}; \
+	chown -R www-data:www-data /usr/src/mybb-${MYBB_VERSION}
 
 COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["php-fpm"]
