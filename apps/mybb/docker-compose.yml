@@ -39,9 +39,9 @@ services:
       - ./conf/nginx.conf:/etc/nginx/conf.d/default.conf:ro
       - ./data/mybb-data:/var/www/html:ro
     depends_on:
-      - default
       - mybb
     networks:
+      - default
       - proxy
     labels:
       - 'traefik.enable=true'
