@@ -3,7 +3,7 @@ version: '3.9'
 services:
 
   mybb:
-    image: 'mybb:1.8.39'
+    image: nemanjamitic/mybb:1.8.39
     # command: --skip-old-files php-fpm
     container_name: mybb
     restart: unless-stopped
