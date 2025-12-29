@@ -36,7 +36,7 @@ services:
     container_name: mybb-nginx
     restart: unless-stopped
     volumes:
-      - ./conf/nginx/default.conf:/etc/nginx/conf.d:ro
+      - ./conf/nginx.conf:/etc/nginx/conf.d/default.conf:ro
       - ./data/mybb-data:/var/www/html:ro
     depends_on:
       - mybb
