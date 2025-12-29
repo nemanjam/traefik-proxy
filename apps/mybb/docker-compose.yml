@@ -4,17 +4,9 @@ services:
 
   mybb:
     image: 'mybb:1.8.39'
+    # command: --skip-old-files php-fpm
     container_name: mybb
     restart: unless-stopped
-    build:
-      context: ./docker
-      dockerfile: Dockerfile
-      args:
-        BUILD_AUTHORS: "Nemanja Mitic <me@nemanjamitic.com>"
-        BUILD_DATE: "2025-12-28T23:20:39Z" # $(date -u +'%Y-%m-%dT%H:%M:%SZ')
-        BUILD_SHA512SUM: a13f45cc465100726d324a59f1683c5a116d4aad8ae3d26d3b6d709d8d97b6db14a135c08a0064d3194ed363891efa6cdcb0f4b58111d78a718fa2f6bd936bd7
-        BUILD_VERSION: 1839
-    # command: --skip-old-files php-fpm
     env_file:
       - .env
     # environment:
@@ -30,6 +22,15 @@ services:
     depends_on:
       - database
       - redis
+    # Note: use image, comment out build section to avoid building locally
+    # build:
+    #   context: ./docker
+    #   dockerfile: Dockerfile
+    #   args:
+    #     BUILD_AUTHORS: "Nemanja Mitic <me@nemanjamitic.com>"
+    #     BUILD_DATE: "2025-12-28T23:20:39Z" # $(date -u +'%Y-%m-%dT%H:%M:%SZ')
+    #     BUILD_SHA512SUM: a13f45cc465100726d324a59f1683c5a116d4aad8ae3d26d3b6d709d8d97b6db14a135c08a0064d3194ed363891efa6cdcb0f4b58111d78a718fa2f6bd936bd7
+    #     BUILD_VERSION: 1839
 
   nginx:
     image: nginx:1.29.1-alpine3.22-slim
