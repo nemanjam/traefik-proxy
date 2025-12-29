@@ -3,7 +3,7 @@ version: '3.9'
 services:
 
   mybb:
-    # image: mybb/mybb:1.8.39
+    image: 'mybb:1.8.39'
     container_name: mybb
     restart: unless-stopped
     build:
