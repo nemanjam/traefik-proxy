@@ -111,7 +111,7 @@ services:
       # No www. support
       # ! Must not use extra '.' here, use '-' instead
       # adminer-mybb.rpi.nemanjamitic.com
-      - 'traefik.http.routers.mybb-adminer.rule=Host(`adminer.${SITE_HOSTNAME}`)'
+      - 'traefik.http.routers.mybb-adminer.rule=Host(`adminer.${SITE_HOSTNAME_2}`)'
       - 'traefik.http.routers.mybb-adminer.entrypoints=websecure'
       - 'traefik.http.routers.mybb-adminer.service=mybb-adminer'
       - 'traefik.http.services.mybb-adminer.loadbalancer.server.port=8080'
