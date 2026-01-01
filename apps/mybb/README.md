@@ -1,8 +1,9 @@
 
 # MyBB
 
-- URL: https://mybb.rpi.nemanjamitic.com
-- PHP info: https://mybb.rpi.nemanjamitic.com/info.php
+- URL: https://rpi.varalicar.rs
+- PHP info: https://rpi.varalicar.rs/info.php
+- Adminer: https://adminer.rpi.varalicar.rs
 
 ## References
 
