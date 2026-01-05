@@ -15,6 +15,7 @@ services:
     #   DB_USER: mybbuser
     #   DB_PASS: mybbpass
     #   REDIS_HOST: redis
+    user: '${MY_UID}:${MY_GID}'
     volumes:
       - ./data/mybb-data:/var/www/html:rw
       - ./conf/info.php:/var/www/html/info.php:ro
