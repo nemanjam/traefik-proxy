@@ -23,11 +23,10 @@ services:
     depends_on:
       - database
       - redis
+    # needs external network for smtp
     networks:
       - default
-    dns:
-      - 1.1.1.1
-      - 8.8.8.8
+      - proxy
     # Note: use image, comment out build section to avoid building locally
     # build:
     #   context: ./docker
