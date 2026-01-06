@@ -25,6 +25,9 @@ services:
       - redis
     networks:
       - default
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
     # Note: use image, comment out build section to avoid building locally
     # build:
     #   context: ./docker
