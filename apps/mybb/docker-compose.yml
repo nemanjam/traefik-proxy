@@ -91,6 +91,7 @@ services:
     image: redis:7-alpine
     container_name: mybb-redis
     restart: unless-stopped
+    command: ['redis-server', '/usr/local/etc/redis/redis.conf']
     volumes:
       - ./data/redis-data:/data
       - ./conf/redis.conf:/usr/local/etc/redis/redis.conf:ro
