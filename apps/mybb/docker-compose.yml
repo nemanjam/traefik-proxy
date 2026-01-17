@@ -1,7 +1,6 @@
 version: '3.9'
 
 services:
-
   mybb:
     image: nemanjamitic/mybb:1.8.39
     # command: --skip-old-files php-fpm
@@ -19,7 +18,8 @@ services:
     volumes:
       - ./data/mybb-data:/var/www/html:rw
       - ./conf/info.php:/var/www/html/info.php:ro
-      - ./conf/redis-session.ini:/usr/local/etc/php/conf.d/redis-session.ini
+      # native php session, unused in mybb
+      # - ./conf/redis-session.ini:/usr/local/etc/php/conf.d/redis-session.ini
     depends_on:
       - database
       - redis
