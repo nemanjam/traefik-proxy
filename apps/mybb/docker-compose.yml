@@ -93,6 +93,7 @@ services:
     restart: unless-stopped
     volumes:
       - ./data/redis-data:/data
+      - ./conf/redis.conf:/usr/local/etc/redis/redis.conf:ro
     networks:
       - default
 
