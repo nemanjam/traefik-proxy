@@ -42,7 +42,7 @@ redis-cli CONFIG GET maxmemory
 redis-cli CONFIG GET maxmemory-policy
 ------------
 // Traefik IP, all in nginx.conf
-// fails with double Traefik Rathole, rpi
+// fails with Rathole and double Traefik, rpi
 // check client IP forward from Treafik works in Mybb
 // create php file, from ~/traefik-proxy/apps/mybb
 echo '<?php var_dump($_SERVER["REMOTE_ADDR"]);' > data/mybb-data/ip.php
