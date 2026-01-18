@@ -37,6 +37,9 @@ TRUNCATE TABLE mybb_sessions;
 // limit ram redis, verify
 redis-cli CONFIG GET maxmemory
 redis-cli CONFIG GET maxmemory-policy
-
+------------
+// check client IP forward from Treafik works in Mybb
+// open forum and refresh page, or see in admin panel
+docker exec -it mybb php -r 'var_dump($_SERVER["REMOTE_ADDR"]);'
 
 ```
