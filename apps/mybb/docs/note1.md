@@ -2,7 +2,10 @@
 // todo:
         forward IP from Traefik, to Nginx, php-fpm will use IP from Nginx
         traefik.yml, nginx.conf // all in nginx.conf
-
+-----------
+// set user and group in data/mybb-data
+// from ~/traefik-proxy/apps/mybb
+sudo chown -R $MY_UID:$MY_GID ./data/mybb-data
 -----------
 // configure registration email
 // mora 2fa auth sa aegis otp code in google
