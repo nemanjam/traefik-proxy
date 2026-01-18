@@ -1,7 +1,7 @@
 ```ts
 // todo:
-forward IP from Traefik, to Nginx, php-fpm will use IP from Nginx
-traefik.yml, nginx.conf
+        forward IP from Traefik, to Nginx, php-fpm will use IP from Nginx
+        traefik.yml, nginx.conf // all in nginx.conf
 
 -----------
 // configure registration email
@@ -39,7 +39,10 @@ redis-cli CONFIG GET maxmemory
 redis-cli CONFIG GET maxmemory-policy
 ------------
 // check client IP forward from Treafik works in Mybb
-// open forum and refresh page, or see in admin panel
-docker exec -it mybb php -r 'var_dump($_SERVER["REMOTE_ADDR"]);'
-
+// create php file, from ~/traefik-proxy/apps/mybb
+echo '<?php var_dump($_SERVER["REMOTE_ADDR"]);' > data/mybb-data/ip.php
+// open
+https://varalicar.rs/ip.php
+// in Mybb admin panel
+Admin CP -> Users & Groups > Some user (Options), last IP address
 ```
