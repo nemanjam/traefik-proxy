@@ -2,6 +2,7 @@
 // todo:
         forward IP from Traefik, to Nginx, php-fpm will use IP from Nginx
         traefik.yml, nginx.conf // all in nginx.conf
+write doc to manually migrate backup from varalicar.rs to rpi.varalicar.rs
 -----------
 // set user and group in data/mybb-data
 // from ~/traefik-proxy/apps/mybb
