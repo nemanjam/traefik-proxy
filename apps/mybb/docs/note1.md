@@ -34,6 +34,7 @@ $config['redis']['host'] = 'redis';
 $config['redis']['port'] = 6379;
 ---------
 // clean db cache table
+// ! NE OVO, ovo ga je slomilo, registracija novih usera, corrupt db state
 TRUNCATE TABLE mybb_datacache; // empty...
 // logs out all users
 TRUNCATE TABLE mybb_sessions;
