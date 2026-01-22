@@ -54,4 +54,10 @@ Admin CP -> Users & Groups > Some user (Options), last IP address
 ----------
 // change logo
 Templates & Style -> Themes -> Default -> Edit Theme Properties -> Board Logo
+----------
+rpi.varalicar.rs shares cookie with varalicar.rs, login fails
+MUST use private tab for rpi.varalicar.rs
+---------
+redis-data/dump.rdb se kreira kad ugasis container
+delete ni ne izloguje usere
 ```
