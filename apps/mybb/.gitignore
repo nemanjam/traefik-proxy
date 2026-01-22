@@ -22,3 +22,5 @@ data/redis-data/*
 data/nginx-data/*
 !data/nginx-data/.gitkeep
 
+# temp backup dirs
+data/_*mybb-*
