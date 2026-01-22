@@ -51,4 +51,7 @@ echo '<?php var_dump($_SERVER["REMOTE_ADDR"]);' > data/mybb-data/ip.php
 https://varalicar.rs/ip.php
 // in Mybb admin panel
 Admin CP -> Users & Groups > Some user (Options), last IP address
+----------
+// change logo
+Templates & Style -> Themes -> Default -> Edit Theme Properties -> Board Logo
 ```
