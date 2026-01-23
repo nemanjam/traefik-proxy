@@ -22,5 +22,10 @@ data/redis-data/*
 data/nginx-data/*
 !data/nginx-data/.gitkeep
 
+# ignore backup data
+!backup/data
+backup/data/*
+!backup/data/.gitkeep
+
 # temp backup dirs
 data/_*-data*
