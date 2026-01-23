@@ -73,6 +73,8 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 is_valid_config() {
     local non_zero_found=0
 
+    echo "[INFO] Validating configuration..."
+
     # Check that MySQL container is running
     if ! docker inspect -f '{{.State.Running}}' "$DB_CONTAINER_NAME" 2>/dev/null | grep -q true; then
         echo "[ERROR] MySQL container not running or not found: DB_CONTAINER_NAME=$DB_CONTAINER_NAME" >&2
@@ -121,6 +123,14 @@ is_valid_config() {
         echo "[ERROR] All retention values are zero: daily=$BACKUP_RETENTION_DAILY weekly=$BACKUP_RETENTION_WEEKLY monthly=$BACKUP_RETENTION_MONTHLY" >&2
         return 1
     fi
+
+    # Delete existing temp backup file for this day (idempotent, can run on same day)
+    if [[ -f "$ZIP_PATH" ]]; then
+        rm -f "$ZIP_PATH"
+        echo "[WARN] Existing temporary backup file deleted: $ZIP_PATH"
+    fi
+
+    echo "[INFO] Configuration is valid. Creating backup..."
 
     return 0
 }
@@ -182,8 +192,14 @@ create_retention_copies() {
         esac
 
         TARGET_FILE="${ZIP_PATH/frequency/$FREQ}"
-        cp "$ZIP_PATH" "$TARGET_FILE"
 
+        # Delete existing backup for this frequency (idempotent, can run on same day)
+        if [[ -f "$TARGET_FILE" ]]; then
+            rm -f "$TARGET_FILE"
+            echo "[WARN] Existing $FREQ backup removed: $TARGET_FILE"
+        fi
+
+        cp "$ZIP_PATH" "$TARGET_FILE"
         echo "[INFO] $FREQ backup copied successfully: $TARGET_FILE"
     done
 
