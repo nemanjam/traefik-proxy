@@ -57,12 +57,13 @@ DATE=$(date +"%Y-%m-%d")
 ZIP_PATH="$LOCAL_BACKUP_DIR/$ZIP_PREFIX-$FREQ_PLACEHOLDER-$DATE.zip"
 
 # Current day and weekday
-MONTH=$(date +%d)
-DAY_WEEK=$(date +%u)
+DAY_OF_MONTH=$(date +%d)
+DAY_OF_WEEK=$(date +%u) # 1=Monday … 7=Sunday
 
-BACKUP_DAILY=$(( BACKUP_RETENTION_DAILY > 0 ))
-BACKUP_WEEKLY=$(( BACKUP_RETENTION_WEEKLY > 0 ))
-BACKUP_MONTHLY=$(( BACKUP_RETENTION_MONTHLY > 0 ))
+# Must do it like this for booleans
+BACKUP_DAILY=$([[ $BACKUP_RETENTION_DAILY -gt 0 ]] && echo true || echo false)
+BACKUP_WEEKLY=$([[ $BACKUP_RETENTION_WEEKLY -gt 0 ]] && echo true || echo false)
+BACKUP_MONTHLY=$([[ $BACKUP_RETENTION_MONTHLY -gt 0 ]] && echo true || echo false)
 
 # Script dir absolute path, unused
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -126,7 +127,7 @@ is_valid_config() {
 
 # ------------- Logic ---------------
 
-create_backup {
+create_backup() {
     ZIP_SOURCES=()
 
     TEMP_DB_DIR="$LOCAL_BACKUP_DIR/$MYSQL_ZIP_DIR"
@@ -134,7 +135,7 @@ create_backup {
     echo "[INFO] Created temporary DB directory: $TEMP_DB_DIR"
 
     # Dump MySQL as plain .sql, path is on host
-    docker exec "$DB_CONTAINER_NAME" sh -c 'mysqldump -u"$DB_USER" -p"$DB_PASS" "$DB_NAME"' > "$TEMP_DB_DIR/$DB_NAME.sql"
+    docker exec "$DB_CONTAINER_NAME" sh -c 'mysqldump --no-tablespaces -u"$DB_USER" -p"$DB_PASS" "$DB_NAME"' > "$TEMP_DB_DIR/$DB_NAME.sql"
     echo "[INFO] MySQL database dumped: $DB_NAME -> $TEMP_DB_DIR/$DB_NAME.sql"
 
     # Add database to zip sources
@@ -144,7 +145,7 @@ create_backup {
     for SRC_CODE_DIR in "${!SRC_CODE_DIRS[@]}"; do
         SRC_CODE_DIR_PATH="${SRC_CODE_DIRS[$SRC_CODE_DIR]}"
         ZIP_SOURCES+=("$SRC_CODE_DIR_PATH")
-        echo "[INFO] Added folder to zip sources: $SRC_CODE_DIR_PATH"
+        echo "[INFO] Added folder or file to zip sources: $SRC_CODE_DIR_PATH"
     done
 
     # Create zip archive
@@ -158,9 +159,9 @@ create_backup {
     echo "[INFO] Local-only backup created successfully: $ZIP_PATH"
 }
 
-create_retention_copies {
-    local IS_WEEKLY=$(( DAY_WEEK == 7 ))
-    local IS_MONTHLY=$(( MONTH == 1 ))
+create_retention_copies() {
+    local IS_WEEKLY=$(( DAY_OF_WEEK == 7 )) # Sunday
+    local IS_MONTHLY=$(( DAY_OF_MONTH == 1 )) # First day of month
 
     if [[ ! -f "$ZIP_PATH" ]]; then
         echo "[ERROR] Backup file does not exist: $ZIP_PATH"
@@ -190,7 +191,7 @@ create_retention_copies {
     echo "[INFO] Removed temporary frequency backup file: $ZIP_PATH"
 }
 
-prune_old_backups {
+prune_old_backups() {
     for FREQ in daily weekly monthly; do
         # Determine retention variable dynamically
         RETENTION_VAR="BACKUP_RETENTION_${FREQ^^}"  # uppercase: daily -> DAILY
