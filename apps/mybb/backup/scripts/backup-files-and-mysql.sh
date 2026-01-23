@@ -8,7 +8,6 @@
 #    │  ├─ backup-files-and-mysql.sh         - versioned
 #    │  └─ backup-files-and-mysql-run.sh     - this script
 #    └─ data/
-#       ├─ .gitkeep
 #       ├─ mybb_files_and_mysql-daily-2026-01-20.zip
 #       │  ├─ inc/
 #       │  ├─ images/custom/
@@ -33,9 +32,11 @@ DB_PASS="password"
 # script located at ~/traefik-proxy/apps/mybb/backup/scripts
 LOCAL_BACKUP_DIR="../data"
 
+# File or directory
+# Relative to script dir
 declare -A SRC_CODE_DIRS=(
-    ["inc"]="inc"
-    ["images/custom"]="images/custom"
+    ["inc"]="../../data/mybb-data/inc/config.php"
+    ["images/custom"]="../../data/mybb-data/images/custom"
 )
 
 # Retention
@@ -90,10 +91,10 @@ is_valid_config() {
         return 1
     fi
 
-    # Check source code directories exist
-    for dir in "${SRC_CODE_DIRS[@]}"; do
-        if [ ! -d "$LOCAL_BACKUP_DIR/$dir" ]; then
-            echo "[ERROR] Source directory missing: path=$SCRIPT_DIR/$LOCAL_BACKUP_DIR/$dir" >&2
+    # Check source code paths exist (file or directory)
+    for path in "${SRC_CODE_DIRS[@]}"; do
+        if [ ! -e "$path" ]; then
+            echo "[ERROR] Source path missing: path=$SCRIPT_DIR/$path" >&2
             return 1
         fi
     done
