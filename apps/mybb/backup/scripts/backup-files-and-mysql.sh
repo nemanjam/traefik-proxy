@@ -246,3 +246,5 @@ create_backup
 create_retention_copies
 
 prune_old_backups
+
+echo "[INFO] Backup completed successfully."
