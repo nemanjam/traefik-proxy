@@ -10,6 +10,8 @@ sudo chown -R $MY_UID:$MY_GID ./data/mybb-data
 -----------
 // configure registration email
 // mora 2fa auth sa aegis otp code in google
+// app password url
+https://myaccount.google.com/apppasswords
 // smtp app password
 radi i sa space i bez, bolje sa
 abcd efgh ijkl mnop // exmaple
