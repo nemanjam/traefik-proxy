@@ -144,8 +144,15 @@ create_backup() {
     mkdir -p "$TEMP_DB_DIR"
     echo "[INFO] Created temporary DB directory: $TEMP_DB_DIR"
 
-    # Dump MySQL as plain .sql, path is on host
-    docker exec "$DB_CONTAINER_NAME" sh -c 'mysqldump --no-tablespaces -u"$DB_USER" -p"$DB_PASS" "$DB_NAME"' > "$TEMP_DB_DIR/$DB_NAME.sql"
+    # Dump MySQL as plain UTF-8 .sql, path is on host
+    docker exec "$DB_CONTAINER_NAME" sh -c \
+        'mysqldump \
+            --no-tablespaces \
+            --default-character-set=utf8mb4 \
+            --skip-set-charset \
+            -u"$DB_USER" -p"$DB_PASS" "$DB_NAME"' \
+        > "$TEMP_DB_DIR/$DB_NAME.sql"
+
     echo "[INFO] MySQL database dumped: $DB_NAME -> $TEMP_DB_DIR/$DB_NAME.sql"
 
     # Add database to zip sources
