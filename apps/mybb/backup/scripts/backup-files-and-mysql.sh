@@ -150,13 +150,13 @@ create_backup() {
 
     # Create zip archive
     zip -r "$ZIP_PATH" "${ZIP_SOURCES[@]}"
-    echo "[INFO] Created zip archive: $ZIP_PATH"
+    echo "[INFO] Created temp zip archive: $ZIP_PATH"
 
     # Cleanup temp DB dir
     rm -rf "$TEMP_DB_DIR"
     echo "[INFO] Removed temporary DB directory: $TEMP_DB_DIR"
 
-    echo "[INFO] Local-only backup created successfully: $ZIP_PATH"
+    echo "[INFO] Temporary backup file created successfully: $ZIP_PATH"
 }
 
 create_retention_copies() {
@@ -188,7 +188,7 @@ create_retention_copies() {
     done
 
     rm -rf "$ZIP_PATH"
-    echo "[INFO] Removed temporary frequency backup file: $ZIP_PATH"
+    echo "[INFO] Removed temporary backup file: $ZIP_PATH"
 }
 
 prune_old_backups() {
