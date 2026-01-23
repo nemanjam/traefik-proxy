@@ -27,5 +27,10 @@ data/nginx-data/*
 backup/data/*
 !backup/data/.gitkeep
 
+# ignore temp db data
+!docs/forum-assets/db
+docs/forum-assets/db/*
+!docs/forum-assets/db/.gitkeep
+
 # temp backup dirs
 data/_*-data*
