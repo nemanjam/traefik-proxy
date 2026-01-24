@@ -168,12 +168,18 @@ create_backup() {
 
     echo "[INFO] MySQL database dumped: db_name=$DB_NAME -> path=$TEMP_DB_DIR/$DB_NAME.sql"
 
-    # Copy source code folders grouped into staging/source_code dir
+    # Copy source code folders grouped into FILES_DIR dir
     for SRC_CODE_DIR in "${!SRC_CODE_DIRS[@]}"; do
         SRC_CODE_DIR_PATH="${SRC_CODE_DIRS[$SRC_CODE_DIR]}"
         cp -a "$SRC_CODE_DIR_PATH" "$FILES_DIR/"
         echo "[INFO] Added to staging: $SRC_CODE_DIR_PATH -> $FILES_ZIP_DIR_NAME/"
     done
+
+    # Remove FILES_DIR if empty
+    if [ -d "$FILES_DIR" ] && [ -z "$(ls -A "$FILES_DIR")" ]; then
+        rm -rf "$FILES_DIR"
+        echo "[INFO] Removed empty files directory: $FILES_DIR"
+    fi
 
     # Create zip with clean relative paths
     # ( ... ) - subshell, cd wont affect working dir of the main script
