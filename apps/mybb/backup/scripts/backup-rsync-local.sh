@@ -20,7 +20,7 @@
 # ---------- Configuration ----------
 
 REMOTE_HOST="arm2"
-# Full, absolute path - can't use ~ with ssh/rsync
+# Full, absolute path - can't use ~/, used both locally and remote with ssh/rsync
 REMOTE_BACKUP_DIR="/home/ubuntu/traefik-proxy/apps/mybb/backup/data"
 
 # Note: all commands run from script dir, NEVER call cd, for relative LOCAL paths to work
