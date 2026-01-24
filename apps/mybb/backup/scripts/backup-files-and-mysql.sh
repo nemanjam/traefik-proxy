@@ -33,22 +33,22 @@ DB_PASS="password"
 LOCAL_BACKUP_DIR="../data"
 
 # File or directory
-# Relative to script dir
+# Relative to script dir, ../../ returns to: apps/mybb/
 declare -A SRC_CODE_DIRS=(
     ["inc"]="../../data/mybb-data/inc/config.php"
     ["images/custom"]="../../data/mybb-data/images/custom"
 )
 
 # Retention
-MAX_RETENTION=5
+MAX_RETENTION=6 # 6 months for monthly backups
 BACKUP_RETENTION_DAILY=3
 BACKUP_RETENTION_WEEKLY=2
-BACKUP_RETENTION_MONTHLY=2
+BACKUP_RETENTION_MONTHLY=6
 
 # ---------- Constants ----------
 
 # Zip vars
-MYSQL_ZIP_DIR="mysql_database"
+MYSQL_ZIP_DIR_NAME="mysql_database" # inside zip
 # Must match backup-rsync-local.sh
 ZIP_PREFIX="mybb_files_and_mysql"
 FREQ_PLACEHOLDER='frequency'
@@ -66,6 +66,7 @@ BACKUP_WEEKLY=$([[ $BACKUP_RETENTION_WEEKLY -gt 0 ]] && echo true || echo false)
 BACKUP_MONTHLY=$([[ $BACKUP_RETENTION_MONTHLY -gt 0 ]] && echo true || echo false)
 
 # Script dir absolute path, unused
+# mybb/backup/scripts
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # ---------- Validate config ------------
@@ -88,9 +89,9 @@ is_valid_config() {
         return 1
     fi
 
-    # Check local backup directory exists
-    if [ ! -d "$LOCAL_BACKUP_DIR" ]; then
-        echo "[ERROR] Local backup directory missing: path=$SCRIPT_DIR/$LOCAL_BACKUP_DIR" >&2
+    # Check local backup directory variable is set, dir exists, and is not root
+    if [ -z "$LOCAL_BACKUP_DIR" ] || [ ! -d "$LOCAL_BACKUP_DIR" ] || [ "$LOCAL_BACKUP_DIR" = "/" ]; then
+        echo "[ERROR] Local backup directory invalid: path=$LOCAL_BACKUP_DIR" >&2
         return 1
     fi
 
@@ -138,35 +139,57 @@ is_valid_config() {
 # ------------- Logic ---------------
 
 create_backup() {
-    ZIP_SOURCES=()
+    # Note: use staging dir with relative paths to have nice overview in GUI archive utility
 
-    TEMP_DB_DIR="$LOCAL_BACKUP_DIR/$MYSQL_ZIP_DIR"
-    mkdir -p "$TEMP_DB_DIR"
+    # Local scope, used only in this function
+    # staging dir: mybb/backup/data/staging_dir
+    # temp db dir: mybb/backup/data/staging_dir/mysql_database
+    # working dir: mybb/backup/scripts
+    local STAGING_DIR="$LOCAL_BACKUP_DIR/staging_dir"
+    local TEMP_DB_DIR="$STAGING_DIR/$MYSQL_ZIP_DIR_NAME"
+
+    # Reset staging dir from previous broken state 
+    rm -rf "$STAGING_DIR"
+    mkdir -p "$TEMP_DB_DIR" # Will recreate staging dir
+
+    echo "[INFO] Created staging directory: $STAGING_DIR"
     echo "[INFO] Created temporary DB directory: $TEMP_DB_DIR"
 
-    # Dump MySQL as plain UTF-8 .sql, path is on host
-    docker exec "$DB_CONTAINER_NAME" sh -c 'mysqldump --no-tablespaces -u"$DB_USER" -p"$DB_PASS" "$DB_NAME"' > "$TEMP_DB_DIR/$DB_NAME.sql"
-    echo "[INFO] MySQL database dumped: $DB_NAME -> $TEMP_DB_DIR/$DB_NAME.sql"
+    # Dump MySQL as plain UTF-8 .sql
+    docker exec "$DB_CONTAINER_NAME" sh -c \
+        'mysqldump --no-tablespaces -u"$DB_USER" -p"$DB_PASS" "$DB_NAME"' \
+        > "$TEMP_DB_DIR/$DB_NAME.sql"
 
-    # Add database to zip sources
-    ZIP_SOURCES+=("$TEMP_DB_DIR")
+    echo "[INFO] MySQL database dumped: db_name=$DB_NAME -> path=$TEMP_DB_DIR/$DB_NAME.sql"
 
-    # Add source code folders
+    # Copy source code folders into staging dir
     for SRC_CODE_DIR in "${!SRC_CODE_DIRS[@]}"; do
         SRC_CODE_DIR_PATH="${SRC_CODE_DIRS[$SRC_CODE_DIR]}"
-        ZIP_SOURCES+=("$SRC_CODE_DIR_PATH")
-        echo "[INFO] Added folder or file to zip sources: $SRC_CODE_DIR_PATH"
+        cp -a "$SRC_CODE_DIR_PATH" "$STAGING_DIR/"
+        echo "[INFO] Added to staging: $SRC_CODE_DIR_PATH"
     done
 
-    # Create zip archive
-    zip -r "$ZIP_PATH" "${ZIP_SOURCES[@]}"
-    echo "[INFO] Created temp zip archive: $ZIP_PATH"
+    # Create zip with clean relative paths
+    # ( ... ) - subshell, cd wont affect working dir of the main script
+    (
+        cd "$STAGING_DIR" || {
+            echo "[ERROR] Failed to cd into staging directory: $STAGING_DIR" >&2
+            exit 1
+        }
 
-    # Cleanup temp DB dir
-    rm -rf "$TEMP_DB_DIR"
-    echo "[INFO] Removed temporary DB directory: $TEMP_DB_DIR"
+        zip -r "$ZIP_PATH" .
+    ) || {
+        echo "[ERROR] Zip creation failed: $ZIP_PATH" >&2
+        rm -rf "$STAGING_DIR"
+        exit 1
+    }
 
-    echo "[INFO] Temporary backup file created successfully: $ZIP_PATH"
+    echo "[INFO] Created zip archive: $ZIP_PATH"
+
+    # Cleanup
+    rm -rf "$STAGING_DIR"
+    echo "[INFO] Removed staging directory: $STAGING_DIR"
+    echo "[INFO] Backup file created successfully: $ZIP_PATH"
 }
 
 create_retention_copies() {
@@ -203,7 +226,7 @@ create_retention_copies() {
         echo "[INFO] $FREQ backup copied successfully: $TARGET_FILE"
     done
 
-    rm -rf "$ZIP_PATH"
+    rm -f "$ZIP_PATH"
     echo "[INFO] Removed temporary backup file: $ZIP_PATH"
 }
 
