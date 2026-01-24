@@ -52,21 +52,21 @@ is_valid_config() {
         echo "[ERROR] Cannot connect to remote host via SSH: REMOTE_HOST=$REMOTE_HOST" >&2
         return 1
     fi
-    echo "[OK] SSH connection established: REMOTE_HOST=$REMOTE_HOST"
+    echo "[INFO] SSH connection established: REMOTE_HOST=$REMOTE_HOST"
 
     # Check remote backup directory exists
     if ! ssh "$REMOTE_HOST" "[ -d \"$REMOTE_BACKUP_DIR\" ]" >/dev/null 2>&1; then
         echo "[ERROR] Remote backup directory does not exist: REMOTE_HOST=$REMOTE_HOST REMOTE_BACKUP_DIR=$REMOTE_BACKUP_DIR" >&2
         return 1
     fi
-    echo "[OK] Remote backup directory exists: $REMOTE_BACKUP_DIR"
+    echo "[INFO] Remote backup directory exists: $REMOTE_BACKUP_DIR"
 
     # Check local backup directory exists
     if [ ! -d "$LOCAL_BACKUP_DIR" ]; then
         echo "[ERROR] Local backup directory does not exist: path=$SCRIPT_DIR/$LOCAL_BACKUP_DIR" >&2
         return 1
     fi
-    echo "[OK] Local backup directory exists: $SCRIPT_DIR/$LOCAL_BACKUP_DIR"
+    echo "[INFO] Local backup directory exists: $SCRIPT_DIR/$LOCAL_BACKUP_DIR"
 
     echo "[INFO] Configuration validation successful"
     echo "----------------------------------------"
@@ -189,18 +189,18 @@ is_valid_backup() {
         echo "ERROR: remote backup contains file(s) smaller than minimum size, min=$(bytes_to_human $MIN_BACKUP_SIZE_BYTES)"
         return 1
     fi
-    echo "[OK] Remote backup file sizes validated, min=$(bytes_to_human $MIN_BACKUP_SIZE_BYTES)"
+    echo "[INFO] Remote backup file sizes validated, min=$(bytes_to_human $MIN_BACKUP_SIZE_BYTES)"
 
     # Store remote backup filenames in a variable and split, ignores .gitkeep
     remote_all_files=$(ssh "$REMOTE_HOST" "ls -1 $REMOTE_BACKUP_DIR/${ZIP_PREFIX}-*.zip 2>/dev/null")
     split_backup_types "$remote_all_files" remote_lists
-	echo "[OK] Remote backup file list loaded for type(s):"
+	echo "[INFO] Remote backup file list loaded for type(s):"
 	echo "$remote_all_files"
 
     # Store local backup filenames in a variable and split
     local_all_files=$(ls -1 "$LOCAL_BACKUP_DIR/${ZIP_PREFIX}-*.zip" 2>/dev/null)
     split_backup_types "$local_all_files" local_lists
-	echo "[OK] Local backup file list loaded:"
+	echo "[INFO] Local backup file list loaded:"
 	echo "$local_all_files"
 
     for backup_type in daily weekly monthly; do
@@ -217,7 +217,7 @@ is_valid_backup() {
             echo "ERROR: backup count mismatch for type=$backup_type: remote=$remote_count is less than local=$local_count"
             return 1
         fi
-        echo "[OK] Backup count valid: type=$backup_type remote=$remote_count local=$local_count"
+        echo "[INFO] Backup count valid: type=$backup_type remote=$remote_count local=$local_count"
 
         # Check latest dates
         remote_latest=$(echo "$remote_list" | get_latest_date)
@@ -226,7 +226,7 @@ is_valid_backup() {
             echo "ERROR: latest backup date mismatch for type=$backup_type: remote=$remote_latest is older than local=$local_latest"
             return 1
         fi
-        echo "[OK] Latest backup date valid: type=$backup_type date=$remote_latest"
+        echo "[INFO] Latest backup date valid: type=$backup_type date=$remote_latest"
     done
 
     echo "[INFO] Backup validation successful"
