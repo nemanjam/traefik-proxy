@@ -177,7 +177,10 @@ create_backup() {
             exit 1
         }
 
-        zip -r "$ZIP_PATH" .
+        # Runs in subshell, from staging dir, adjust to data folder
+        # main script working dir: mybb/backup/scripts
+        # subshell working dir: mybb/backup/data/staging_dir
+        zip -r "../$ZIP_PATH" .
     ) || {
         echo "[ERROR] Zip creation failed: $ZIP_PATH" >&2
         rm -rf "$STAGING_DIR"
