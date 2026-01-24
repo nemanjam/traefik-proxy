@@ -64,3 +64,37 @@ MUST use private tab for rpi.varalicar.rs
 redis-data/dump.rdb se kreira kad ugasis container
 delete ni ne izloguje usere
 ```
+
+Cron local
+
+```bash
+#!/bin/bash
+# Wrapper script to run backup and keep log < 2 MB
+
+LOG_FILE="~/Desktop/mybb-backup/scripts/backup.log"
+BACKUP_SCRIPT="~/Desktop/mybb-backup/scripts/run-backup-rsync-local.sh"
+
+# Truncate log if bigger than 2 MB
+if [ -f "$LOG_FILE" ] && [ $(stat -c%s "$LOG_FILE") -ge $((2*1024*1024)) ]; then
+    > "$LOG_FILE"
+fi
+
+# Run backup and append stdout+stderr to log
+/bin/bash "$BACKUP_SCRIPT" >> "$LOG_FILE" 2>&1
+
+# Todo:
+# add this to bottom of existing script
+# truncate from 2mb to 1mb
+# make it function
+```
+
+Cron line
+
+```bash
+crontab -e
+
+# Run backup every day at 22:00 Belgrade time
+TZ=Europe/Belgrade
+0 22 * * * ~/Desktop/mybb-backup/scripts/run-backup-rsync-local-wrapper.sh
+
+```
