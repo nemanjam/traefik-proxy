@@ -50,3 +50,12 @@ docker exec -i mybb-database mysql -u db_user -pdb_password -e "CREATE DATABASE 
 # Example
 docker exec -i mybb-database mysql -u mybbuser -pmybbpass -e "CREATE DATABASE mybb CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 ```
+
+## Crons
+
+```bash
+# Remote
+
+# Local sync
+
+```

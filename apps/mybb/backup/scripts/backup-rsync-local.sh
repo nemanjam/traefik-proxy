@@ -20,14 +20,18 @@
 # ---------- Configuration ----------
 
 REMOTE_HOST="arm2"
-REMOTE_BACKUP_DIR="~/traefik-proxy/apps/mybb/backup/data"
+# Full, absolute path - can't use ~ with ssh/rsync
+REMOTE_BACKUP_DIR="/home/ubuntu/traefik-proxy/apps/mybb/backup/data"
 
 # Note: all commands run from script dir, NEVER call cd, for relative LOCAL paths to work
 LOCAL_BACKUP_DIR="../data"
 
 # Minimum valid backup size
-MIN_BACKUP_SIZE_MB=1
-MIN_BACKUP_SIZE_BYTES=$(( MIN_BACKUP_SIZE_MB * 1024 * 1024 ))
+# Blank mybb with images 250kB
+# Float
+MIN_BACKUP_SIZE_MB=0.1
+# Integer
+MIN_BACKUP_SIZE_BYTES=$(echo "$MIN_BACKUP_SIZE_MB * 1024 * 1024 / 1" | bc) # rounded to integer
 
 # ---------- Constants ----------
 
@@ -58,7 +62,7 @@ is_valid_config() {
     echo "[OK] Remote backup directory exists: $REMOTE_BACKUP_DIR"
 
     # Check local backup directory exists
-    if [ ! -d "$$LOCAL_BACKUP_DIR" ]; then
+    if [ ! -d "$LOCAL_BACKUP_DIR" ]; then
         echo "[ERROR] Local backup directory does not exist: path=$SCRIPT_DIR/$LOCAL_BACKUP_DIR" >&2
         return 1
     fi
@@ -160,7 +164,7 @@ check_file_size() {
         return 1
     fi
 
-    echo "[INFO] All remote backup files meet minimum size: $(bytes_to_human $MIN_BACKUP_SIZE_BYTES)"
+    echo "[INFO] All remote backup files meet minimum size, min=$(bytes_to_human $MIN_BACKUP_SIZE_BYTES)"
     return 0
 }
 
@@ -182,10 +186,10 @@ is_valid_backup() {
 
     # Global size validation (run once)
     if ! check_file_size; then
-        echo "ERROR: remote backup contains file(s) smaller than minimum size ($MIN_BACKUP_SIZE_BYTES bytes)"
+        echo "ERROR: remote backup contains file(s) smaller than minimum size, min=$(bytes_to_human $MIN_BACKUP_SIZE_BYTES)"
         return 1
     fi
-    echo "[OK] Remote backup file sizes validated (min=${MIN_BACKUP_SIZE_BYTES}B)"
+    echo "[OK] Remote backup file sizes validated, min=$(bytes_to_human $MIN_BACKUP_SIZE_BYTES)"
 
     # Store remote backup filenames in a variable and split, ignores .gitkeep
     remote_all_files=$(ssh "$REMOTE_HOST" "ls -1 $REMOTE_BACKUP_DIR/${ZIP_PREFIX}-*.zip 2>/dev/null")
@@ -249,6 +253,6 @@ fi
 echo "[INFO] Remote backup valid - syncing data"
 
 # Mirror remote data directory locally
-rsync -avh --progress --stats --delete "$REMOTE_HOST:$REMOTE_BACKUP_DIR/" "$LOCAL_BACKUP_DIR/"
+rsync -ah --progress --delete "$REMOTE_HOST:$REMOTE_BACKUP_DIR/" "$LOCAL_BACKUP_DIR/"
 
 echo "[INFO] Backup sync complete"
