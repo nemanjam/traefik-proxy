@@ -26,8 +26,8 @@ REMOTE_BACKUP_DIR="/home/ubuntu/traefik-proxy/apps/mybb/backup/data"
 # Note: all commands run from script dir, NEVER call cd, for relative LOCAL paths to work
 LOCAL_BACKUP_DIR="../data"
 
-# Minimum valid backup size
-# Blank mybb with images 250kB
+# Minimum valid backup size, ZIP size, compressed
+# Only db for blank forum, zip=158.2 KiB
 # Float
 MIN_BACKUP_SIZE_MB=0.1
 # Integer
