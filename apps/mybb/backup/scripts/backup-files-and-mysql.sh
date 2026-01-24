@@ -112,8 +112,8 @@ is_valid_config() {
             return 1
         fi
 
-        if (( value >= MAX_RETENTION )); then
-            echo "[ERROR] Retention value too large: $var=$value (max=$((MAX_RETENTION - 1)))" >&2
+        if (( value > MAX_RETENTION )); then
+            echo "[ERROR] Retention value too large: $var=$value max=$MAX_RETENTION" >&2
             return 1
         fi
 
