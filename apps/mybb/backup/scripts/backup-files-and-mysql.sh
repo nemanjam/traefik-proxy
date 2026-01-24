@@ -48,7 +48,10 @@ BACKUP_RETENTION_MONTHLY=6
 # ---------- Constants ----------
 
 # Zip vars
-MYSQL_ZIP_DIR_NAME="mysql_database" # inside zip
+# Both inside zip
+MYSQL_ZIP_DIR_NAME="mysql_database" 
+FILES_ZIP_DIR_NAME="source_code"
+
 # Must match backup-rsync-local.sh
 ZIP_PREFIX="mybb_files_and_mysql"
 FREQ_PLACEHOLDER='frequency'
@@ -141,19 +144,22 @@ is_valid_config() {
 create_backup() {
     # Note: use staging dir with relative paths to have nice overview in GUI archive utility
 
-    # Local scope, used only in this function
+    # Local scope
     # staging dir: mybb/backup/data/staging_dir
     # temp db dir: mybb/backup/data/staging_dir/mysql_database
     # working dir: mybb/backup/scripts
     local STAGING_DIR="$LOCAL_BACKUP_DIR/staging_dir"
     local TEMP_DB_DIR="$STAGING_DIR/$MYSQL_ZIP_DIR_NAME"
+    local FILES_DIR="$STAGING_DIR/$FILES_ZIP_DIR_NAME"
 
     # Reset staging dir from previous broken state 
     rm -rf "$STAGING_DIR"
-    mkdir -p "$TEMP_DB_DIR" # Will recreate staging dir
+    mkdir -p "$TEMP_DB_DIR"  # Will recreate staging dir
+    mkdir -p "$FILES_DIR"    # Folder to group all source code
 
     echo "[INFO] Created staging directory: $STAGING_DIR"
     echo "[INFO] Created temporary DB directory: $TEMP_DB_DIR"
+    echo "[INFO] Created files directory: $FILES_DIR"
 
     # Dump MySQL as plain UTF-8 .sql
     docker exec "$DB_CONTAINER_NAME" sh -c \
@@ -162,11 +168,11 @@ create_backup() {
 
     echo "[INFO] MySQL database dumped: db_name=$DB_NAME -> path=$TEMP_DB_DIR/$DB_NAME.sql"
 
-    # Copy source code folders into staging dir
+    # Copy source code folders grouped into staging/source_code dir
     for SRC_CODE_DIR in "${!SRC_CODE_DIRS[@]}"; do
         SRC_CODE_DIR_PATH="${SRC_CODE_DIRS[$SRC_CODE_DIR]}"
-        cp -a "$SRC_CODE_DIR_PATH" "$STAGING_DIR/"
-        echo "[INFO] Added to staging: $SRC_CODE_DIR_PATH"
+        cp -a "$SRC_CODE_DIR_PATH" "$FILES_DIR/"
+        echo "[INFO] Added to staging: $SRC_CODE_DIR_PATH -> $FILES_ZIP_DIR_NAME/"
     done
 
     # Create zip with clean relative paths
@@ -177,9 +183,8 @@ create_backup() {
             exit 1
         }
 
-        # Runs in subshell, from staging dir, adjust to data folder
-        # main script working dir: mybb/backup/scripts
-        # subshell working dir: mybb/backup/data/staging_dir
+        # There was cd in subshell
+        # Adjust zip path relative to staging_dir
         zip -r "../$ZIP_PATH" .
     ) || {
         echo "[ERROR] Zip creation failed: $ZIP_PATH" >&2
