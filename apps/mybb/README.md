@@ -81,6 +81,9 @@ Lines to add:
 # Cron must use bash for redirection to file to work
 # Use exact /usr/bin/bash (which bash), because /bin/bash breaks relative paths
 
+# Debug cron execution with every minute
+# * * * * * cd /home/username/mybb-backup/scripts && /usr/bin/bash ./run-backup-rsync-local.sh
+
 # Set Belgrade time zone for all crons
 TZ=Europe/Belgrade
 
