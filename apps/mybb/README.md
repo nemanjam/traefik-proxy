@@ -76,11 +76,15 @@ Lines to add:
 ```bash
 # Remote
 
+# Important:
+# Cron must run from local .../scripts folder for relative paths to work
+# Cron must use bash for redirection to file to work
+
 # Set Belgrade time zone for all crons
 TZ=Europe/Belgrade
 
 # Create backup every day at 23:30 Belgrade time
-30 23 * * * /home/ubuntu/traefik-proxy/apps/mybb/backup/scripts/run-backup-files-and-mysql.sh
+30 23 * * * cd /home/ubuntu/traefik-proxy/apps/mybb/backup/scripts && /bin/bash ./run-backup-files-and-mysql.sh
 
 # Local
 
@@ -88,5 +92,5 @@ TZ=Europe/Belgrade
 TZ=Europe/Belgrade
 
 # Sync backup every day at 23:45 Belgrade time
-45 23 * * * /home/username/mybb-backup/scripts/run-backup-rsync-local.sh
+45 23 * * * cd /home/username/mybb-backup/scripts && /bin/bash ./run-backup-rsync-local.sh
 ```
