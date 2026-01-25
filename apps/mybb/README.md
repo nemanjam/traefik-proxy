@@ -76,7 +76,7 @@ Lines to add:
 ```bash
 # Remote
 
-# Set Belgrade time zone fo all crons
+# Set Belgrade time zone for all crons
 TZ=Europe/Belgrade
 
 # Create backup every day at 23:30 Belgrade time
@@ -84,7 +84,7 @@ TZ=Europe/Belgrade
 
 # Local
 
-# Set Belgrade time zone fo all crons
+# Set Belgrade time zone for all crons
 TZ=Europe/Belgrade
 
 # Sync backup every day at 23:45 Belgrade time
