@@ -47,6 +47,9 @@ LOG_FILE="./log-backup-rsync-local.txt"
 LOG_MAX_SIZE_MB=1.0   # truncate when log exceeds this
 LOG_KEEP_SIZE_MB=0.5  # keep last N MB after truncation
 
+# Timezone for log timestamps
+LOG_TIMEZONE="Europe/Belgrade"
+
 # ---------- Constants ----------
 
 # Must match backup-files-and-mysql.sh
@@ -76,10 +79,11 @@ setup_logging() {
             && mv "$LOG_FILE.tmp" "$LOG_FILE"
     fi
 
-    # Redirect stdout + stderr through timestamp wrapper in Belgrade time
+    # Redirect stdout + stderr through timestamp wrapper in specified timezone
     exec > >(
-        awk -v TZ="Europe/Belgrade" '{
-            "date +\"%Y-%m-%d %H:%M:%S\" -d @$(date +%s) --utc" | getline d
+        awk -v TZ="$LOG_TIMEZONE" '{
+            # Use environment TZ for date formatting
+            "date +\"%Y-%m-%d %H:%M:%S\" --date=@$(date +%s)" | getline d
             print d, $0; fflush()
         }'
     ) 2>&1
@@ -87,7 +91,7 @@ setup_logging() {
     # Add per-run separator
     echo
     echo "========================================"
-    echo "[INFO] Logging started: $(TZ=Europe/Belgrade date '+%Y-%m-%d %H:%M:%S')"
+    echo "[INFO] Logging started: $(TZ="$LOG_TIMEZONE" date '+%Y-%m-%d %H:%M:%S')"
     echo "[INFO] Log file: $LOG_FILE"
     echo "[INFO] Max size: ${LOG_MAX_SIZE_MB}MB, keep: ${LOG_KEEP_SIZE_MB}MB"
     echo "========================================"
