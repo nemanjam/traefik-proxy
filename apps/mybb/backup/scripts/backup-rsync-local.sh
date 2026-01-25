@@ -58,10 +58,10 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # ---------- Enable logging ----------
 
 setup_logging() {
-    # Convert MB -> bytes (rounded down)
     local max_size
     local keep_size
 
+    # Convert MB -> bytes (rounded down)
     max_size=$(echo "$LOG_MAX_SIZE_MB * 1024 * 1024 / 1" | bc)
     keep_size=$(echo "$LOG_KEEP_SIZE_MB * 1024 * 1024 / 1" | bc)
 
