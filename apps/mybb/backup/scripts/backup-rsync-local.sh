@@ -73,10 +73,15 @@ setup_logging() {
     fi
 
     # Truncate log if too big
-    local size
+    local size size_mb
     size=$(stat -c%s "$LOG_FILE")
+    size_mb=$(awk "BEGIN {printf \"%.2f\", $size/1024/1024}")  # convert bytes -> MB
+
     if (( size > max_size )); then
         tail -c "$keep_size" "$LOG_FILE" > "$LOG_FILE.tmp" && mv "$LOG_FILE.tmp" "$LOG_FILE"
+
+        # Log truncation message happens before the exec redirection, so it needs its own timestamp
+        echo "$(TZ="$LOG_TIMEZONE" date '+%Y-%m-%d %H:%M:%S') [INFO] Log truncated: original_size=${size_mb}MB, max_size=${LOG_MAX_SIZE_MB}MB, keep_size=${LOG_KEEP_SIZE_MB}MB" >> "$LOG_FILE"
     fi
 
     # Redirect stdout + stderr to log file with timestamps
