@@ -61,40 +61,39 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # ---------- Enable logging ----------
 
 setup_logging() {
-    local max_size
-    local keep_size
+    local max_size keep_size
 
     # Convert MB -> bytes (rounded down)
     max_size=$(echo "$LOG_MAX_SIZE_MB * 1024 * 1024 / 1" | bc)
     keep_size=$(echo "$LOG_KEEP_SIZE_MB * 1024 * 1024 / 1" | bc)
 
-    # Ensure log file exists (no dirs, current script dir only)
+    # Ensure log file exists
     : > "$LOG_FILE" 2>/dev/null || touch "$LOG_FILE"
 
-    # Truncate to last KEEP_SIZE if log exceeds MAX_SIZE
+    # Truncate log if too big
     local size
     size=$(stat -c%s "$LOG_FILE")
+    
     if (( size > max_size )); then
-        tail -c "$keep_size" "$LOG_FILE" > "$LOG_FILE.tmp" \
-            && mv "$LOG_FILE.tmp" "$LOG_FILE"
+        tail -c "$keep_size" "$LOG_FILE" > "$LOG_FILE.tmp" && mv "$LOG_FILE.tmp" "$LOG_FILE"
     fi
 
-    # Redirect stdout + stderr through timestamp wrapper in specified timezone
-    exec > >(
-        awk -v TZ="$LOG_TIMEZONE" '{
-            # Use environment TZ for date formatting
-            "date +\"%Y-%m-%d %H:%M:%S\" --date=@$(date +%s)" | getline d
-            print d, $0; fflush()
-        }'
-    ) 2>&1
+    # Wrapper function to add timestamps
+    log() {
+        local msg="$*"
+        echo "$(TZ="$LOG_TIMEZONE" date '+%Y-%m-%d %H:%M:%S') $msg"
+    }
 
-    # Add per-run separator
-    echo
-    echo "========================================"
-    echo "[INFO] Logging started: $(TZ="$LOG_TIMEZONE" date '+%Y-%m-%d %H:%M:%S')"
-    echo "[INFO] Log file: $LOG_FILE"
-    echo "[INFO] Max size: ${LOG_MAX_SIZE_MB}MB, keep: ${LOG_KEEP_SIZE_MB}MB"
-    echo "========================================"
+    # Redirect all echo calls in the script to log function
+    # Use tee if you want to see output in terminal as well
+    exec > >(while IFS= read -r line; do log "$line"; done >> "$LOG_FILE") 2>&1
+
+    # Per-run separator
+    log "========================================"
+    log "[INFO] Logging started"
+    log "[INFO] Log file: $LOG_FILE"
+    log "[INFO] Max size: ${LOG_MAX_SIZE_MB}MB, keep: ${LOG_KEEP_SIZE_MB}MB"
+    log "========================================"
     echo
 }
 
