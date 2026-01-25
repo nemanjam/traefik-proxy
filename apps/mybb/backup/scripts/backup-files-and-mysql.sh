@@ -45,6 +45,23 @@ BACKUP_RETENTION_DAILY=3
 BACKUP_RETENTION_WEEKLY=2
 BACKUP_RETENTION_MONTHLY=6
 
+# ---------- Logging vars ----------
+
+# Enable only when running from cron
+# Cron has no TTY, interactive shell does
+LOG_TO_FILE=false
+[ -z "$PS1" ] && LOG_TO_FILE=true
+
+# Log file
+LOG_FILE="./log-backup-files-and-mysql.txt"
+
+# Log size limits (MB, float allowed)
+LOG_MAX_SIZE_MB=1.0   # truncate when log exceeds this
+LOG_KEEP_SIZE_MB=0.5  # keep last N MB after truncation
+
+# Timezone for log timestamps
+LOG_TIMEZONE="Europe/Belgrade"
+
 # ---------- Constants ----------
 
 # Zip vars
@@ -71,6 +88,46 @@ BACKUP_MONTHLY=$([[ $BACKUP_RETENTION_MONTHLY -gt 0 ]] && echo true || echo fals
 # Script dir absolute path, unused
 # mybb/backup/scripts
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# ---------- Enable logging ----------
+
+setup_logging() {
+    local max_size keep_size
+
+    # Convert MB -> bytes (rounded down)
+    max_size=$(echo "$LOG_MAX_SIZE_MB * 1024 * 1024 / 1" | bc)
+    keep_size=$(echo "$LOG_KEEP_SIZE_MB * 1024 * 1024 / 1" | bc)
+
+    # Ensure log file exists (do not truncate)
+    if [ ! -f "$LOG_FILE" ]; then
+        touch "$LOG_FILE"
+    fi
+
+    # Truncate log if too big
+    local size
+    size=$(stat -c%s "$LOG_FILE")
+    if (( size > max_size )); then
+        tail -c "$keep_size" "$LOG_FILE" > "$LOG_FILE.tmp" && mv "$LOG_FILE.tmp" "$LOG_FILE"
+    fi
+
+    # Redirect stdout + stderr to log file with timestamps
+    exec > >(while IFS= read -r line; do
+        echo "$(TZ="$LOG_TIMEZONE" date '+%Y-%m-%d %H:%M:%S') $line"
+    done >> "$LOG_FILE") 2>&1
+
+    # Per-run separator — just echo, timestamps added automatically
+    echo
+    echo "========================================"
+    echo "[INFO] Logging started"
+    echo "[INFO] Log file: $LOG_FILE"
+    echo "[INFO] Max size: ${LOG_MAX_SIZE_MB}MB, keep: ${LOG_KEEP_SIZE_MB}MB"
+    echo "========================================"
+    echo
+}
+
+if [ "$LOG_TO_FILE" = true ]; then
+    setup_logging
+fi
 
 # ---------- Validate config ------------
 
