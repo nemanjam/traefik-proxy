@@ -66,7 +66,7 @@ crontab -e
 chmod +x /home/ubuntu/traefik-proxy/apps/mybb/backup/scripts/run-backup-files-and-mysql.sh
 
 # Local
-chmod +x /home/username/Desktop/mybb-backup/scripts/run-backup-rsync.sh
+chmod +x /home/username/mybb-backup/scripts/run-backup-rsync-local.sh
 ```
 
 Since cron has no environment, always use absolute paths for script paths (no `~/` for home dir).
@@ -88,5 +88,5 @@ TZ=Europe/Belgrade
 TZ=Europe/Belgrade
 
 # Sync backup every day at 23:45 Belgrade time
-45 23 * * * /home/username/Desktop/mybb-backup/scripts/run-backup-rsync.sh
+45 23 * * * /home/username/mybb-backup/scripts/run-backup-rsync-local.sh
 ```

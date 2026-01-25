@@ -93,10 +93,28 @@ Cron line
 ```bash
 crontab -e
 
-# Run backup every day at 22:00 Belgrade time
-TZ=Europe/Belgrade
-0 22 * * * ~/Desktop/mybb-backup/scripts/run-backup-rsync-local-wrapper.sh
+# Laptop
 
+# Sync backup every day at 19:45 Belgrade time
+TZ=Europe/Belgrade
+45 19 * * * /home/username/mybb-backup/scripts/run-backup-rsync-local.sh
+
+# OrangePi
+
+# Set Belgrade time zone for all crons
+TZ=Europe/Belgrade
+
+# Sync backup every day at 23:45 Belgrade time
+45 23 * * * /home/orangepi/mybb-backup/scripts/run-backup-rsync-local.sh
+
+```
+
+Copy to rpi home folder:
+
+```bash
+scp -r ~/mybb-backup username@rpi:~/
+
+scp -r ~/mybb-backup orangepi@opi:~/
 ```
 
 Forward client IP with Rathole
