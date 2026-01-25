@@ -67,8 +67,10 @@ setup_logging() {
     max_size=$(echo "$LOG_MAX_SIZE_MB * 1024 * 1024 / 1" | bc)
     keep_size=$(echo "$LOG_KEEP_SIZE_MB * 1024 * 1024 / 1" | bc)
 
-    # Ensure log file exists
-    : > "$LOG_FILE" 2>/dev/null || touch "$LOG_FILE"
+    # Ensure log file exists (do not truncate)
+    if [ ! -f "$LOG_FILE" ]; then
+        touch "$LOG_FILE"
+    fi
 
     # Truncate log if too big
     local size
