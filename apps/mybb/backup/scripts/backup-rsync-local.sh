@@ -37,6 +37,7 @@ MIN_BACKUP_SIZE_BYTES=$(echo "$MIN_BACKUP_SIZE_MB * 1024 * 1024 / 1" | bc) # rou
 
 # Enable only when running from cron
 # Cron has no TTY, interactive shell does
+# Todo: useless, always true, fix it
 LOG_TO_FILE=false
 [ -z "$PS1" ] && LOG_TO_FILE=true
 
