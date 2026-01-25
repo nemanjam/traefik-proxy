@@ -32,5 +32,8 @@ backup/data/*
 docs/forum-assets/db/*
 !docs/forum-assets/db/.gitkeep
 
+# ignore log files for scripts
+backup/scripts/log-*.txt
+
 # temp backup dirs
 data/_*-data*
