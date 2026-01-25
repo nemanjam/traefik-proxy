@@ -51,11 +51,34 @@ docker exec -i mybb-database mysql -u db_user -pdb_password -e "CREATE DATABASE 
 docker exec -i mybb-database mysql -u mybbuser -pmybbpass -e "CREATE DATABASE mybb CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 ```
 
-## Crons
+## Cron
+
+Edit cron:
+
+```bash
+crontab -e
+
+# Edit ...
+
+# Make scripts executable
+
+# Remote
+chmod +x /home/ubuntu/traefik-proxy/apps/mybb/backup/scripts/run-backup-files-and-mysql.sh
+
+# Local
+chmod +x /home/username/Desktop/mybb-backup/scripts/run-backup-rsync.sh
+```
+
+Lines to add:
 
 ```bash
 # Remote
+# Create backup every day at 23:30 Belgrade time
+TZ=Europe/Belgrade
+30 23 * * * /home/ubuntu/traefik-proxy/apps/mybb/backup/scripts/run-backup-files-and-mysql.sh
 
-# Local sync
-
+# Local
+# Sync backup every day at 23:45 Belgrade time
+TZ=Europe/Belgrade
+45 23 * * * /home/username/Desktop/mybb-backup/scripts/run-backup-rsync.sh
 ```
