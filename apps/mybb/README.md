@@ -69,16 +69,24 @@ chmod +x /home/ubuntu/traefik-proxy/apps/mybb/backup/scripts/run-backup-files-an
 chmod +x /home/username/Desktop/mybb-backup/scripts/run-backup-rsync.sh
 ```
 
+Since cron has no environment, always use absolute paths for script paths (no `~/` for home dir).
+
 Lines to add:
 
 ```bash
 # Remote
-# Create backup every day at 23:30 Belgrade time
+
+# Set Belgrade time zone fo all crons
 TZ=Europe/Belgrade
+
+# Create backup every day at 23:30 Belgrade time
 30 23 * * * /home/ubuntu/traefik-proxy/apps/mybb/backup/scripts/run-backup-files-and-mysql.sh
 
 # Local
-# Sync backup every day at 23:45 Belgrade time
+
+# Set Belgrade time zone fo all crons
 TZ=Europe/Belgrade
+
+# Sync backup every day at 23:45 Belgrade time
 45 23 * * * /home/username/Desktop/mybb-backup/scripts/run-backup-rsync.sh
 ```
