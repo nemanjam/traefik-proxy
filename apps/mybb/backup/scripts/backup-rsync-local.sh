@@ -71,21 +71,27 @@ setup_logging() {
     # Truncate to last KEEP_SIZE if log exceeds MAX_SIZE
     local size
     size=$(stat -c%s "$LOG_FILE")
-
     if (( size > max_size )); then
         tail -c "$keep_size" "$LOG_FILE" > "$LOG_FILE.tmp" \
             && mv "$LOG_FILE.tmp" "$LOG_FILE"
     fi
 
-    # Redirect stdout + stderr
-    exec >>"$LOG_FILE" 2>&1
+    # Redirect stdout + stderr through timestamp wrapper in Belgrade time
+    exec > >(
+        awk -v TZ="Europe/Belgrade" '{
+            "date +\"%Y-%m-%d %H:%M:%S\" -d @$(date +%s) --utc" | getline d
+            print d, $0; fflush()
+        }'
+    ) 2>&1
 
-    echo "----------------------------------------"
-    echo "[INFO] Logging enabled"
+    # Add per-run separator
+    echo
+    echo "========================================"
+    echo "[INFO] Logging started: $(TZ=Europe/Belgrade date '+%Y-%m-%d %H:%M:%S')"
     echo "[INFO] Log file: $LOG_FILE"
     echo "[INFO] Max size: ${LOG_MAX_SIZE_MB}MB, keep: ${LOG_KEEP_SIZE_MB}MB"
-    echo "[INFO] Started at: $(date -Is)"
-    echo "----------------------------------------"
+    echo "========================================"
+    echo
 }
 
 if [ "$LOG_TO_FILE" = true ]; then
