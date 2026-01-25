@@ -73,27 +73,22 @@ setup_logging() {
     # Truncate log if too big
     local size
     size=$(stat -c%s "$LOG_FILE")
-    
     if (( size > max_size )); then
         tail -c "$keep_size" "$LOG_FILE" > "$LOG_FILE.tmp" && mv "$LOG_FILE.tmp" "$LOG_FILE"
     fi
 
-    # Wrapper function to add timestamps
-    log() {
-        local msg="$*"
-        echo "$(TZ="$LOG_TIMEZONE" date '+%Y-%m-%d %H:%M:%S') $msg"
-    }
+    # Redirect stdout + stderr to log file with timestamps
+    exec > >(while IFS= read -r line; do
+        echo "$(TZ="$LOG_TIMEZONE" date '+%Y-%m-%d %H:%M:%S') $line"
+    done >> "$LOG_FILE") 2>&1
 
-    # Redirect all echo calls in the script to log function
-    # Use tee if you want to see output in terminal as well
-    exec > >(while IFS= read -r line; do log "$line"; done >> "$LOG_FILE") 2>&1
-
-    # Per-run separator
-    log "========================================"
-    log "[INFO] Logging started"
-    log "[INFO] Log file: $LOG_FILE"
-    log "[INFO] Max size: ${LOG_MAX_SIZE_MB}MB, keep: ${LOG_KEEP_SIZE_MB}MB"
-    log "========================================"
+    # Per-run separator — just echo, timestamps added automatically
+    echo
+    echo "========================================"
+    echo "[INFO] Logging started"
+    echo "[INFO] Log file: $LOG_FILE"
+    echo "[INFO] Max size: ${LOG_MAX_SIZE_MB}MB, keep: ${LOG_KEEP_SIZE_MB}MB"
+    echo "========================================"
     echo
 }
 
@@ -315,4 +310,4 @@ echo "[INFO] Remote backup valid - syncing data"
 # Mirror remote data directory locally
 rsync -ah --progress --delete "$REMOTE_HOST:$REMOTE_BACKUP_DIR/" "$LOCAL_BACKUP_DIR/"
 
-echo "[INFO] Backup sync complete"
+echo "[INFO] Backup sync completed successfully."
