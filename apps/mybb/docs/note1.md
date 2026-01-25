@@ -98,3 +98,9 @@ TZ=Europe/Belgrade
 0 22 * * * ~/Desktop/mybb-backup/scripts/run-backup-rsync-local-wrapper.sh
 
 ```
+
+Forward client IP with Rathole
+
+https://www.perplexity.ai/search/phpbb-client-ip-iza-tunela-i-2-xug9TYlfS7OSNYwRJIhDxA#0
+https://chatgpt.com/s/t_6974f53533948191addc93725444deeb
+https://chat.deepseek.com/share/ti87qepbplf1giu7uy

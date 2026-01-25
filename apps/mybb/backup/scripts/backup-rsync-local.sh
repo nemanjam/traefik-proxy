@@ -33,6 +33,20 @@ MIN_BACKUP_SIZE_MB=0.1
 # Integer
 MIN_BACKUP_SIZE_BYTES=$(echo "$MIN_BACKUP_SIZE_MB * 1024 * 1024 / 1" | bc) # rounded to integer
 
+# ---------- Logging vars ----------
+
+# Enable only when running from cron
+# Cron has no TTY, interactive shell does
+LOG_TO_FILE=false
+[ -z "$PS1" ] && LOG_TO_FILE=true
+
+# Log file
+LOG_FILE="./log-backup-rsync-local.txt"
+
+# Log size limits (MB, float allowed)
+LOG_MAX_SIZE_MB=1.0   # truncate when log exceeds this
+LOG_KEEP_SIZE_MB=0.5  # keep last N MB after truncation
+
 # ---------- Constants ----------
 
 # Must match backup-files-and-mysql.sh
@@ -40,6 +54,43 @@ ZIP_PREFIX="mybb_files_and_mysql"
 
 # Script dir absolute path, unused
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# ---------- Enable logging ----------
+
+setup_logging() {
+    # Convert MB -> bytes (rounded down)
+    local max_size
+    local keep_size
+
+    max_size=$(echo "$LOG_MAX_SIZE_MB * 1024 * 1024 / 1" | bc)
+    keep_size=$(echo "$LOG_KEEP_SIZE_MB * 1024 * 1024 / 1" | bc)
+
+    # Ensure log file exists (no dirs, current script dir only)
+    : > "$LOG_FILE" 2>/dev/null || touch "$LOG_FILE"
+
+    # Truncate to last KEEP_SIZE if log exceeds MAX_SIZE
+    local size
+    size=$(stat -c%s "$LOG_FILE")
+
+    if (( size > max_size )); then
+        tail -c "$keep_size" "$LOG_FILE" > "$LOG_FILE.tmp" \
+            && mv "$LOG_FILE.tmp" "$LOG_FILE"
+    fi
+
+    # Redirect stdout + stderr
+    exec >>"$LOG_FILE" 2>&1
+
+    echo "----------------------------------------"
+    echo "[INFO] Logging enabled"
+    echo "[INFO] Log file: $LOG_FILE"
+    echo "[INFO] Max size: ${LOG_MAX_SIZE_MB}MB, keep: ${LOG_KEEP_SIZE_MB}MB"
+    echo "[INFO] Started at: $(date -Is)"
+    echo "----------------------------------------"
+}
+
+if [ "$LOG_TO_FILE" = true ]; then
+    setup_logging
+fi
 
 # ---------- Validate config ------------
 
