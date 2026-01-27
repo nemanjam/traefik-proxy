@@ -128,3 +128,7 @@ https://chat.deepseek.com/share/ti87qepbplf1giu7uy
 grep CRON /var/log/syslog | tail -50
 
 ```
+
+Clean MyBB cache
+
+Admin CP → Tools & Maintenance → Cache Manager → Empty All Caches
