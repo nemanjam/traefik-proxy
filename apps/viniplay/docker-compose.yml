@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  viniplay:
+    image: ardovini/viniplay:latest
+    container_name: viniplay
+    restart: unless-stopped
+    # ports:
+    #   - 8998:8998
+    volumes:
+      - ./data:/data
+    env_file:
+      - ./.env
+    networks:
+      - proxy
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.docker.network=proxy'
+
+      - 'traefik.http.routers.viniplay-secure.rule=Host(`${SITE_HOSTNAME}`)'
+      - 'traefik.http.routers.viniplay-secure.entrypoints=websecure'
+      - 'traefik.http.routers.viniplay-secure.service=viniplay-svc'
+      - 'traefik.http.services.viniplay-svc.loadbalancer.server.port=8998'
+
+networks:
+  proxy:
+    external: true

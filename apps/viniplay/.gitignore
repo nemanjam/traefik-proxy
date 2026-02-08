@@ -1,0 +1,10 @@
+
+# env
+.env
+
+# data volume
+!data
+data/*
+!data/.gitkeep
+
+
