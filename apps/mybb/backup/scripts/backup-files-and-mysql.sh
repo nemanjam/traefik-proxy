@@ -77,8 +77,8 @@ DATE=$(date +"%Y-%m-%d")
 ZIP_PATH="$LOCAL_BACKUP_DIR/$ZIP_PREFIX-$FREQ_PLACEHOLDER-$DATE.zip"
 
 # Current day and weekday
-DAY_OF_MONTH=$(date +%d)
-DAY_OF_WEEK=$(date +%u) # 1=Monday … 7=Sunday
+DAY_OF_MONTH=$((10#$(date +%d))) # Force decimal, avoid bash octal bug on 08/09
+DAY_OF_WEEK=$((10#$(date +%u))) # 1=Monday … 7=Sunday
 
 # Must do it like this for booleans
 BACKUP_DAILY=$([[ $BACKUP_RETENTION_DAILY -gt 0 ]] && echo true || echo false)
