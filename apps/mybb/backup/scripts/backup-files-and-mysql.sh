@@ -290,7 +290,8 @@ create_retention_copies() {
                 ;;
         esac
 
-        TARGET_FILE="${ZIP_PATH/frequency/$FREQ}"
+        # Placeholder 'frequency' string replacement
+        TARGET_FILE="${ZIP_PATH/$FREQ_PLACEHOLDER/$FREQ}"
 
         # Delete existing backup for this frequency (idempotent, can run on same day)
         if [[ -f "$TARGET_FILE" ]]; then
