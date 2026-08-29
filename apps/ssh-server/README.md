@@ -11,7 +11,7 @@ curl https://preview1.amd1.nemanjamitic.com
 
 ```
 
-- Enable port forwarding in ssh config
+- Enable port forwarding in ssh config (not needed)
 
 ```bash
 sudo nano /etc/ssh/sshd_config
@@ -22,6 +22,7 @@ GatewayPorts yes
 sudo systemctl restart sshd
 
 ```
+
 ssh 1080 -> 2222 // the main SSH connection port
 http 1081 for traefik, tunneled service remote port
 localhost:3000 -> tunnel:1081 -> traefik // tunnel1
@@ -39,4 +40,17 @@ ssh \
   -R *:1081:localhost:3000 \
   -R *:1082:localhost:3000 \
   amd1c
+```
+
+---
+
+Must set MAIN ssh port 1080 here, not tunnel port 1081
+
+```bash
+# ssh amd1 ssh container
+Host amd1c 123.123.123.13
+    HostName 123.123.123.13
+    IdentityFile ~/.ssh/oracle/my-private-key
+    User username
+    Port 1080 # not 1081 e.g., IMPORTANT, no route to host
 ```
