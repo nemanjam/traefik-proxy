@@ -87,8 +87,8 @@ services:
     image: mongo:6.0.3
     container_name: mdp-mongo
     restart: unless-stopped
-    ports:
-      - '27017:27017'
+    # ports:
+    #   - '27017:27017'
     environment:
       # forwarded
       - MONGO_INITDB_DATABASE
