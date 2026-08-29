@@ -38,14 +38,15 @@ services:
     depends_on:
       - npb-db-live
     networks:
+      - default
       - proxy
 
   npb-db-live:
-    image: postgres:14.3-bullseye
+    image: postgres:17.5-alpine3.22
     container_name: npb-db-live
     restart: unless-stopped
-    ports:
-      - '5432:5432'
+    # ports:
+    #   - '5432:5432'
     user: '${MY_UID}:${MY_GID}'
     volumes:
       - ./prisma/pg-data:/var/lib/postgresql/data
@@ -67,9 +68,12 @@ services:
     # env_file:
     #   - .env.production.live.local
     networks:
+      - default
       # for adminer
-      - proxy
+      # - proxy
 
 networks:
+  default:
+    driver: bridge
   proxy:
     external: true
