@@ -90,6 +90,9 @@ services:
       - default # not on public network
 
   adminer:
+    # disabled by default, db on internal network
+    profiles:
+      - adminer
     image: adminer:5.4.0-standalone
     container_name: full-stack-fastapi-template-nextjs-adminer
     restart: unless-stopped
@@ -111,7 +114,6 @@ services:
       - 'traefik.http.routers.fsftn-adminer.entrypoints=websecure'
       - 'traefik.http.routers.fsftn-adminer.service=fsftn-adminer'
       - 'traefik.http.services.fsftn-adminer.loadbalancer.server.port=8080'
-
 
 networks:
   default:
